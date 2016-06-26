@@ -1,0 +1,99 @@
+#!/bin/bash
+#! Script to build the whole project when its your firstday
+set -e
+export MAVEN_OPTS="-Xmx6192m -Xms4096m -XX:MaxNewSize=4096m -XX:MaxPermSize=4096m"
+
+function usage() {
+	echo "USAGE: $0 [-clean] hive/spark/idbc/inceptor/all"
+}
+
+if [[ -z $DEVROOT ]]; then
+	  echo "export DEVROOT=/path/to/projects; then continue"
+	  exit 0;
+fi
+
+ABSPATH=$DEVROO
+HIVE=hive-0.12.0-transwarp
+NGMR=ngmr-1.7-transwarp
+ACTIONS=("hive" "spark" "idbc" "inceptor" "all")
+CLEAN="false"
+ACTION=${@:$#}
+
+# Check CLI options
+if [ $# -lt 1 ]; then
+    usage && exit 1;
+fi
+
+while [ $# -gt 0 ]; do
+  COMMAND=$1
+  case $COMMAND in
+    -clean)
+      CLEAN="true" && shift;;
+    *)
+      break;;
+  esac
+done
+
+if [[ "${ACTIONS[@]}" =~ "${ACTION}" ]]; then
+    echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    echo "mvn clean == $CLEAN"
+    echo "target == $ACTION"
+    echo "DEVROOT=$DEVROOT"
+    echo "HIVE=$DEVROOT/$HIVE"
+    echo "NGMR=$DEVROOT/$NGMR"
+    echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    while true; do
+        read -p "Do you want to compile using above configurations? (y/n) " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+else
+    usage && exit 1;
+fi
+
+cd $DEVROOT/$HIVE/src
+if [[ $ACTION == "hive" || $ACTION == "all" ]]; then
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests -Pidea
+fi
+
+cd $DEVROOT/$NGMR/spark
+if [[ $ACTION == "spark" || $ACTION == "all" ]]; then
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests -Pyarn -Pidea
+fi
+
+cd $DEVROOT/$NGMR/idbc
+if [[ $ACTION == "idbc" || $ACTION == "all" ]]; then
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests
+fi
+
+cd $DEVROOT/$NGMR/inceptor
+if [[ $ACTION == "inceptor" || $ACTION == "all" ]]; then
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -Dmaven.test.skip=true -Pidea
+fi
+
+mkdir -p ~/jars/hive/lib/
+mkdir -p ~/jars/ngmr-shell/target/scala-2.10/
+mkdir -p ~/jars/ngmr/stargate/target/scala-2.10
+mkdir -p ~/jars/ngmr/core/target/scala-2.10/
+mkdir -p ~/jars/ngmr/holodesk/target/scala-2.10/
+mkdir -p ~/jars/ngmr-shell/target/scala-2.10/
+
+rsync -aXS $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-tdh460.jar $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-tdh460.jar  ~/jars/hive/lib
+rsync -aXS $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-tdh460-combined.jar ~/jars/hive/lib/hive-shims-0.12.0-transwarp-tdh460.jar
+
+rsync -aXS $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-tdh460.jar ~/jars/ngmr-shell/target/scala-2.10/
+rsync -aXS $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-tdh460.jar ~/jars/ngmr-shell/target/scala-2.10/
+rsync -aXS $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-tdh460.jar ~/jars/ngmr-shell/target/scala-2.10/
+rsync -aXS $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-tdh460.jar  ~/jars/ngmr-shell/target/scala-2.10/
+
+rsync -aXS $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-tdh460.jar ~/jars/ngmr/stargate/target/scala-2.10/ngmr-stargate_2.10-1.1.0-transwarp-tdh460.jar
+rsync -aXS $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-tdh460.jar  ~/jars/ngmr/core/target/scala-2.10/ngmr-core_2.10-1.1.0-transwarp-tdh460.jar
+rsync -aXS $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-tdh460.jar ~/jars/ngmr/holodesk/target/scala-2.10/ngmr-holodesk_2.10-1.1.0-transwarp-tdh460.jar
+rsync -aXS $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-tdh460.jar ~/jars/ngmr-shell/target/scala-2.10/ngmr-shell_2.10-1.1.0-transwarp-tdh460.jar
