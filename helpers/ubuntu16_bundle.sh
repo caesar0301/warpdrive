@@ -41,10 +41,10 @@ sudo apt-get autoremove
 
 # TMUX
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-curl https://raw.githubusercontent.com/caesar0301/omnilab-misc/master/Scripts/dotfiles/.tmux.conf -o ~/.tmux.conf
+curl https://raw.githubusercontent.com/caesar0301/warp-drive/master/dotfiles/.tmux.conf -o ~/.tmux.conf
 
 # R DEV
-curl https://raw.githubusercontent.com/caesar0301/omnilab-misc/master/Scripts/dotfiles/.Rprofile -o ~/.Rprofile
+curl https://raw.githubusercontent.com/caesar0301/warp-drive/master/dotfiles/.Rprofile -o ~/.Rprofile
 
 # SPACEMACS
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
