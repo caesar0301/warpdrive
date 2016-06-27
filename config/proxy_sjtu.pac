@@ -231,7 +231,8 @@ function FindProxyForURL(url, host) {
 
     if (isInNet(dnsResolve(pureHost(host)), "10.0.0.0", "255.0.0.0") ||
         isInNet(dnsResolve(pureHost(host)), "192.168.0.0", "255.255.0.0") ||
-        isInNet(dnsResolve(pureHost(host)), "127.0.0.0", "255.255.255.0"))
+        isInNet(dnsResolve(pureHost(host)), "127.0.0.0", "255.255.255.0") ||
+        isInNet(dnsResolve(pureHost(host)), "172.16.0.0", "255.255.0.0"))
         return PROXY_NONE;
         
     if (isDomesticDomain(url, host))
