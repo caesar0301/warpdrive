@@ -12,9 +12,9 @@ if [[ -z $DEVROOT ]]; then
 	  exit 0;
 fi
 
-THISPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 HIVE=hive-0.12.0-transwarp
 NGMR=ngmr-1.7-transwarp
+THISPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 ACTIONS=("hive" "spark" "idbc" "inceptor" "all")
 CLEAN="false"
 ACTION=${@:$#}
@@ -36,8 +36,9 @@ done
 
 if [[ "${ACTIONS[@]}" =~ "${ACTION}" ]]; then
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    echo "mvn clean == $CLEAN"
-    echo "target == $ACTION"
+    echo "mvn clean: $CLEAN"
+    echo "target: $ACTION"
+    echo ""
     echo "DEVROOT=$DEVROOT"
     echo "HIVE=$DEVROOT/$HIVE"
     echo "NGMR=$DEVROOT/$NGMR"
@@ -54,28 +55,47 @@ else
     usage && exit 1;
 fi
 
-cd $DEVROOT/$HIVE/src
-if [[ $ACTION == "hive" || $ACTION == "all" ]]; then
-    if [[ $CLEAN == "true" ]]; then mvn clean; fi
-    mvn package install -DskipTests -Pidea
+function build_hive() {
+    cd $DEVROOT/$HIVE/src
+    if [[ $ACTION == "hive" || $ACTION == "all" ]]; then
+        if [[ $CLEAN == "true" ]]; then mvn clean; fi
+        mvn package install -DskipTests -Pidea
+    fi
+}
+
+function build_spark() {
+    cd $DEVROOT/$NGMR/spark
+    if [[ $ACTION == "spark" || $ACTION == "all" ]]; then
+        if [[ $CLEAN == "true" ]]; then mvn clean; fi
+        mvn package install -DskipTests -Pyarn -Pidea
+    fi  
+}
+
+function build_idbc() {
+    cd $DEVROOT/$NGMR/idbc
+    if [[ $ACTION == "idbc" || $ACTION == "all" ]]; then
+        if [[ $CLEAN == "true" ]]; then mvn clean; fi
+        mvn package install -DskipTests
+    fi
+}
+
+function build_inceptor() {
+    cd $DEVROOT/$NGMR/inceptor
+    if [[ $ACTION == "inceptor" || $ACTION == "all" ]]; then
+        if [[ $CLEAN == "true" ]]; then mvn clean; fi
+        mvn package install -Dmaven.test.skip=true -Pidea
+    fi
+}
+
+build_hive
+build_spark
+build_idbc
+build_inceptor
+
+## Copy compiled packages for regression tests
+SYNC_BINARY=$(dirname $THISPATH)/sync-firstday
+if [ -e $SYNC_BINARY ]; then
+	bash $SYNC_BINARY
 fi
 
-cd $DEVROOT/$NGMR/spark
-if [[ $ACTION == "spark" || $ACTION == "all" ]]; then
-    if [[ $CLEAN == "true" ]]; then mvn clean; fi
-    mvn package install -DskipTests -Pyarn -Pidea
-fi
-
-cd $DEVROOT/$NGMR/idbc
-if [[ $ACTION == "idbc" || $ACTION == "all" ]]; then
-    if [[ $CLEAN == "true" ]]; then mvn clean; fi
-    mvn package install -DskipTests
-fi
-
-cd $DEVROOT/$NGMR/inceptor
-if [[ $ACTION == "inceptor" || $ACTION == "all" ]]; then
-    if [[ $CLEAN == "true" ]]; then mvn clean; fi
-    mvn package install -Dmaven.test.skip=true -Pidea
-fi
-
-$(dirname $THISPATH)/sync-firstday
+exit 0;
