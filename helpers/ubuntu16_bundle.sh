@@ -35,7 +35,11 @@ sudo apt-get update
 # replace final key with yours
 sudo apt-get install wps-office
 
+# Zotero
 sudo apt-get install zotero-standalone
+
+# Media players
+sudo apt-get install mpv smplayer
 
 sudo apt-get autoremove
 
