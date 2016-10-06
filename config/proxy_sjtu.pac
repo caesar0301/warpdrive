@@ -55,6 +55,7 @@ function isDomesticDomain(url, host){
         "dianping.com",
         "dianpingoa.com",
         "douban.com",
+        "github.com",
         "hao123.com",
         "hsiamin.com",
         "jd.com",
@@ -239,7 +240,7 @@ function FindProxyForURL(url, host) {
         return PROXY_NONE;
         
     if (isAcademicDomain(url, host))
-        return PROXY_NONE;
+        return PROXY_SJTU;
 
     if (inGFWList(url, host))
         return PROXY_OMNILAB;
