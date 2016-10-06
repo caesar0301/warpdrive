@@ -11,9 +11,11 @@ host1=username@login_node.com
 host2=username@dest.ination.com
 ssh -L 7777:localhost:7777 $host1 ssh -L 7777:localhost:7777 -N $host2
 
-# dynamic port forwarding
-ssh -fqNC -D 7777 guest@joes-pc
-ssh -vNC -D 7777 guest@joes-pc
+# dynamic port forwarding, SOCKS, port 1080 may be perferred by some apps.
+# Ref. https://help.ubuntu.com/community/SSH/OpenSSH/PortForwarding
+ssh -fqNC -D 1080 guest@joes-pc
+ssh -vNC -D 1080 guest@joes-pc
+ssh -C -D 1080 guest@joes-pc
 
 # my ssh tunnal to desktop
 function mxc_ssh_tunnels() {
