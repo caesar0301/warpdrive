@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+	<title>Mail Filters</title>
+	<id>tag:mail.google.com,2008:filters:1300957034901,1372339319660,1373726689696,1373726700699,1380702122079,1381635321225,1387769339934,1400565553140,1400565568134,1400565578683,1405524458774,1405567800445,1409108341020,1409984479284,1410228204193,1410228771916,1410228789111,1410320187302</id>
+	<updated>2014-09-10T03:39:10Z</updated>
+	<author>
+		<name>Xiaming Chen</name>
+		<email>chenxm35@gmail.com</email>
+	</author>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1300957034901</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='备忘'/>
+		<apps:property name='label' value='备忘'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1372339319660</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='from:chen_xm@sjtu.edu.cn OR to:chen_xm@sjtu.edu.cn OR cc: chen_xm@sjtu.edu.cn OR bcc:chen_xm@sjtu.edu.cn'/>
+		<apps:property name='label' value='JMail'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1373726689696</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='list:&quot;&lt;omnilab-bdm.googlegroups.com&gt;&quot;'/>
+		<apps:property name='label' value='omnilab-bdm'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='smartLabelToApply' value='^smartlabel_group'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1373726700699</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='omnilab-all-members@googlegroups.com'/>
+		<apps:property name='label' value='omnilab-all'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='smartLabelToApply' value='^smartlabel_group'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1380702122079</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='communications-digital-edition@acm.org'/>
+		<apps:property name='label' value='Paper-Fresh'/>
+		<apps:property name='shouldArchive' value='true'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1381635321225</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='jin.yaohui@gmail.com OR jinyh@sjtu.edu.cn,'/>
+		<apps:property name='label' value='jinyh'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1387769339934</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='from:*@wikicfp.com OR to:*@wikicfp.com'/>
+		<apps:property name='label' value='CFP/wikicfp'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1400565553140</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='from:user@avro.apache.org OR to:user@avro.apache.org'/>
+		<apps:property name='shouldTrash' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1400565568134</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='from:r-help@r-project.org OR to:r-help@r-project.org OR cc:r-help@r-project.org'/>
+		<apps:property name='shouldTrash' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1400565578683</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='from:user@pig.apache.org OR to:user@pig.apache.org'/>
+		<apps:property name='shouldTrash' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1405524458774</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='{nature_news OR scientific_reports OR nature}@ealert.nature.com OR alerts@aaas-science.org OR *@hq.acm.org OR {acmbulletin}@acm.org OR *@extrahop.com'/>
+		<apps:property name='label' value='News'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1405567800445</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='tccc-announce@*'/>
+		<apps:property name='label' value='CFP/tccc'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1409108341020</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='iccceg@asdf.org.in OR end2end-interest@*'/>
+		<apps:property name='label' value='CFP/e2e'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1409984479284</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='communications-digital-edition@acm.org OR valert@prod.sciencedirect.com OR {tocservice OR communications-digital-edition}@acm.org OR toc-alert@ieee.org OR EUCLID-L@cornell.edu'/>
+		<apps:property name='label' value='Paper-Fresh'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1410228204193</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='list: mycolleagues.mailman.ufsc.br'/>
+		<apps:property name='label' value='CFP/colle'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1410228771916</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='(10086 | account)@139.com OR job.boshi.14@gmail.com OR huyanli@sjtu.edu.cn OR jhong@sjtu.edu.cn OR mercury.hu@gmail.com OR seieegs@sjtu.edu.cn'/>
+		<apps:property name='label' value='通知'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1410228789111</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='from' value='support@planet-lab.org OR tstat-request@tlc.polito.it OR *noreply*@* OR  *no-reply*@* OR *@github* OR *@ubuntuforums.org OR *@git.omnilab.sjtu.edu.cn'/>
+		<apps:property name='doesNotHaveTheWord' value='*@ieee.org OR *@easychair.org'/>
+		<apps:property name='label' value='NoReply'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1410320187302</id>
+		<updated>2014-09-10T03:39:10Z</updated>
+		<content></content>
+		<apps:property name='subject' value='openings | studentship | studentships | grant | grants | workshop | workshops | position | positions | postdoc | scholarship | health |professorship |downloaded |demo|demos|poster|posters|newsletter|newsletters|presentation|presentations|download'/>
+		<apps:property name='hasTheWord' value='label:(cfp-colle | cfp-e2e | cfp-tccc)'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldTrash' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+</feed>
