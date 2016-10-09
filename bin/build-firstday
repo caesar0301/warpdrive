@@ -2,11 +2,13 @@
 #! Script to build the whole project when its your firstday
 set -e
 
-if [ "X$MAVEN_OPTS" == "X" ]; then
-    export MAVEN_OPTS="-Xmx2048m -Xms1024m -XX:MaxNewSize=2048m -XX:MaxPermSize=2048m"
-fi
+MAVEN_OPTS="-Xmx6000m -XX:MaxPermSize=4000m"
+JAVA_HOME=/usr/lib/jvm/java-7-oracle
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 
-echo "export MAVEN_OPTS=$MAVEN_OPTS"
+echo "MAVEN_OPTS=$MAVEN_OPTS"
 
 function usage() {
 	echo "USAGE: $0 [-clean] hive/spark/idbc/inceptor/all"
