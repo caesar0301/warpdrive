@@ -16,20 +16,25 @@ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89
 sudo apt-get update
 
 # basics
-sudo apt-get install -y tmux vim zsh bash-completion emacs tree wget curl sshpass nano mlocate virtualbox gparted exfat-utils openvpn indicator-multiload openssh-server openssh-client python-pip sysv-rc-conf fcitx mpv smplayer zotero-standalone
+sudo apt-get install -y tmux vim zsh bash-completion emacs tree wget curl sshpass nano mlocate virtualbox fcitx mpv smplayer
+sudo apt-get install -y gparted exfat-utils openvpn indicator-multiload openssh-server openssh-client python-pip sysv-rc-conf zotero-standalone
 
 # system
-sudo apt-get install -y ntp lvm2 lshw usbutils pciutils denyhosts autofs mdadm iperf lshw sysstat fio iotop iftop htop iptraf tcpdump mtr tcpdump clusterssh pdsh nmap
+sudo apt-get install -y ntp lvm2 lshw usbutils pciutils denyhosts autofs mdadm iperf lshw sysstat
+sudo apt-get install -y fio iotop iftop htop iptraf tcpdump mtr tcpdump clusterssh pdsh nmap
 
 # development
-sudo apt-get install -y build-essential subversion r-base r-base-dev r-base-core gnuplot git git-svn git-cvs ant libcurl3 libcurl4-openssl-dev openssl libxml2-dev libxslt-dev maven libssl-dev exuberant-ctags sbt sublime-text-installer ubuntu-make intellij-idea-community
+sudo apt-get install -y build-essential subversion r-base r-base-dev r-base-core gnuplot git git-svn git-cvs ant sbt npm nodejs maven
+sudo apt-get install -y sublime-text-installer ubuntu-make intellij-idea-community
+sudo apt-get install -y openssl libxml2-dev libxslt-dev libssl-dev exuberant-ctags libcurl3 libcurl4-openssl-dev
 
 sudo pip install -U dbgp vim-debug pep8 flake8 pyflakes isort
 
 # Java and Scala
 sudo apt-get remove -y openjdk-*-jre-*
 sudo apt-get purge -y openjdk*
-sudo apt-get install -y oracle-java8-installer oracle-java8-set-default scala
+sudo apt-get install -y oracle-java7-installer oracle-java8-installer scala
+sudo apt-get install -y oracle-java8-set-default
 
 # WPS in ubuntukylin repo
 # Fix GPG key error:
@@ -40,6 +45,7 @@ sudo apt-get install -y oracle-java8-installer oracle-java8-set-default scala
 sudo apt-get autoremove
 
 # TMUX
+rm -rf ~/.tmux*
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 curl https://raw.githubusercontent.com/caesar0301/warp-drive/master/dotfiles/.tmux.conf -o ~/.tmux.conf
 
@@ -47,9 +53,11 @@ curl https://raw.githubusercontent.com/caesar0301/warp-drive/master/dotfiles/.tm
 curl https://raw.githubusercontent.com/caesar0301/warp-drive/master/dotfiles/.Rprofile -o ~/.Rprofile
 
 # SPACEMACS
+rm -rf ~/.emacs*
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 # VIM
+rm -rf ~/.vim*
 curl https://raw.githubusercontent.com/fisadev/fisa-vim-config/master/.vimrc -o ~/.vimrc
 
 exit 0;
