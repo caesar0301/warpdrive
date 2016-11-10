@@ -26,8 +26,8 @@ sudo /usr/share/cmf/uninstall-cloudera-manager.sh
 sudo service cloudera-scm-server stop
 sudo service cloudera-scm-server-db stop
 
-sudo yum remove cloudera-manager-server
-sudo yum remove cloudera-manager-server-db-2
+sudo yum remove -y cloudera-manager-server
+sudo yum remove -y cloudera-manager-server-db-2
 ```
 
 # Uninstall Cloudera Manager Agent and Managed Software
@@ -42,8 +42,13 @@ sudo service cloudera-scm-agent stop/hard_stop
 ## Do uninstalling
 
 ``` bash
-sudo yum remove 'cloudera-manager-*'
+sudo yum remove -y 'cloudera-manager-*'
 sudo yum clean all 
+```
+# Uninstall related CDH packages
+
+``` bash
+rpm -e `rpm -qa | grep cdh`
 ```
 
 # Remove Cloudera Manager and User Data
