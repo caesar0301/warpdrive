@@ -1,0 +1,17 @@
+mongo:
+  image: mongo:latest
+  container_name: mongodb
+  environment:
+    - AUTH=no
+  ports:
+    - 27017:27017
+    - 28017:28017
+
+mongo-express:
+  image: mongo-express:latest
+  container_name: mongoexp
+  links:
+    - mongo
+  ports:
+    - 8081:8081
+  tty: true

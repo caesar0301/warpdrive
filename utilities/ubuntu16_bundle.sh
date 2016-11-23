@@ -1,12 +1,13 @@
 #!/bin/bash
 # set -e
 
-# Useful PPAs
+# Third-party PPAs
 sudo apt-add-repository -y ppa:webupd8team/java
 sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
 sudo add-apt-repository -y ppa:smathot/cogscinl
 sudo add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
 sudo apt-add-repository -y ppa:mmk2410/intellij-idea-community
+sudo add-apt-repository -y ppa:ubuntukylin-members/ubuntukylin
 
 # Install sbt
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
@@ -24,9 +25,10 @@ sudo apt-get install -y ntp lvm2 lshw usbutils pciutils denyhosts autofs mdadm i
 sudo apt-get install -y fio iotop iftop htop iptraf tcpdump mtr tcpdump clusterssh pdsh nmap
 
 # development
-sudo apt-get install -y build-essential subversion r-base r-base-dev r-base-core gnuplot git git-svn git-cvs ant sbt npm nodejs maven
+sudo apt-get install -y build-essential subversion r-base r-base-dev r-base-core gnuplot git git-svn git-cvs ant sbt npm nodejs nodejs-legency maven
 sudo apt-get install -y sublime-text-installer ubuntu-make intellij-idea-community
 sudo apt-get install -y openssl libxml2-dev libxslt-dev libssl-dev exuberant-ctags libcurl3 libcurl4-openssl-dev
+sudo apt-get install -y docker.io
 
 sudo pip install -U dbgp vim-debug pep8 flake8 pyflakes isort
 
@@ -40,7 +42,7 @@ sudo apt-get install -y oracle-java8-set-default
 # Fix GPG key error:
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3C962022012520A0
 # replace final key with yours
-# sudo apt-get install wps-office
+sudo apt-get install wps-office
 
 sudo apt-get autoremove
 

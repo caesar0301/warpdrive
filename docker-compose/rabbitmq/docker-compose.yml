@@ -1,0 +1,3 @@
+rabbitmq:
+  image: rabbitmq:latest
+  container_name: rabbitmq

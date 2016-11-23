@@ -1,0 +1,50 @@
+mysql_nopw:
+  image: mysql:latest
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+
+rabbitmq:
+  image: rabbitmq:latest
+
+phantomjs:
+  image: binux/pyspider:latest
+  command: phantomjs
+
+result:
+  image: binux/pyspider:latest
+  links:
+    - mysql_nopw
+    - rabbitmq
+  command: result_worker
+
+processor:
+  image: binux/pyspider:latest
+  links:
+    - mysql_nopw
+    - rabbitmq
+  command: processor
+
+fetcher:
+  image: binux/pyspider:latest
+  links:
+    - rabbitmq
+    - phantomjs
+  command : fetcher
+
+scheduler:
+  image: binux/pyspider:latest
+  links:
+    - mysql_nopw
+    - rabbitmq
+  command: scheduler
+
+webui:
+  image: binux/pyspider:latest
+  links:
+    - mysql_nopw
+    - rabbitmq
+    - scheduler
+    - phantomjs
+  command: webui
+  ports:
+    - "5000:5000"
