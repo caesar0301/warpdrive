@@ -90,7 +90,7 @@ function build_idbc() {
     if [[ $ACTION == "idbc" || $ACTION == "all" ]]; then
         if [[ $CLEAN == "true" ]]; then mvn clean; fi
         mvn package install -DskipTests
-        notify "IDBC building completed"
+        notify "Driver building completed"
     fi
 }
 
