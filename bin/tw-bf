@@ -51,11 +51,11 @@ if [[ -z $DEVROOT ]]; then
 fi
 
 ## Parse options
-while [ $# -gt 1 ]; do
-  OPT=$1 && shift
+while [ $# -gt 0 ]; do
+  OPT=$1
   case $OPT in
     -v)
-      VER=$1 && shift;;
+      VER=$2 && shift 2;;
     -c)
       CLEAN="true" && shift;;
     -h)
@@ -66,7 +66,7 @@ while [ $# -gt 1 ]; do
 done
 
 ## Parse actions
-IFS=',' read -ra ACTIONS <<< ${@:$#}
+IFS=',' read -ra ACTIONS <<< $1
 for i in "${ACTIONS[@]}"; do
     if [[ ! "${DEFAULT_ACTIONS[@]}" =~ "$i" ]]; then
         echo "Unrecognized action [$i]" && usage && exit 1;
@@ -84,9 +84,9 @@ fi
 ## Set default actions
 if [[ $ACTIONS == "" ]]; then
     ACTIONS=("all")
+    BUILD_ALL="true"
 fi
 
-echo
 echo "TDH version: $VER"
 echo "actions: ${ACTIONS[@]}"
 echo "mvn clean: $CLEAN"
