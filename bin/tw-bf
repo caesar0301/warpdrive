@@ -1,173 +1,208 @@
 #!/bin/bash
-#! Script to build the whole project when its your firstday
+#! Script to build the whole project when its your first-day @tw
 set -e
 
-MAVEN_OPTS="-Xmx6000m -XX:MaxPermSize=4000m"
+#-------------- Settings -----------------
+HIVE="hive-0.12.0-transwarp"
+NGMR="ngmr-1.7-transwarp"
+UPLOAD_DELL="/tmp/jars-dell"
+UPLOAD_JK="/tmp/jars"
+#-----------------------------------------
+
 JAVA_HOME=/usr/lib/jvm/java-7-oracle
 JRE_HOME=$JAVA_HOME/jre
 CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
 PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+MAVEN_OPTS="-Xmx6000m -XX:MaxPermSize=4000m"
 
-echo "MAVEN_OPTS=$MAVEN_OPTS"
+THISPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+DEFAULT_ACTIONS=("hive" "spark" "idbc" "inceptor" "all")
+ACTIONS=
+VER=
+CLEAN="false"
+BUILD_ALL="false"
 
 function usage() {
-	echo "USAGE: $0 [-clean] hive/spark/idbc/inceptor/all"
+    echo "USAGE: `basename $0` [-c] [-v version] actions"
+    echo "  -c            If performing cleaning before maven compiling"
+    echo "  -v version    Version integer of TDH dist. such as 460, 500 etc."
+    echo "  actions       An action or multiple actions separated by ',' delimiter."
+    echo "                Supported actions (in lower case): hive|spark|idbc|inceptor|all."
+    echo "                Components dependency:"
+    echo "                  * Hive and Spark being independent"
+    echo "                  * IDBC depends on Spark"
+    echo "                  * Inceptor depends on all three other components"
+    echo
 }
 
-if [[ -z $DEVROOT ]]; then
-	  echo "export DEVROOT=/path/to/projects; then continue"
-	  exit 0;
-fi
-
-HIVE=hive-0.12.0-transwarp
-NGMR=ngmr-1.7-transwarp
-THISPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
-ACTIONS=("hive" "spark" "idbc" "inceptor" "all")
-CLEAN="false"
-ACTION=${@:$#}
+function notify() {
+    spd-say "$1"
+}
 
 # Check CLI options
 if [ $# -lt 1 ]; then
     usage && exit 1;
 fi
 
-while [ $# -gt 0 ]; do
-  COMMAND=$1
-  case $COMMAND in
-    -clean)
+## Check DEVROOT env.
+if [[ -z $DEVROOT ]]; then
+      echo "export DEVROOT=/path/to/projects; then continue"
+      exit 0;
+fi
+
+## Parse options
+while [ $# -gt 1 ]; do
+  OPT=$1 && shift
+  case $OPT in
+    -v)
+      VER=$1 && shift;;
+    -c)
       CLEAN="true" && shift;;
+    -h)
+      usage && exit 0;;
     *)
       break;;
   esac
 done
 
-if [[ "${ACTIONS[@]}" =~ "${ACTION}" ]]; then
-    echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    echo "mvn clean: $CLEAN"
-    echo "target: $ACTION"
-    echo ""
-    echo "DEVROOT=$DEVROOT"
-    echo "HIVE=$DEVROOT/$HIVE"
-    echo "NGMR=$DEVROOT/$NGMR"
-    echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    while true; do
-        read -p "Do you want to compile using above configurations? (y/n) " yn
-        case $yn in
-            [Yy]* ) break;;
-            [Nn]* ) exit;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-else
-    usage && exit 1;
+## Parse actions
+IFS=',' read -ra ACTIONS <<< ${@:$#}
+for i in "${ACTIONS[@]}"; do
+    if [[ ! "${DEFAULT_ACTIONS[@]}" =~ "$i" ]]; then
+        echo "Unrecognized action [$i]" && usage && exit 1;
+    fi
+    if [[ $i == "all" ]]; then
+        BUILD_ALL="true"
+    fi
+done
+
+## check version
+if [[ $VER == "" ]]; then
+    echo "Please specify a version." && usage && exit 1;
 fi
 
-function notify() {
-    alert "$1" &
-    spd-say "$1"
-}
+## Set default actions
+if [[ $ACTIONS == "" ]]; then
+    ACTIONS=("all")
+fi
+
+echo
+echo "TDH version: $VER"
+echo "actions: ${ACTIONS[@]}"
+echo "mvn clean: $CLEAN"
+echo "mvn options: $MAVEN_OPTS"
+echo
+echo "DEVROOT: $DEVROOT"
+echo "HIVE: $DEVROOT/$HIVE"
+echo "NGMR: $DEVROOT/$NGMR"
+echo
 
 function build_hive() {
     cd $DEVROOT/$HIVE/src
-    if [[ $ACTION == "hive" || $ACTION == "all" ]]; then
-        if [[ $CLEAN == "true" ]]; then mvn clean; fi
-        mvn package install -DskipTests -Pidea
-        notify "Hive building completed"
-    fi
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests -Pidea
+    notify "Hive building completed"
 }
 
 function build_spark() {
     cd $DEVROOT/$NGMR/spark
-    if [[ $ACTION == "spark" || $ACTION == "all" ]]; then
-        if [[ $CLEAN == "true" ]]; then mvn clean; fi
-        mvn package install -DskipTests -Pyarn -Pidea
-        notify "Spark building completed"
-    fi
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests -Pyarn -Pidea
+    notify "Spark building completed"
 }
 
 function build_idbc() {
     cd $DEVROOT/$NGMR/idbc
-    if [[ $ACTION == "idbc" || $ACTION == "all" ]]; then
-        if [[ $CLEAN == "true" ]]; then mvn clean; fi
-        mvn package install -DskipTests
-        notify "Driver building completed"
-    fi
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -DskipTests
+    notify "Driver building completed"
 }
 
 function build_inceptor() {
     cd $DEVROOT/$NGMR/inceptor
-    if [[ $ACTION == "inceptor" || $ACTION == "all" ]]; then
-        if [[ $CLEAN == "true" ]]; then mvn clean; fi
-        mvn package install -Dmaven.test.skip=true -Pidea
-        notify "Inceptor building completed"
-    fi
+    if [[ $CLEAN == "true" ]]; then mvn clean; fi
+    mvn package install -Dmaven.test.skip=true -Pidea
+    notify "Inceptor building completed"
 }
 
-build_hive
-build_spark
-build_idbc
-build_inceptor
-
+## Run building action
+if [[ $BUILD_ALL == "true" ]]; then
+    build_hive
+    build_spark
+    build_idbc
+    build_inceptor
+else
+    if [[ "${ACTIONS[@]}" =~ "hive" ]]; then
+        build_hive
+    fi
+    if [[ "${ACTIONS[@]}" =~ "spark" ]]; then
+        build_spark
+    fi
+    if [[ "${ACTIONS[@]}" =~ "idbc" ]]; then
+        build_idbc
+    fi
+    if [[ "${ACTIONS[@]}" =~ "inceptor" ]]; then
+        build_inceptor
+    fi
+fi
 
 function sync_firstday() {
-
-    VER=tdh500
-
     echo "Copying for Jenkins regression tests ..."
-    rm -rf ~/jars/*
+    mkdir -p $UPLOAD_JK
+    rm -rf $UPLOAD_JK/*.jar
+    VERSION="tdh$VER"
 
-    rsync -aXS $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -axS $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-${VER}.jar  ~/jars
-    rsync -aXS $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-${VER}-combined.jar ~/jars/hive-shims-0.12.0-transwarp-${VER}.jar
+    rsync -aXS $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -axS $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-${VERSION}.jar  $UPLOAD_JK
+    rsync -aXS $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-${VERSION}-combined.jar $UPLOAD_JK/hive-shims-0.12.0-transwarp-${VERSION}.jar
 
-    rsync -aXS $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-${VER}.jar ~/jars
-    rsync -aXS $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-${VER}.jar ~/jars
-    rsync -aXS $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-${VER}.jar ~/jars
-    rsync -aXS $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-${VER}.jar  ~/jars
+    rsync -aXS $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-${VERSION}.jar $UPLOAD_JK
+    rsync -aXS $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-${VERSION}.jar $UPLOAD_JK
+    rsync -aXS $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-${VERSION}.jar $UPLOAD_JK
+    rsync -aXS $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-${VERSION}.jar  $UPLOAD_JK
 
-    rsync -aXS $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-${VER}.jar ~/jars/ngmr-stargate_2.10-1.1.0-transwarp-${VER}.jar
-    rsync -aXS $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-${VER}.jar  ~/jars/ngmr-core_2.10-1.1.0-transwarp-${VER}.jar
-    rsync -aXS $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-${VER}.jar ~/jars/ngmr-holodesk_2.10-1.1.0-transwarp-${VER}.jar
-    rsync -aXS $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-${VER}.jar ~/jars/ngmr-shell_2.10-1.1.0-transwarp-${VER}.jar
+    rsync -aXS $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-${VERSION}.jar $UPLOAD_JK/ngmr-stargate_2.10-1.1.0-transwarp-${VERSION}.jar
+    rsync -aXS $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-${VERSION}.jar  $UPLOAD_JK/ngmr-core_2.10-1.1.0-transwarp-${VERSION}.jar
+    rsync -aXS $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-${VERSION}.jar $UPLOAD_JK/ngmr-holodesk_2.10-1.1.0-transwarp-${VERSION}.jar
+    rsync -aXS $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-${VERSION}.jar $UPLOAD_JK/ngmr-shell_2.10-1.1.0-transwarp-${VERSION}.jar
 
     echo "Copying for dell regression tests ..."
-    mkdir -p ~/jars-dell/hive
-    mkdir -p ~/jars-dell/ngmr
-    rm -rf ~/jars-dell/hive/*.jar
-    rm -rf ~/jars-dell/ngmr/*.jar
+    mkdir -p $UPLOAD_DELL/hive
+    mkdir -p $UPLOAD_DELL/ngmr
+    rm -rf $UPLOAD_DELL/hive/*.jar
+    rm -rf $UPLOAD_DELL/ngmr/*.jar
 
-    rsync -aXS $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-${VER}.jar                   ~/jars-dell/hive/hive-metastore-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-${VER}.jar           ~/jars-dell/hive/hive-hbase-handler-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-${VER}.jar                       ~/jars-dell/hive/hive-service-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-${VER}.jar                               ~/jars-dell/hive/hive-cli-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-${VER}.jar                           ~/jars-dell/hive/hive-serde-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-${VER}.jar                               ~/jars-dell/hive/hive-hwi-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-${VER}.jar                         ~/jars-dell/hive/hive-common-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-${VER}.jar                               ~/jars-dell/hive/hive-exec-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-${VER}.jar                       ~/jars-dell/hive/hive-beeline-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-${VER}.jar                       ~/jars-dell/hive/hive-contrib-0.12.0-transwarp-tdh460.jar
-    rsync -axS $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-${VER}.jar                             ~/jars-dell/hive/hive-jdbc-0.12.0-transwarp-tdh460.jar
-    rsync -aXS $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-${VER}-combined.jar ~/jars-dell/hive/hive-shims-0.12.0-transwarp-tdh460.jar
+    rsync -aXS $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-${VERSION}.jar                   $UPLOAD_DELL/hive/hive-metastore-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-${VERSION}.jar           $UPLOAD_DELL/hive/hive-hbase-handler-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-${VERSION}.jar                       $UPLOAD_DELL/hive/hive-service-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-${VERSION}.jar                               $UPLOAD_DELL/hive/hive-cli-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-${VERSION}.jar                           $UPLOAD_DELL/hive/hive-serde-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-${VERSION}.jar                               $UPLOAD_DELL/hive/hive-hwi-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-${VERSION}.jar                         $UPLOAD_DELL/hive/hive-common-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-${VERSION}.jar                               $UPLOAD_DELL/hive/hive-exec-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-${VERSION}.jar                       $UPLOAD_DELL/hive/hive-beeline-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-${VERSION}.jar                       $UPLOAD_DELL/hive/hive-contrib-0.12.0-transwarp-tdh460.jar
+    rsync -axS $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-${VERSION}.jar                             $UPLOAD_DELL/hive/hive-jdbc-0.12.0-transwarp-tdh460.jar
+    rsync -aXS $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-${VERSION}-combined.jar $UPLOAD_DELL/hive/hive-shims-0.12.0-transwarp-tdh460.jar
 
-    rsync -aXS  $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-${VER}.jar             ~/jars-dell/ngmr/ngmr-core_2.10-1.1.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-${VER}.jar     ~/jars-dell/ngmr/ngmr-holodesk_2.10-1.1.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-${VER}.jar     ~/jars-dell/ngmr/ngmr-stargate_2.10-1.1.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-${VERSION}.jar             $UPLOAD_DELL/ngmr/ngmr-core_2.10-1.1.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-${VERSION}.jar     $UPLOAD_DELL/ngmr/ngmr-holodesk_2.10-1.1.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-${VERSION}.jar     $UPLOAD_DELL/ngmr/ngmr-stargate_2.10-1.1.0-transwarp-tdh460.jar
 
-    rsync -aXS  $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-${VER}.jar                 ~/jars-dell/ngmr/ngmr-shell_2.10-1.1.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-${VER}.jar                    ~/jars-dell/ngmr/idbc-core-1.0.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-${VER}.jar             ~/jars-dell/ngmr/hyperdrive-1.0.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-${VER}.jar                    ~/jars-dell/ngmr/jdbcdrive-1.0.0-transwarp-tdh460.jar
-    rsync -aXS  $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-${VER}.jar                   ~/jars-dell/ngmr/esdrive-1.0.0-transwarp-tdh460.jar
-
+    rsync -aXS  $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-${VERSION}.jar                 $UPLOAD_DELL/ngmr/ngmr-shell_2.10-1.1.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-${VERSION}.jar                    $UPLOAD_DELL/ngmr/idbc-core-1.0.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-${VERSION}.jar             $UPLOAD_DELL/ngmr/hyperdrive-1.0.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-${VERSION}.jar                    $UPLOAD_DELL/ngmr/jdbcdrive-1.0.0-transwarp-tdh460.jar
+    rsync -aXS  $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-${VERSION}.jar                   $UPLOAD_DELL/ngmr/esdrive-1.0.0-transwarp-tdh460.jar
 }
 
 ## Copy compiled packages for regression tests
