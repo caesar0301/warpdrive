@@ -17,7 +17,10 @@ else
 fi
 
 THISPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
-$(dirname $THISPATH)/sync-firstday
+THISHOME=$(dirname $THISPATH)
+if [[ -e "$THISHOME/tw-sync-bf" ]]; then
+    bash $THISHOME/tw-sync-bf
+fi
 
 if [ $# -gt 1 ];then
   temp=($@)

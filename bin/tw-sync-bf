@@ -1,0 +1,93 @@
+#!/bin/bash
+UPLOAD_DELL="/tmp/jars-dell"
+UPLOAD_JK="/tmp/jars"
+HIVE="hive-0.12.0-transwarp"
+NGMR="ngmr-1.7-transwarp"
+
+## Check DEVROOT env.
+if [[ -z $DEVROOT ]]; then
+      echo "export DEVROOT=/path/to/projects; then continue"
+      exit 0;
+fi
+echo "DEVROOT: $DEVROOT"
+
+function copyToDir() {
+    src_dir=`dirname $1`
+    src=`find $src_dir -regex $1`
+    dst=$2
+    pattern=$3
+    echo $src
+    if [[ $pattern == "" ]]; then
+        rsync -aXS $src $dst
+    else
+        src_dir=`dirname $src`
+        src_file=`basename $src`
+        dst_file=`echo $src_file | sed $pattern`
+        rsync -aXS $src $dst/$dst_file
+    fi
+}
+
+function sync_firstday() {
+    echo "Copying for Jenkins regression tests ..."
+    mkdir -p $UPLOAD_JK
+    rm -rf $UPLOAD_JK/*.jar
+
+    copyToDir $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+    copyToDir $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-tdh[0-9]+-combined.jar \
+        $UPLOAD_JK "s/hive-shims-aggregator/hive-shims/g;s/-combined//g"
+
+    copyToDir $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-tdh[0-9]+.jar $UPLOAD_JK
+    copyToDir $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-tdh[0-9]+.jar $UPLOAD_JK
+    copyToDir $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-tdh[0-9]+.jar $UPLOAD_JK
+    copyToDir $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-tdh[0-9]+.jar  $UPLOAD_JK
+
+    copyToDir $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-tdh[0-9]+.jar \
+        $UPLOAD_JK "s/spark/ngmr/g"
+    copyToDir $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-tdh[0-9]+.jar  \
+        $UPLOAD_JK "s/spark/ngmr/g"
+    copyToDir $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-tdh[0-9]+.jar \
+        $UPLOAD_JK "s/spark/ngmr/g"
+    copyToDir $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-tdh[0-9]+.jar \
+        $UPLOAD_JK "s/inceptor/ngmr-shell/g"
+
+    echo "Copying for dell regression tests ..."
+    mkdir -p $UPLOAD_DELL/hive
+    mkdir -p $UPLOAD_DELL/ngmr
+    rm -rf $UPLOAD_DELL/hive/*.jar
+    rm -rf $UPLOAD_DELL/ngmr/*.jar
+
+    copyToDir $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-tdh[0-9]+.jar                   $UPLOAD_DELL/hive/hive-metastore-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-tdh[0-9]+.jar           $UPLOAD_DELL/hive/hive-hbase-handler-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-tdh[0-9]+.jar                       $UPLOAD_DELL/hive/hive-service-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-tdh[0-9]+.jar                               $UPLOAD_DELL/hive/hive-cli-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-tdh[0-9]+.jar                           $UPLOAD_DELL/hive/hive-serde-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-tdh[0-9]+.jar                               $UPLOAD_DELL/hive/hive-hwi-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-tdh[0-9]+.jar                         $UPLOAD_DELL/hive/hive-common-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-tdh[0-9]+.jar                               $UPLOAD_DELL/hive/hive-exec-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-tdh[0-9]+.jar                       $UPLOAD_DELL/hive/hive-beeline-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-tdh[0-9]+.jar                       $UPLOAD_DELL/hive/hive-contrib-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-tdh[0-9]+.jar                             $UPLOAD_DELL/hive/hive-jdbc-0.12.0-transwarp-tdh460.jar
+    copyToDir $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-tdh[0-9]+-combined.jar       $UPLOAD_DELL/hive/hive-shims-0.12.0-transwarp-tdh460.jar
+
+    copyToDir  $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-tdh[0-9]+.jar                    $UPLOAD_DELL/ngmr/idbc-core-1.0.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-tdh[0-9]+.jar             $UPLOAD_DELL/ngmr/hyperdrive-1.0.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-tdh[0-9]+.jar                    $UPLOAD_DELL/ngmr/jdbcdrive-1.0.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-tdh[0-9]+.jar                   $UPLOAD_DELL/ngmr/esdrive-1.0.0-transwarp-tdh460.jar
+
+    copyToDir  $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-tdh[0-9]+.jar             $UPLOAD_DELL/ngmr/ngmr-core_2.10-1.1.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-tdh[0-9]+.jar     $UPLOAD_DELL/ngmr/ngmr-holodesk_2.10-1.1.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-tdh[0-9]+.jar     $UPLOAD_DELL/ngmr/ngmr-stargate_2.10-1.1.0-transwarp-tdh460.jar
+    copyToDir  $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-tdh[0-9]+.jar                 $UPLOAD_DELL/ngmr/ngmr-shell_2.10-1.1.0-transwarp-tdh460.jar
+}
+
+sync_firstday
