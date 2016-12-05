@@ -87,7 +87,8 @@ if [[ $ACTIONS == "" ]]; then
     BUILD_ALL="true"
 fi
 
-echo "TDH version: $VER"
+echo "--------------------------------------------------------"
+echo "jars version: $VER"
 echo "actions: ${ACTIONS[@]}"
 echo "mvn clean: $CLEAN"
 echo "mvn options: $MAVEN_OPTS"
@@ -95,7 +96,15 @@ echo
 echo "DEVROOT: $DEVROOT"
 echo "HIVE: $DEVROOT/$HIVE"
 echo "NGMR: $DEVROOT/$NGMR"
-echo
+echo "--------------------------------------------------------"
+while true; do
+    read -p "Do you want to compile with above config? (y/n) " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 function build_hive() {
     cd $DEVROOT/$HIVE/src

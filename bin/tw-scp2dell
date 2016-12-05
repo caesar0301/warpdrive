@@ -1,6 +1,6 @@
 #!/bin/bash
 cluster=(172.16.1.51 172.16.1.52 172.16.1.53 172.16.1.54)
-srcs=("/home/chenxm/jars-dell/hive/hive*.jar" "/home/chenxm/jars-dell/ngmr/ngmr-core_2.10-1.1.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/ngmr-holodesk_2.10-1.1.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/ngmr-stargate_2.10-1.1.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/ngmr-shell_2.10-1.1.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/idbc-core-1.0.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/hyperdrive-1.0.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/jdbcdrive-1.0.0-transwarp*.jar" "/home/chenxm/jars-dell/ngmr/esdrive-1.0.0-transwarp*.jar")
+srcs=("/tmp/jars-dell/hive/hive*.jar" "/tmp/jars-dell/ngmr/ngmr-core_2.10-1.1.0-transwarp*.jar" "/tmp/jars-dell/ngmr/ngmr-holodesk_2.10-1.1.0-transwarp*.jar" "/tmp/jars-dell/ngmr/ngmr-stargate_2.10-1.1.0-transwarp*.jar" "/tmp/jars-dell/ngmr/ngmr-shell_2.10-1.1.0-transwarp*.jar" "/tmp/jars-dell/ngmr/idbc-core-1.0.0-transwarp*.jar" "/tmp/jars-dell/ngmr/hyperdrive-1.0.0-transwarp*.jar" "/tmp/jars-dell/ngmr/jdbcdrive-1.0.0-transwarp*.jar" "/tmp/jars-dell/ngmr/esdrive-1.0.0-transwarp*.jar")
 dsts=("/usr/lib/hive/lib/" "/usr/lib/ngmr/core/target/scala-2.10/" "/usr/lib/ngmr/holodesk/target/scala-2.10/" "/usr/lib/ngmr/stargate/target/scala-2.10/" "/usr/lib/ngmr-shell/target/scala-2.10/" "/usr/lib/ngmr-shell/target/scala-2.10/" "/usr/lib/ngmr-shell/target/scala-2.10/" "/usr/lib/ngmr-shell/target/scala-2.10/" "/usr/lib/ngmr-shell/target/scala-2.10/")
 
 if [ "$1" == "hive" ];then
