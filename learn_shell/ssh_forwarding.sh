@@ -17,34 +17,10 @@ ssh -fqNC -D 1080 guest@joes-pc
 ssh -vNC -D 1080 guest@joes-pc
 ssh -C -D 1080 guest@joes-pc
 
-# my ssh tunnal to desktop
-function mxc_ssh_tunnels() {
-  # cmd [guest@remote.host] [PORT1 PORT2 ...]
+# SCP via tunnel
+# user2@gateway:port2 -> user3@remote-host:port3
+# Project port3 of remote-host to port 4321 of gateway
+ssh -L 4321:remote-host:port3 -p port2 user2@gateway cat -
 
-  CTRSKT=/tmp/mxc_tunnels2desktop.socket
-  REMOTE=chenxm@desktop.me
-  PORTS="8787 8888"
-
-  if [ $# -gt 0 ]; then
-    REMOTE=$1
-    PORTS_=${@:2}
-    if [ $PORTS_ != "" ]; then
-      PORTS=$PORTS_
-    fi
-  fi
-
-  PAIRS=""
-  for i in $PORTS; do PAIRS="-L $i:localhost:$i $PAIRS"; done
-
-  echo "  Host: $REMOTE"
-  echo "  Ports: $PORTS"
-
-  echo "Stopping previous sessions ..."
-  if [ -e $CTRSKT ]; then
-    ssh -S $CTRSKT -O exit $REMOTE
-  fi
-
-  echo "Connecting to desktop in omnilab ..."
-  ssh -M -S $CTRSKT -fnNT $PAIRS $REMOTE
-  ssh -S $CTRSKT -O check $REMOTE
-}
+# Send commands to remote host via port 4321
+scp -P 4321 user3@127.0.0.1:/path/to/file/of/remote local/path
