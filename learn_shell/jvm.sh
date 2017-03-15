@@ -10,3 +10,9 @@ watch -n 1 jmap -histo:live pid
 
 # gc
 jstat -gcutil pid
+
+# others
+jconsole
+jinfo
+jmc
+jdb
