@@ -22,7 +22,8 @@ sudo apt-get install -y gparted exfat-utils openvpn indicator-multiload openssh-
 
 # system
 sudo apt-get install -y ntp lvm2 lshw usbutils pciutils denyhosts autofs mdadm iperf lshw sysstat
-sudo apt-get install -y fio iotop iftop htop iptraf tcpdump mtr tcpdump clusterssh pdsh nmap
+sudo apt-get install -y fio iotop iftop htop mtr clusterssh pdsh tcpdump nmap 
+sudo apt-get install -y nload iptraf bmon slurm nethogs tcptrack vnstat bwm-ng cbm speedometer pktstat netdiag ifstat dstat collectl
 
 # development
 sudo apt-get install -y build-essential subversion r-base r-base-dev r-base-core gnuplot git git-svn git-cvs ant sbt npm nodejs nodejs-legency maven
