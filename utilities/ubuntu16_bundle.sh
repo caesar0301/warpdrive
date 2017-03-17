@@ -36,8 +36,9 @@ sudo pip install -U dbgp vim-debug pep8 flake8 pyflakes isort
 # Java and Scala
 sudo apt-get remove -y openjdk-*-jre-*
 sudo apt-get purge -y openjdk*
-sudo apt-get install -y oracle-java7-installer oracle-java8-installer scala
-sudo apt-get install -y oracle-java8-set-default
+# sudo apt-get install -y oracle-java7-installer oracle-java7-set-default
+sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
+sudo apt-get install -y scala
 
 # WPS in ubuntukylin repo
 # Fix GPG key error:
