@@ -81,13 +81,14 @@ if [[ $ACTIONS == "" ]]; then
 fi
 
 echo "--------------------------------------------------------"
-echo "actions: ${ACTIONS[@]}"
 echo "mvn clean: $CLEAN"
-echo "mvn options: $MAVEN_OPTS"
+echo "mvn optns: $MAVEN_OPTS"
+echo
+echo "Actions: ** ${ACTIONS[@]} **"
 echo
 echo "DEVROOT: $DEVROOT"
-echo "HIVE: $DEVROOT/$HIVE"
-echo "NGMR: $DEVROOT/$NGMR"
+echo "   HIVE: $DEVROOT/$HIVE"
+echo "   NGMR: $DEVROOT/$NGMR"
 echo "--------------------------------------------------------"
 while true; do
     read -p "Do you want to compile with above config? (y/n) " yn
