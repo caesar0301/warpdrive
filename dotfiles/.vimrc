@@ -1,431 +1,410 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: 
-"       Amir Salihefendic
-"       http://amix.dk - amix@amix.dk
-"
-" Version: 
-"       5.0 - 29/05/12 15:43:36
-"
-" Blog_post: 
-"       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
-"
-" Awesome_version:
-"       Get this config, nice color schemes and lots of plugins!
-"
-"       Install the awesome version from:
-"
-"           https://github.com/amix/vimrc
-"
-" Syntax_highlighted:
-"       http://amix.dk/vim/vimrc.html
-"
-" Raw_version: 
-"       http://amix.dk/vim/vimrc.txt
-"
-" Sections:
-"    -> General
-"    -> VIM user interface
-"    -> Colors and Fonts
-"    -> Files and backups
-"    -> Text, tab and indent related
-"    -> Visual mode related
-"    -> Moving around, tabs and buffers
-"    -> Status line
-"    -> Editing mappings
-"    -> vimgrep searching and cope displaying
-"    -> Spell checking
-"    -> Misc
-"    -> Helper functions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fisa-vim-config
+" http://fisadev.github.io/fisa-vim-config/
+" version: 8.3
 
+" ============================================================================
+" Vim-plug initialization
+" Avoid modify this section, unless you are very sure of what you are doing
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sets how many lines of history VIM has to remember
-set history=500
+let vim_plug_just_installed = 0
+let vim_plug_path = expand('~/.vim/autoload/plug.vim')
+if !filereadable(vim_plug_path)
+    echo "Installing Vim-plug..."
+    echo ""
+    silent !mkdir -p ~/.vim/autoload
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    let vim_plug_just_installed = 1
+endif
 
-" Enable filetype plugins
+" manually load vim-plug the first time
+if vim_plug_just_installed
+    :execute 'source '.fnameescape(vim_plug_path)
+endif
+
+" Obscure hacks done, you can now modify the rest of the .vimrc as you wish :)
+
+" ============================================================================
+" Active plugins
+" You can disable or add new ones here:
+
+" this needs to be here, so vim-plug knows we are declaring the plugins we
+" want to use
+call plug#begin('~/.vim/plugged')
+
+" Plugins from github repos:
+
+" Override configs by directory 
+Plug 'arielrossanigo/dir-configs-override.vim'
+" Better file browser
+Plug 'scrooloose/nerdtree'
+" Code commenter
+Plug 'scrooloose/nerdcommenter'
+" Class/module browser
+Plug 'majutsushi/tagbar'
+" Code and files fuzzy finder
+Plug 'ctrlpvim/ctrlp.vim'
+" Extension to ctrlp, for fuzzy command finder
+Plug 'fisadev/vim-ctrlp-cmdpalette'
+" Zen coding
+Plug 'mattn/emmet-vim'
+" Git integration
+Plug 'motemen/git-vim'
+" Tab list panel
+Plug 'kien/tabman.vim'
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Terminal Vim with 256 colors colorscheme
+Plug 'fisadev/fisa-vim-colorscheme'
+" Consoles as buffers
+Plug 'rosenfeld/conque-term'
+" Pending tasks list
+Plug 'fisadev/FixedTaskList.vim'
+" Surround
+Plug 'tpope/vim-surround'
+" Autoclose
+Plug 'Townk/vim-autoclose'
+" Indent text object
+Plug 'michaeljsmith/vim-indent-object'
+" Indentation based movements
+Plug 'jeetsukumaran/vim-indentwise'
+" Python autocompletion, go to definition.
+Plug 'davidhalter/jedi-vim'
+" Better autocompletion
+Plug 'Shougo/neocomplcache.vim'
+" Snippets manager (SnipMate), dependencies, and snippets repo
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate'
+" Git/mercurial/others diff icons on the side of the file lines
+Plug 'mhinz/vim-signify'
+" Automatically sort python imports
+Plug 'fisadev/vim-isort'
+" Drag visual blocks arround
+Plug 'fisadev/dragvisuals.vim'
+" Window chooser
+Plug 't9md/vim-choosewin'
+" Python and other languages code checker
+Plug 'scrooloose/syntastic'
+" Paint css colors with the real color
+Plug 'lilydjwg/colorizer'
+" Ack code search (requires ack installed in the system)
+Plug 'mileszs/ack.vim'
+if has('python')
+    " YAPF formatter for Python
+    Plug 'pignacio/vim-yapf-format'
+endif
+" Relative numbering of lines (0 is the current line)
+" (disabled by default because is very intrusive and can't be easily toggled
+" on/off. When the plugin is present, will always activate the relative 
+" numbering every time you go to normal mode. Author refuses to add a setting 
+" to avoid that)
+" Plug 'myusuf3/numbers.vim'
+
+" Plugins from vim-scripts repos:
+
+" Search results counter
+Plug 'IndexedSearch'
+" XML/HTML tags navigation
+Plug 'matchit.zip'
+" Gvim colorscheme
+Plug 'Wombat'
+" Yank history navigation
+Plug 'YankRing.vim'
+
+" Tell vim-plug we finished declaring plugins, so it can load them
+call plug#end()
+
+" ============================================================================
+" Install plugins the first time vim runs
+
+if vim_plug_just_installed
+    echo "Installing Bundles, please ignore key map error messages"
+    :PlugInstall
+endif
+
+" ============================================================================
+" Vim settings and mappings
+" You can edit them as you wish
+
+" no vi-compatible
+set nocompatible
+
+" allow plugins by file type (required for plugins!)
 filetype plugin on
 filetype indent on
 
-" Set to auto read when a file is changed from the outside
-set autoread
+" tabs and spaces handling
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+" tab length exceptions on some file types
+autocmd FileType html setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType htmldjango setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4
 
-" Fast saving
-nmap <leader>w :w!<cr>
+" always show status bar
+set ls=2
 
-" :W sudo saves the file 
-" (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
-
-" Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
-set langmenu=en
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
-
-" Turn on the WiLd menu
-set wildmenu
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-else
-    set wildignore+=.git\*,.hg\*,.svn\*
-endif
-
-"Always show current position
-set ruler
-
-" Height of the command bar
-set cmdheight=2
-
-" A buffer becomes hidden when it is abandoned
-set hid
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
-
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases 
-set smartcase
-
-" Highlight search results
+" incremental search
+set incsearch
+" highlighted search results
 set hlsearch
 
-" Makes search act like search in modern browsers
-set incsearch 
+" syntax highlight on
+syntax on
 
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
+" show line numbers
+set nu
 
-" For regular expressions turn magic on
-set magic
+" tab navigation mappings
+map tn :tabn<CR>
+map tp :tabp<CR>
+map tm :tabm 
+map tt :tabnew 
+map ts :tab split<CR>
+map <C-S-Right> :tabn<CR>
+imap <C-S-Right> <ESC>:tabn<CR>
+map <C-S-Left> :tabp<CR>
+imap <C-S-Left> <ESC>:tabp<CR>
 
-" Show matching brackets when text indicator is over them
-set showmatch 
-" How many tenths of a second to blink when matching brackets
-set mat=2
+" navigate windows with meta+arrows
+map <M-Right> <c-w>l
+map <M-Left> <c-w>h
+map <M-Up> <c-w>k
+map <M-Down> <c-w>j
+imap <M-Right> <ESC><c-w>l
+imap <M-Left> <ESC><c-w>h
+imap <M-Up> <ESC><c-w>k
+imap <M-Down> <ESC><c-w>j
 
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
+" old autocomplete keyboard shortcut
+imap <C-J> <C-X><C-O>
 
-" Add a bit extra margin to the left
-set foldcolumn=1
+" Comment this line to enable autocompletion preview window
+" (displays documentation related to the selected completion option)
+" Disabled by default because preview makes the window flicker
+set completeopt-=preview
 
+" save as sudo
+ca w!! w !sudo tee "%"
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
-syntax enable 
+" simple recursive grep
+nmap ,r :Ack 
+nmap ,wr :Ack <cword><CR>
 
-try
-    colorscheme desert
-catch
-endtry
-
-set background=dark
-
-" Set extra options when running in GUI mode
-if has("gui_running")
-    set guioptions-=T
-    set guioptions-=e
-    set t_Co=256
-    set guitablabel=%M\ %t
+" use 256 colors when possible
+if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
+	let &t_Co = 256
+    colorscheme fisa
+else
+    colorscheme delek
 endif
 
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
-set nobackup
-set nowb
-set noswapfile
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
-
-" Be smart when using tabs ;)
-set smarttab
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-
-" Linebreak on 500 characters
-set lbr
-set tw=500
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
-
-
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f', '')<CR>
-vnoremap <silent> # :call VisualSelection('b', '')<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
-
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
-
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
-
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-
-" Close all the buffers
-map <leader>ba :bufdo bd<cr>
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
-
-" Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Specify the behavior when switching between buffers 
-try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
-catch
-endtry
-
-" Return to last edit position when opening files (You want this!)
-" autocmd BufReadPost *
-"      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-"      \   exe "normal! g`\"" |
-"      \ endif
-" Remember info about open buffers on close
-" set viminfo^=%
-
-
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-" Always show the status line
-set laststatus=2
-
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remap VIM 0 to first non-blank character
-map 0 ^
-
-" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
+" colors for gvim
+if has('gui_running')
+    colorscheme wombat
 endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
+" when scrolling, keep cursor 3 lines away from screen border
+set scrolloff=3
+
+" autocompletion of files and commands behaves like shell
+" (complete only the common part, list the options that match)
+set wildmode=list:longest
+
+" better backup, swap and undos storage
+set directory=~/.vim/dirs/tmp     " directory to place swap files in
+set backup                        " make backup files
+set backupdir=~/.vim/dirs/backups " where to put backup files
+set undofile                      " persistent undos - undo after you re-open the file
+set undodir=~/.vim/dirs/undos
+set viminfo+=n~/.vim/dirs/viminfo
+" store yankring history file there too
+let g:yankring_history_dir = '~/.vim/dirs/'
+
+" create needed directories if they don't exist
+if !isdirectory(&backupdir)
+    call mkdir(&backupdir, "p")
+endif
+if !isdirectory(&directory)
+    call mkdir(&directory, "p")
+endif
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
+
+" ============================================================================
+" Plugins settings and mappings
+" Edit them as you wish.
+
+" Tagbar ----------------------------- 
+
+" toggle tagbar display
+map <F4> :TagbarToggle<CR>
+" autofocus on tagbar open
+let g:tagbar_autofocus = 1
+
+" NERDTree ----------------------------- 
+
+" toggle nerdtree display
+map <F3> :NERDTreeToggle<CR>
+" open nerdtree with the current file selected
+nmap ,t :NERDTreeFind<CR>
+" don;t show these file types
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ag searching and cope displaying
-"    requires ag.vim - it's much better than vimgrep/grep
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" When you press gv you Ag after the selected text
-vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
+" Tasklist ------------------------------
 
-" Open Ag and put the cursor in the right position
-map <leader>g :Ag 
+" show pending tasks list
+map <F2> :TaskList<CR>
 
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+" CtrlP ------------------------------
 
-" Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with Ag, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
-"
-map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-map <leader>n :cn<cr>
-map <leader>p :cp<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-" Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-" Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
-
-" Quickly open a markdown buffer for scribble
-map <leader>x :e ~/buffer.md<cr>
-
-" Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
-
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction 
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("Ag \"" . l:pattern . "\" " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
+" file finder mapping
+let g:ctrlp_map = ',e'
+" tags (symbols) in current file finder mapping
+nmap ,g :CtrlPBufTag<CR>
+" tags (symbols) in all files finder mapping
+nmap ,G :CtrlPBufTagAll<CR>
+" general code finder in all files mapping
+nmap ,f :CtrlPLine<CR>
+" recent files finder mapping
+nmap ,m :CtrlPMRUFiles<CR>
+" commands finder mapping
+nmap ,c :CtrlPCmdPalette<CR>
+" to be able to call CtrlP with default search text
+function! CtrlPWithSearchText(search_text, ctrlp_command_end)
+    execute ':CtrlP' . a:ctrlp_command_end
+    call feedkeys(a:search_text)
 endfunction
+" same as previous mappings, but calling with current word as default text
+nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
+nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
+nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
+nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
+nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
+nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
+nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
+" don't change working directory
+let g:ctrlp_working_path_mode = 0
+" ignore these files and folders on file finder
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
+  \ 'file': '\.pyc$\|\.pyo$',
+  \ }
 
+" Syntastic ------------------------------
 
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+" show list of errors and warnings on the current file
+nmap <leader>e :Errors<CR>
+" check also when just opened the file
+let g:syntastic_check_on_open = 1
+" don't put icons on the sign column (it hides the vcs status icons of signify)
+let g:syntastic_enable_signs = 0
+" custom icons (enable them if you use a patched font, and enable the previous 
+" setting)
+"let g:syntastic_error_symbol = '✗'
+"let g:syntastic_warning_symbol = '⚠'
+"let g:syntastic_style_error_symbol = '✗'
+"let g:syntastic_style_warning_symbol = '⚠'
 
-" Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+" Jedi-vim ------------------------------
 
-   if buflisted(l:alternateBufNum)
-     buffer #
-   else
-     bnext
-   endif
+" All these mappings work only for python code:
+" Go to definition
+let g:jedi#goto_command = ',d'
+" Find ocurrences
+let g:jedi#usages_command = ',o'
+" Find assignments
+let g:jedi#goto_assignments_command = ',a'
+" Go to definition in new tab
+nmap ,D :tab split<CR>:call jedi#goto()<CR>
 
-   if bufnr("%") == l:currentBufNum
-     new
-   endif
+" NeoComplCache ------------------------------
 
-   if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
-   endif
-endfunction
+" most of them not documented because I'm not sure how they work
+" (docs aren't good, had to do a lot of trial and error to make 
+" it play nice)
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_ignore_case = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_auto_select = 1
+let g:neocomplcache_enable_fuzzy_completion = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_fuzzy_completion_start_length = 1
+let g:neocomplcache_auto_completion_start_length = 1
+let g:neocomplcache_manual_completion_start_length = 1
+let g:neocomplcache_min_keyword_length = 1
+let g:neocomplcache_min_syntax_length = 1
+" complete with workds from any opened file
+let g:neocomplcache_same_filetype_lists = {}
+let g:neocomplcache_same_filetype_lists._ = '_'
+
+" TabMan ------------------------------
+
+" mappings to toggle display, and to focus on it
+let g:tabman_toggle = 'tl'
+let g:tabman_focus  = 'tf'
+
+" Autoclose ------------------------------
+
+" Fix to let ESC work as espected with Autoclose plugin
+let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+
+" DragVisuals ------------------------------
+
+" mappings to move blocks in 4 directions
+vmap <expr> <S-M-LEFT> DVB_Drag('left')
+vmap <expr> <S-M-RIGHT> DVB_Drag('right')
+vmap <expr> <S-M-DOWN> DVB_Drag('down')
+vmap <expr> <S-M-UP> DVB_Drag('up')
+" mapping to duplicate block
+vmap <expr> D DVB_Duplicate()
+
+" Signify ------------------------------
+
+" this first setting decides in which order try to guess your current vcs
+" UPDATE it to reflect your preferences, it will speed up opening files
+let g:signify_vcs_list = [ 'git', 'hg' ]
+" mappings to jump to changed blocks
+nmap <leader>sn <plug>(signify-next-hunk)
+nmap <leader>sp <plug>(signify-prev-hunk)
+" nicer colors
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+" Window Chooser ------------------------------
+
+" mapping
+nmap  -  <Plug>(choosewin)
+" show big letters
+let g:choosewin_overlay_enable = 1
+
+" Airline ------------------------------
+
+let g:airline_powerline_fonts = 0
+let g:airline_theme = 'bubblegum'
+let g:airline#extensions#whitespace#enabled = 0
+
+" to use fancy symbols for airline, uncomment the following lines and use a
+" patched font (more info on the README.rst)
+"if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+"endif
+"let g:airline_left_sep = '⮀'
+"let g:airline_left_alt_sep = '⮁'
+"let g:airline_right_sep = '⮂'
+"let g:airline_right_alt_sep = '⮃'
+"let g:airline_symbols.branch = '⭠'
+"let g:airline_symbols.readonly = '⭤'
+"let g:airline_symbols.linenr = '⭡'
