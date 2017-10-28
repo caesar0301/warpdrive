@@ -142,27 +142,5 @@ bind + delete-buffer
 bind-key -t emacs-copy C-v page-down
 bind-key -t emacs-copy M-v page-up
 
-##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-## MAC OS X specific settings to enable clipboard sharing between tmux and Mac OS X.
-## You need to install `reattach-to-user-namespace` utility first:
-##     $ brew install reattach-to-user-namespace
-## Uncomment following configurations to enable the functionality.
-
-#set-option -g default-command "reattach-to-user-namespace -l bash"
-
-## setup pipe copy as in Vim mode
-#unbind -t vi-copy y
-#bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
-#unbind -t vi-copy Enter
-#bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
-
-## setup pipe copy as in Emacs mode
-#unbind -t emacs-copy M-w
-#bind-key -t emacs-copy M-w copy-pipe "reattach-to-user-namespace pbcopy"
-
-## bind ']' to use pbpaste
-#bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"
-##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
