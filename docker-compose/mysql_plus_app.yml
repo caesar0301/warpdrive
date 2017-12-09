@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+
+  ockle-db:
+    image: 172.16.1.99/transwarp/mysql:5.7
+    restart: always
+    environment:
+     MYSQL_ROOT_PASSWORD: '123'
+    volumes:
+     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+     - /opt/mysql_data:/var/lib/mysql
+    ports:
+      - "13306:3306"
+
+  ockle-server:
+    image: 172.16.1.41:5000/jenkins/ockle:live
+    build:
+      context: ..
+      dockerfile: docker-build/Dockerfile
+    privileged: true
+    restart: always
+    command: bash /ockle/docker-build/bootstrap.sh
+    ports:
+      - "5001:5001"
+    volumes:
+      - ..:/ockle
+      - /opt/ockle_data:/ockle/data
+    environment:
+      - FLASK_ENV=prod
+      - SQLALCHEMY_DATABASE_URI=mysql://root:123@ockle-db:3306/ockledb?charset=utf8
+      - KUBERNETES_HOST=http://172.16.130.45:8080
+    depends_on:
+      - ockle-db
+    links:
+      - ockle-db
