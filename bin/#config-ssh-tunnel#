@@ -1,16 +1,10 @@
 #!/bin/bash
 # An automatic script to config SSH tunnels in a cluster
-#
-# Usage:
-#    ./config-ssh-tunnel host_file
-#
-# host_file records all hostnames by line.
-#
 # Xiaming Chen
 #  2015-07-20
 set -e
 
-HOSTFILE=$1
+HOSTFILE=~/bin/hosts/
 SSHOME=~/.ssh
 PRTKEY=$SSHOME/id_rsa
 PUBKEY=$SSHOME/id_rsa.pub
