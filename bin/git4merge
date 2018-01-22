@@ -1,0 +1,8 @@
+#!/bin/bash
+
+git branch -D 4merge
+git push origin :4merge
+
+git checkout -b 4merge trunk/master
+git merge --squash master
+
