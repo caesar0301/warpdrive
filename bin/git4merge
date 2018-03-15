@@ -1,8 +1,26 @@
 #!/bin/bash
+# A script to facilitate branch merging for collaborative development.
+# In collaborative development, we would make a bunch of commits before
+# merging them into the trunk branch by a squash.
+#
+# Here is an example:
+#
+# Remote branches:
+#   trunk/master
+#   trunk/dev-1.0
+#
+# Local branches:
+#   origin/master
+#   origin/dev-1.0
+#
+# When you attempt to merge origin/dev-1.0 into trunk/dev-1.0, run
+#   git4merge dev-1.0
+# under branch origin/dev-1.0. Then a new branch 4merge_dev-1.0 is ready
+# to merge to the remote branch trunk/dev-1.0.
+CUR_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
-git branch -D 4merge
-git push origin :4merge
+git branch -D "4merge_$CUR_BRANCH"
+git push origin :"4merge_$CUR_BRANCH"
 
-git checkout -b 4merge trunk/master
-git merge --squash master
-
+git checkout -b 4merge_$CUR_BRANCH trunk/$CUR_BRANCH
+git merge --squash origin/$CUR_BRANCH
