@@ -1,5 +1,0 @@
-# Read by maven at startup.
-# $JAVA_HOME is suggested to appended into ~/.bashrc or ~/.profile
-
-# For macOS
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*)
