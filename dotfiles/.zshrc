@@ -107,7 +107,7 @@ fi
 export DEVROOT=~/Workspace
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/default
+export JAVA_HOME=/usr/lib/jvm/java-9-oracle
 # export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*) # For macOS
 export JAVA_OPTIONS="-Xmx8191m -XX:MaxPermSize=2048m"
 export JRE_HOME=$JAVA_HOME/jre
