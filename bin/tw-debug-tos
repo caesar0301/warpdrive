@@ -1,0 +1,202 @@
+#!/bin/bash
+
+function usage() {
+    echo
+    echo "USAGE: `basename $0` -i ORIGIN_IMG [-r] [-v] [-d] [-h]"
+    echo "  -i ORIGIN_IMG  The base image (REPOSITORY:TAG) for modification"
+    echo "  -r NEW_IMG     The new image (REPOSITORY:TAG) to push onto registry"
+    echo "  -v TDH_VERSION The version of remote TDH cluster (default 5.0.0)"
+    echo "  -d             Enable remote debug of inceptor server (default false)"
+    echo "  -h             Show this message"
+    echo
+}
+
+function message() {
+    echo "[debug4docker] $1"
+}
+
+ORIGIN_IMG=
+MODIFIED_IMG=
+ENABLE_REMOTE_DEBUG=FALSE
+LOCAL_CONTAINER=
+TDH_VERSION="5.0.0"
+HIVE="hive-0.12.0-transwarp"
+NGMR="ngmr-1.7-transwarp"
+TEMP_JARS="/tmp/jars-docker"
+
+# Check CLI options
+if [ $# -lt 1 ]; then
+    usage && exit 1;
+fi
+
+## Check DEVROOT env.
+if [[ -z $DEVROOT ]]; then
+      echo "export DEVROOT=/path/to/projects; then continue"
+      exit 0;
+fi
+echo "DEVROOT: $DEVROOT"
+
+## Parse options
+while [ $# -gt 0 ]; do
+  OPT=$1
+  case $OPT in
+    -i)
+      ORIGIN_IMG=$2 && shift 2;;
+    -r)
+      MODIFIED_IMG=$2 && shift 2;;
+    -v)
+      TDH_VERSION=$2 && shift 2;;
+    -d)
+      ENABLE_REMOTE_DEBUG=TRUE && shift;;
+    -h)
+      usage && exit 0;;
+    *)
+      break;;
+  esac
+done
+
+if [ x$ORIGIN_IMG == "x" ]; then
+    echo "Remote image must be specified (-i)"
+    usage && exit 1;
+fi
+
+if [ x$MODIFIED_IMG == "x" ]; then
+    MODIFIED_IMG=$ORIGIN_IMG
+fi
+
+if [ x$LOCAL_CONTAINER == "x" ]; then
+    LOCAL_CONTAINER="debug-inceptor-`whoami`"
+fi
+
+
+function copyToDir() {
+    src_dir=`dirname $1`
+    src=`find $src_dir -regex $1`
+    dst=$2
+    pattern=$3
+    echo $src
+    if [[ $pattern == "" ]]; then
+        rsync -aXS $src $dst
+    else
+        src_dir=`dirname $src`
+        src_file=`basename $src`
+        dst_file=`echo $src_file | sed $pattern`
+        rsync -aXS $src $dst/$dst_file
+    fi
+}
+
+
+function syncDocker() {
+    message "Copy compiled jars to $TEMP_JARS"
+    rm -rf $TEMP_JARS > /dev/null
+    INCEPTOR_PATH=usr/lib/inceptor
+    LIB_PATH=$INCEPTOR_PATH/lib
+    mkdir -p $TEMP_JARS/$LIB_PATH  > /dev/null
+
+    VERSION_REGEX="[0-9]*.[0-9]*.[0-9]*+"
+
+    # HIVE
+    copyToDir $DEVROOT/$HIVE/src/metastore/target/hive-metastore-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-metastore-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/hbase-handler/target/hive-hbase-handler-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-hbase-handler-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/service/target/hive-service-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-service-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/cli/target/hive-cli-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-cli-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/serde/target/hive-serde-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-serde-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/hwi/target/hive-hwi-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-hwi-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/common/target/hive-common-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-common-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/ql/target/hive-exec-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-exec-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/beeline/target/hive-beeline-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-beeline-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/contrib/target/hive-contrib-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-contrib-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/jdbc/target/hive-jdbc-0.12.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hive-jdbc-0.12.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir $DEVROOT/$HIVE/src/shims/target/hive-shims-aggregator-0.12.0-transwarp-$VERSION_REGEX-combined.jar\
+        $TEMP_JARS/$LIB_PATH/hive-shims-0.12.0-transwarp-$TDH_VERSION.jar
+
+    # NGMR
+    copyToDir  $DEVROOT/$NGMR/idbc/core/target/scala-2.10/idbc-core-1.0.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/idbc-core-1.0.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/idbc/hyperdrive/target/scala-2.10/hyperdrive-1.0.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/hyperdrive-1.0.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/idbc/jdbc/target/scala-2.10/jdbcdrive-1.0.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/jdbcdrive-1.0.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/idbc/esdrive/target/scala-2.10/esdrive-1.0.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/esdrive-1.0.0-transwarp-$TDH_VERSION.jar
+
+    # SPARK
+    copyToDir  $DEVROOT/$NGMR/spark/core/target/scala-2.10/spark-core_2.10-1.1.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/spark-core_2.10-1.1.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/spark/holodesk/target/scala-2.10/spark-holodesk_2.10-1.1.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/spark-holodesk_2.10-1.1.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/spark/stargate/target/scala-2.10/spark-stargate_2.10-1.1.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$LIB_PATH/spark-stargate_2.10-1.1.0-transwarp-$TDH_VERSION.jar
+
+    copyToDir  $DEVROOT/$NGMR/inceptor/target/scala-2.10/inceptor_2.10-1.1.0-transwarp-$VERSION_REGEX.jar\
+        $TEMP_JARS/$INCEPTOR_PATH/inceptor_2.10-1.1.0-transwarp-$TDH_VERSION.jar
+}
+
+
+function remove_old_container() {
+    docker stop $LOCAL_CONTAINER > /dev/null
+    docker rm $LOCAL_CONTAINER > /dev/null
+}
+
+
+function replace_image() {
+    message "Pull image from remote registry"
+    docker pull $ORIGIN_IMG
+
+    message "Remove old container ..."
+    remove_old_container
+
+    message "Replace compiled jars"
+    docker run --name $LOCAL_CONTAINER $ORIGIN_IMG "/bin/bash"
+    docker cp $TEMP_JARS/* $LOCAL_CONTAINER:/
+
+    # Remote debugging of inceptor server
+    # Ref: http://172.16.1.168:8090/pages/viewpage.action?pageId=5472840
+    if [ $ENABLE_REMOTE_DEBUG == "TRUE" ]; then
+        cp $DEVROOT/$NGMR/inceptor/docker-build/scripts-tdh/hive-inceptor.sh /tmp/hive-inceptor.sh
+        sed -i '/$JAVA_HOME\/bin\/java/i OPTS+=" -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=6666" \n' /tmp/hive-inceptor.sh
+        docker cp /tmp/hive-inceptor.sh $LOCAL_CONTAINER:/bin/transwarp/hive-inceptor.sh
+        message "Debugger listening on 6666"
+    fi
+
+    message "Commit modified image to local repository"
+    commit_msg="Replace inceptor jars by `whoami`, `date '+%Y-%m-%d %H:%M:%S'`"
+    docker commit -m "$commit_msg" $LOCAL_CONTAINER $MODIFIED_IMG
+
+    remove_old_container
+
+    message "Push new image to remote registry"
+    docker push $MODIFIED_IMG
+}
+
+syncDocker
+replace_image
+
+exit 0;
