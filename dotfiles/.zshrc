@@ -80,7 +80,7 @@ export LC_CTYPE=zh_CN.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='vim'
 fi
 
 # Compilation flags
@@ -109,11 +109,11 @@ export DEVROOT=~/Workspace
 # Java
 export JAVA_HOME=/usr/lib/jvm/java-9-oracle
 # export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*) # For macOS
-export JAVA_OPTIONS="-Xmx8191m -XX:MaxPermSize=2048m"
+export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
 export JRE_HOME=$JAVA_HOME/jre
 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
 export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-export MAVEN_OPTS="-Xmx6000m -XX:MaxPermSize=2048m"
+export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
 
 # Alias
 alias go_hive_metastore="$DEVROOT/inceptor_idea/bin/start_hive.sh org.apache.hadoop.hive.metastore.HiveMetaStore &"
