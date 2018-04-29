@@ -18,9 +18,15 @@ ssh -vNC -D 1080 guest@joes-pc
 ssh -C -D 1080 guest@joes-pc
 
 # SCP via tunnel
+
 # user2@gateway:port2 -> user3@remote-host:port3
 # Project port3 of remote-host to port 4321 of gateway
 ssh -L 4321:remote-host:port3 -p port2 user2@gateway cat -
 
 # Send commands to remote host via port 4321
 scp -P 4321 user3@127.0.0.1:/path/to/file/of/remote local/path
+
+# Jump hostlist. Requires:
+# 1. SSH access to the gateway machine and the internal one.
+# 2. Gateway machine has Netcat installed.
+ssh -J user1@host1:port1,user2@host2:port2 user3@host3
