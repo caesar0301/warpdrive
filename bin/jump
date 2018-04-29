@@ -1,4 +1,14 @@
 #!/bin/bash
+if [ x$JUMP_USERNAME == "x" ] | [ x$JUMP_USER_PASSWORD == "x" ]; then
+    echo "JUMP_USERNAME and JUMP_USER_PASSWORD should not be empty"
+    exit 1
+fi
+
+if [ ! -e ~/.ssh/$JUMP_USERNAME.pem ]; then
+    echo "Download JUMP_USERNAME.pem file from manager to ~/.ssh, then continue"
+    exit 1
+fi
+
 auto_login_ssh () {
     expect -c "set timeout -1;
                 spawn -noecho ssh -i ~/.ssh/$JUMP_USERNAME.pem $JUMP_USERNAME@172.16.1.98
