@@ -23,4 +23,4 @@ git branch -D "4merge_$CUR_BRANCH"
 git push origin :"4merge_$CUR_BRANCH"
 
 git checkout -b 4merge_$CUR_BRANCH trunk/$CUR_BRANCH
-git merge --squash origin/$CUR_BRANCH
+git merge --squash $CUR_BRANCH
