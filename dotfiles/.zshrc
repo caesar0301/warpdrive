@@ -61,6 +61,12 @@ HIST_STAMPS="mm/dd/yyyy"
 plugins=(
   git
   virtualenvwrapper
+  sudo
+  history
+  taskwarrior
+  tmux
+  tmuxinator
+  zsh-autosuggestions
 )
 
 # virtualenvwrapper plugin
@@ -114,10 +120,3 @@ export JRE_HOME=$JAVA_HOME/jre
 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
 export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
-
-# Alias
-alias go_hive_metastore="$DEVROOT/inceptor_idea/bin/start_hive.sh org.apache.hadoop.hive.metastore.HiveMetaStore &"
-alias go_hive_server1="$DEVROOT/inceptor_idea/bin/start_hive.sh io.transwarp.ngmr.NgmrServer --hiveconf hive.metastore.uris=thrift://localhost:9083 &"
-alias go_beeline1="$DEVROOT/inceptor_idea/bin/start_hive.sh org.apache.hive.beeline.BeeLine -u jdbc:hive://localhost:10000/default"
-alias go_hive_server2="$DEVROOT/inceptor_idea/bin/start_hive.sh io.transwarp.inceptor.InceptorServer2 &"
-alias go_beeline2="$DEVROOT/inceptor_idea/bin/start_hive.sh org.apache.hive.beeline.BeeLine -u jdbc:hive2://localhost:10000/default"
