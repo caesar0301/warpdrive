@@ -1,3 +1,7 @@
-## macOS ohmyzsh + tmux + vim + iTerm2 + Powerlevel9k = Badass terminal
+# HowTo
 
-https://blogs.technet.microsoft.com/jessicadeen/linux/macos-ohmyzsh-tmux-vim-iterm2-powerlevel9k-badass-terminal/
+Source: https://blogs.technet.microsoft.com/jessicadeen/linux/macos-ohmyzsh-tmux-vim-iterm2-powerlevel9k-badass-terminal/
+
+## Install
+
+See `install.sh`
