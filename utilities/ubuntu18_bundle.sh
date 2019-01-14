@@ -1,15 +1,11 @@
 #!/bin/bash
 
+# Install umake and dev tools
 sudo apt install ubuntu-make
-
 umake ide idea-ultimate
-
 umake ide sublime-text
-
 umake ide visual-studio-code
-
 umake go
-
 umake scala
 
 # Java
