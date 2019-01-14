@@ -10,9 +10,20 @@ umake ide visual-studio-code
 
 umake go
 
-umake java
-
 umake scala
+
+# Java
+# Java 8
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+
+# Java 10
+sudo add-apt-repository ppa:linuxuprising/java
+sudo apt update
+
+# Set java default
+sudo apt install oracle-java8-set-default
+sudo apt install oracle-java10-set-default
 
 # Install mysql
 sudo apt-get purge mysql-server
