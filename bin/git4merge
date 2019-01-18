@@ -17,10 +17,40 @@
 #   git4merge dev-1.0
 # under branch origin/dev-1.0. Then a new branch 4merge_dev-1.0 is ready
 # to merge to the remote branch trunk/dev-1.0.
+# Check CLI options
 CUR_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+SRC_BRANCH=$CUR_BRANCH
+DST_BRANCH=trunk/$CUR_BRANCH
+MERGE_BRANCH="4merge_$CUR_BRANCH"
 
-git branch -D "4merge_$CUR_BRANCH"
-git push origin :"4merge_$CUR_BRANCH"
+usage() {
+  echo "USAGE: $0 [-h] [-m mergeBranch] [sourceBranch targetBranch]"
+}
 
-git checkout -b 4merge_$CUR_BRANCH trunk/$CUR_BRANCH
-git merge --squash $CUR_BRANCH
+# Get CLI options
+while [ $# -gt 0 ]; do
+  COMMAND=$1
+  case $COMMAND in
+    -m)
+      MERGE_BRANCH=$2
+      shift 2
+      ;;
+    -h)
+      usage && exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+SRC_BRANCH=$1
+DST_BRANCH=$2
+MERGE_BRANCH=4merge_$(echo $DST_BRANCH | sed 's|/|_|g')
+
+git branch -D $MERGE_BRANCH
+git push origin :"$MERGE_BRANCH"
+
+git checkout -b $MERGE_BRANCH $DST_BRANCH
+git merge --squash $SRC_BRANCH
+
