@@ -21,7 +21,6 @@
 CUR_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 SRC_BRANCH=$CUR_BRANCH
 DST_BRANCH=trunk/$CUR_BRANCH
-MERGE_BRANCH="4merge_$CUR_BRANCH"
 
 usage() {
   echo "USAGE: $0 [-h] [-m mergeBranch] [sourceBranch targetBranch]"
@@ -44,8 +43,9 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-SRC_BRANCH=$1
-DST_BRANCH=$2
+if [[ $1 == "" ]]; then SRC_BRANCH=$CUR_BRANCH; else SRC_BRANCH=$1; fi
+if [[ $2 == "" ]]; then DST_BRANCH=trunk/$CUR_BRANCH; else DST_BRANCH=$2; fi
+
 MERGE_BRANCH=4merge_$(echo $DST_BRANCH | sed 's|/|_|g')
 
 git branch -D $MERGE_BRANCH
