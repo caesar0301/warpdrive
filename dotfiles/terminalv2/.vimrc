@@ -26,6 +26,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'ervandew/supertab'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'flazz/vim-colorschemes'
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
@@ -36,17 +38,37 @@ Bundle 'godlygeek/tabular'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+"**********************************
+" Global and plugin configurations
+"**********************************
+
 " UTF-8 Support
 set encoding=utf-8
 let mapleader=","
 
-"split navigations
+set bg=dark
+colorscheme gruvbox
+
+" Search highlighting
+set hlsearch
+
+" Line numbering
+set nu
+
+" System clipboard
+set clipboard=unnamed
+
+" Split navigations
 set splitbelow
 set splitright
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Quickly edit/reload this configuration file
+nnoremap gev :e $MYVIMRC<CR>
+nnoremap gsv :so $MYVIMRC<CR>
 
 " Enable folding
 set foldmethod=indent
@@ -56,18 +78,18 @@ set foldlevel=99
 nnoremap <space> za
 
 au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
+			\ set tabstop=4 |
+			\ set softtabstop=4 |
+			\ set shiftwidth=4 |
+			\ set textwidth=79 |
+			\ set expandtab |
+			\ set autoindent |
+			\ set fileformat=unix |
 
 au BufNewFile,BufRead *.js,*.html,*.css
-    \ set tabstop=2 |
-    \ set softtabstop=2 |
-    \ set shiftwidth=2 |
+			\ set tabstop=2 |
+			\ set softtabstop=2 |
+			\ set shiftwidth=2 |
 
 " Flagging Unnecessary Whitespace
 highlight BadWhitespace ctermbg=red guibg=darkred
@@ -89,18 +111,18 @@ let NERDTreeShowHidden=1
 let NERDTreeWinSize=31
 let g:nerdtree_tabs_open_on_console_startup=1
 let NERDTreeShowBookmarks=1
-let NERDTreeQuitOnOpen = 1
+let NERDTreeQuitOnOpen = 0
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
 map <leader>f :NERDTreeToggle<CR>
+map <Leader>t :NERDTreeTabsToggle<CR>
+
+" NERDTree automatically when vim starts up on opening a directory
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+" Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" Line numbering
-set nu
-
-" System clipboard
-set clipboard=unnamed
 
