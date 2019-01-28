@@ -24,10 +24,13 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'ervandew/supertab'
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'godlygeek/tabular'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -35,6 +38,7 @@ filetype plugin indent on    " required
 
 " UTF-8 Support
 set encoding=utf-8
+let mapleader=","
 
 "split navigations
 set splitbelow
@@ -78,11 +82,21 @@ let python_highlight_all=1
 syntax on
 
 " File browsing
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-" autocmd vimenter * NERDTree " autostart NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp'] "ignore files in NERDTree
+let NERDTreeShowLineNumbers=1
+let NERDTreeAutoCenter=1
+let NERDTreeShowHidden=1
+let NERDTreeWinSize=31
+let g:nerdtree_tabs_open_on_console_startup=1
+let NERDTreeShowBookmarks=1
+let NERDTreeQuitOnOpen = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+map <leader>f :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Line numbering
 set nu
