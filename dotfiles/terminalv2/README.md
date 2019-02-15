@@ -33,15 +33,14 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 Ref：https://realpython.com/vim-and-python-a-match-made-in-heaven/
 
 ```bash
+sudo apt-get install python-autopep8
+
 # Install Vundle
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Get .vimrc and run `:PluginInstall` in vim
-
-# Install code formatter, see more https://github.com/Chiel92/vim-autoformat
-sudo apt-get install python-autopep8
-
-# How to tabularize texts, see more https://github.com/godlygeek/tabular
-
-# How to use tabular auto completion, see https://github.com/ervandew/supertab
 ```
+Ref:
+* How to tabularize texts, see more https://github.com/godlygeek/tabular
+* How to use tabular auto completion, see https://github.com/ervandew/supertab
+* code formatter, see more https://github.com/Chiel92/vim-autoformat
