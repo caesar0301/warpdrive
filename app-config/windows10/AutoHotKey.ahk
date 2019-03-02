@@ -4,11 +4,20 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; -------------------------------------------------------------------------
 ; 网页快捷键
+:*:*gh::
+Run, https://github.com/
+return
 :*:*wd::
 Run, https://github.com/caesar0301/warp-drive
 return
 :*:*pt::
 Run, https://pt.sjtu.edu.cn/index.php
+return
+:*:*yt::
+Run, https://youtube.com/
+return
+:*:*yk::
+Run, http://youku.com/
 return
 :*:*jr::
 Run, http://172.16.0.244:8080
