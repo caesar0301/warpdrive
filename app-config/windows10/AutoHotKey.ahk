@@ -2,15 +2,17 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
-; Windows 10 虚拟桌面自动切换 
-!1::
-send #^{left} 
-return 
-!2::
-send #^{right}
+; -------------------------------------------------------------------------
+; 快捷输入当前日期时间
+:*:]n::  ; 按下快捷键组合： `]` 和 `n`
+getNow()
 return
-
+getNow()
+{
+    FormatTime, NowDateTime,, yyyy-MM-dd HH:mm:ss
+    send, %NowDateTime%
+}
+; -------------------------------------------------------------------------
 ; Window 10同一应用多窗口切换
 !`:: ; Next window
 WinGetClass, ActiveClass, A
@@ -51,3 +53,4 @@ Loop, % List
 }
 WinActivate, % "ahk_id " WinID
 return
+; -------------------------------------------------------------------------
