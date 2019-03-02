@@ -7,9 +7,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 :*:*gh::
 Run, https://github.com/
 return
-:*:*wd::
-Run, https://github.com/caesar0301/warp-drive
-return
 :*:*pt::
 Run, https://pt.sjtu.edu.cn/index.php
 return
