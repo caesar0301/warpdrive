@@ -95,8 +95,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/java-9-oracle
-# export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*) # For macOS
+export JAVA_HOME=/usr/lib/jvm/default-java
 export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
 export JRE_HOME=$JAVA_HOME/jre
 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
