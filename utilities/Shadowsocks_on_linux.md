@@ -3,7 +3,7 @@
 # Install dependencies
 sudo apt install shadowsocks-libev
 sudo systemctl stop shadowsocks-libev
-sudo systemctl disable shadowsocks-libev  # Dsiable ss server
+sudo systemctl disable shadowsocks-libev  # Disable ss server
 
 # Configure ss local
 sudo touch /etc/shadowsocks-libev/local.json
@@ -42,44 +42,120 @@ socksProxyType = socks5
 ```
 
 ### CentOS 7
-
 ```bash
 cd /etc/yum.repos.d/
 curl -O https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo
 yum install -y shadowsocks-libev
-
-# Edit /etc/shadowsocks-libev/local.json
-firewall-cmd --permanent --add-port=44290/tcp
-firewall-cmd --permanent --add-port=44290/udp
-firewall-cmd --reload
-
-yum install firewalld
-systemctl start firewalld
-systemctl enable firewalld
-systemctl status firewalld
-
 systemctl start shadowsocks-libev
 systemctl enable shadowsocks-libev
 journalctl -u shadowsocks-libev
 
+vi /etc/shadowsocks-libev/local.json
+{
+ "server":"xxxx",
+ "server_port":xxxx,
+ "local_address":"127.0.0.1",
+ "local_port":1080,
+ "password":"xxxx",
+ "timeout":60,
+ "method":"chacha20-ietf-poly1305"
+}
+
 # Install proxychains
 wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
+sudo vim /etc/proxychains.conf
+socks5   127.0.0.1   1080
 
-version=4.13
-wget https://github.com/rofl0r/proxychains-ng/archive/v$version.tar.gz
-tar xf v$version.tar.gz
-(cd proxychains-ng-$version
- ./configure
- make
- make install
- [[ -f /etc/proxychains.conf ]] || cp src/proxychains.conf /etc/proxychains.conf
-)
-rm -rf v$version.tar.gz proxychains-ng-$version
+sudo vim /usr/lib/proxyresolv
+DNS_SERVER=8.8.8.8
 ```
 
 ### Debian
-* https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+* Install ss package: https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+* Configure SS similar to Ubuntu above
 
+### MX Linux
+* Install ss package (Debian): https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+* Edit `/etc/shadowsocks-libev/local.json` for local configuration
+* Test local configuration: `ss-local -c /etc/shadowsocks-libev/local.json`
+* Install python client `pip install git+https://github.com/shadowsocks/shadowsocks.git@master` and `sslocal -c /etc/shadowsocks.json -d start`
+* Auto start via init.d
+Add `/etc/init.d/sslocal`
+```bash
+#!/bin/bash
+# Author: lynnyq <lynnyq@gmail.com>
+name=sslocal
+BIN=/usr/local/bin/sslocal
+conf=/etc/shadowsocks/client.json
+
+start(){
+    $BIN -c $conf -d start
+    RETVAL=$?
+    if [ "$RETVAL" = "0" ]; then
+        echo "$name start success"
+    else
+        echo "$name start failed"
+    fi
+}
+
+stop(){
+    pid=`ps -ef | grep -v grep | grep -i "${BIN}" | awk '{print $2}'`
+    if [[ ! -z $pid ]]; then
+        $BIN -c $conf -d stop
+        RETVAL=$?
+        if [ "$RETVAL" = "0" ]; then
+            echo "$name stop success"
+        else
+            echo "$name stop failed"
+        fi
+    else
+        echo "$name is not running"
+        RETVAL=1
+    fi
+}
+
+status(){
+    pid=`ps -ef | grep -v grep | grep -i "${BIN}" | awk '{print $2}'`
+    if [[ -z $pid ]]; then
+        echo "$name is not running"
+        RETVAL=1
+    else
+        echo "$name is running with PID $pid"
+        RETVAL=0
+    fi
+}
+
+case "$1" in
+'start')
+    start
+    ;;
+'stop')
+    stop
+    ;;
+'status')
+    status
+    ;;
+'restart')
+    stop
+    start
+    RETVAL=$?
+    ;;
+*)
+    echo "Usage: $0 { start | stop | restart | status }"
+    RETVAL=1
+    ;;
+esac
+exit $RETVAL
+```
+Enable autostart
+```bash
+sudo chmod +x /etc/init.d/sslocal
+sudo update-rc.d sslocal defaults 90
+```
+Disable autostart
+```bash
+sudo update-rc.d -f sslocal remove
+```
 
 ### HTTP proxy
 Proxy list for .bashrc
@@ -93,3 +169,4 @@ alias unproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unse
 * https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu-16-04-17-10
 * https://www.linuxbabe.com/desktop-linux/how-to-use-proxychains-to-redirect-your-traffic-through-proxy-server
 * ss-local.sh: https://www.zfl9.com/ss-local.html
+* ss-installmd: https://gist.github.com/aa65535/ea090063496b0d3a1748
