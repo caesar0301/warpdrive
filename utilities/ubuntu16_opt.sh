@@ -12,6 +12,10 @@ rm -r SogouPY
 rm -r SogouPY.users/
 rm -r sogou-qimpanel/
 
+# Fix input bar loss
+cd ~/.config
+rm -rf SogouPY SogouPY.users/ sogou-qimpanel/
+
 # Nautilus extension：reduce image size quickly
 sudo add-apt-repository ppa:atareao/nautilus-extensions
 sudo apt update && sudo apt install nautilus-reduceimages
