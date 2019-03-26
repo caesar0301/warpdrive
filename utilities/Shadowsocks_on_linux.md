@@ -1,11 +1,14 @@
+## Install Shadowsocks and configure client
+
 ### Ubuntu
+* Install dependencies
 ```bash
-# Install dependencies
 sudo apt install shadowsocks-libev
 sudo systemctl stop shadowsocks-libev
 sudo systemctl disable shadowsocks-libev  # Disable ss server
-
-# Configure ss local
+```
+* Configure ss client
+```bash
 sudo touch /etc/shadowsocks-libev/local.json
 sudo vim /etc/shadowsocks-libev/local.json
 {
@@ -17,31 +20,16 @@ sudo vim /etc/shadowsocks-libev/local.json
  "timeout":60,
  "method":"chacha20-ietf-poly1305"
 }
-
 sudo systemctl enable shadowsocks-libev-local@local.service
 sudo systemctl restart shadowsocks-libev-local@local.service
-sudo systemctl status shadowsocks-libev-local@local.service
 ```
 
-Install proxychains for terminal:
-```bash
-sudo apt install proxychains
-sudo vim /etc/proxychains.conf
-socks5   127.0.0.1   1080
-quiet_mode
-
-sudo vim /usr/lib/proxyresolv
-DNS_SERVER=8.8.8.8
-```
-Install polipo for http/https proxy
-```bash
-sudo apt install polipo
-sudo vim /etc/polipo/config  # Http proxy for terminal, default port 8123
-socksParentProxy = "localhost:1080"
-socksProxyType = socks5
-```
+### Debian
+* Install SS package: https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+* Configure SS client similar to Ubuntu above
 
 ### CentOS 7
+* Install dependencies
 ```bash
 cd /etc/yum.repos.d/
 curl -O https://copr.fedorainfracloud.org/coprs/librehat/shadowsocks/repo/epel-7/librehat-shadowsocks-epel-7.repo
@@ -49,18 +37,11 @@ yum install -y shadowsocks-libev
 systemctl start shadowsocks-libev
 systemctl enable shadowsocks-libev
 journalctl -u shadowsocks-libev
-
-vi /etc/shadowsocks-libev/local.json
-
-# Install proxychains
-wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
-sudo vim /etc/proxychains.conf
-sudo vim /usr/lib/proxyresolv
 ```
-
-### Debian
-* Install ss package: https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
-* Configure SS similar to Ubuntu above
+* Configure ss client
+```bash
+vi /etc/shadowsocks-libev/local.json
+```
 
 ### MX Linux
 * Install ss package (Debian): https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
@@ -147,6 +128,35 @@ sudo update-rc.d sslocal defaults 90
 Disable autostart
 ```bash
 sudo update-rc.d -f sslocal remove
+```
+
+## Install terminal and HTTP proxies
+
+### Ubuntu/Debian/MXLinux
+* Install proxychains for terminal:
+```bash
+sudo apt install proxychains
+sudo vim /etc/proxychains.conf
+socks5   127.0.0.1   1080
+quiet_mode
+
+sudo vim /usr/lib/proxyresolv
+DNS_SERVER=8.8.8.8
+```
+* Install polipo for http/https proxy
+```bash
+sudo apt install polipo
+sudo vim /etc/polipo/config  # Http proxy for terminal, default port 8123
+socksParentProxy = "localhost:1080"
+socksProxyType = socks5
+```
+
+### CentOS
+```bash
+# Install proxychains
+wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
+sudo vim /etc/proxychains.conf
+sudo vim /usr/lib/proxyresolv
 ```
 
 ### HTTP proxy
