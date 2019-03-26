@@ -91,8 +91,19 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshconfig="vi ~/.zshrc"
+alias ohmyzsh="vi ~/.oh-my-zsh"
+alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:8123;export https_proxy=http://127.0.0.1:8123;export PROMPT="[PROXY] $PROMPT"'
+alias unproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
+
+# zsh-completions
+autoload -U compinit && compinit
+source $ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# POWERLEVEL9K
+POWERLEVEL9K_MODE='awesome-patched'
+ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Java
 export JAVA_HOME=/usr/lib/jvm/default-java
@@ -105,11 +116,7 @@ export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
 # virtualenvwrapper plugin
 export WORKON_HOME=~/.virtualenv
 
-# zsh-completions
-autoload -U compinit && compinit
-source $ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# POWERLEVEL9K
-POWERLEVEL9K_MODE='awesome-patched'
-ZSH_THEME="powerlevel9k/powerlevel9k"
+# Go
+export GOROOT=/opt/go
+export GOPATH=~/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
