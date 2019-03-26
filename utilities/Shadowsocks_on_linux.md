@@ -78,7 +78,7 @@ Add `/etc/init.d/sslocal`
 # Author: lynnyq <lynnyq@gmail.com>
 name=sslocal
 BIN=/usr/local/bin/sslocal
-conf=/etc/shadowsocks/client.json
+conf=/etc/shadowsocks/local.json
 
 start(){
     $BIN -c $conf -d start
