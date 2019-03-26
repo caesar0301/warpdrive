@@ -51,23 +51,11 @@ systemctl enable shadowsocks-libev
 journalctl -u shadowsocks-libev
 
 vi /etc/shadowsocks-libev/local.json
-{
- "server":"xxxx",
- "server_port":xxxx,
- "local_address":"127.0.0.1",
- "local_port":1080,
- "password":"xxxx",
- "timeout":60,
- "method":"chacha20-ietf-poly1305"
-}
 
 # Install proxychains
 wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
 sudo vim /etc/proxychains.conf
-socks5   127.0.0.1   1080
-
 sudo vim /usr/lib/proxyresolv
-DNS_SERVER=8.8.8.8
 ```
 
 ### Debian
