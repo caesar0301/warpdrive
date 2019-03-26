@@ -76,10 +76,14 @@ DNS_SERVER=8.8.8.8
 
 ### MX Linux
 * Install ss package (Debian): https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
-* Edit `/etc/shadowsocks-libev/local.json` for local configuration
+* Stop ss server `sudo /etc/init.d/shadowsocks-libev stop`
+* Disable ss server on startup `sudo update-rc.d shadowsocks-libev disable` or `sudo sysv-rc-conf`
+* Edit `/etc/shadowsocks-libev/local.json` for local configuration as above
+```
 * Test local configuration: `ss-local -c /etc/shadowsocks-libev/local.json`
 * Install python client `pip install git+https://github.com/shadowsocks/shadowsocks.git@master` and `sslocal -c /etc/shadowsocks.json -d start`
-* Auto start via init.d
+* Auto start via init.d:
+
 Add `/etc/init.d/sslocal`
 ```bash
 #!/bin/bash
