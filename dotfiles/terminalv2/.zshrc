@@ -120,3 +120,7 @@ export WORKON_HOME=~/.virtualenv
 export GOROOT=/opt/go
 export GOPATH=~/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
