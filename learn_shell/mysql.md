@@ -74,6 +74,7 @@ mysql -h <host> -u <user> -p <Database>
 ```
 
 ### Browsing
+```bash
  SHOW DATABASES
  SHOW TABLES
  SHOW FIELDS FROM table / SHOW COLUMNS FROM table / DESCRIBE table / DESC table / EXPLAIN table
@@ -85,7 +86,10 @@ mysql -h <host> -u <user> -p <Database>
  SELECT table_name, table_rows FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '**yourdbname**';
  $ mysqlshow
  $ mysqlshow database
-Create / delete / select / alter database
+```
+
+## Create / delete / select / alter database
+```bash
  CREATE DATABASE [IF NOT EXISTS] mabase [CHARACTER SET charset] [COLLATE collation]
  CREATE DATABASE mabase CHARACTER SET utf8
  DROP DATABASE mabase
