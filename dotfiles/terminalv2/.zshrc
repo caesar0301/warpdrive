@@ -127,3 +127,12 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
 fi
+
+# k8s
+alias k='kubectl'
+alias ka='kubectl apply --recursive -f'
+alias kex='kubectl exec -i -t'
+alias klo='kubectl logs -f'
+alias kg='kubectl get'
+alias kga='kubectl get --all-namespaces'
+alias kd='kubectl describe'
