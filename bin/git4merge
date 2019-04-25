@@ -1,26 +1,26 @@
 #!/bin/bash
 # A script to facilitate branch merging for collaborative development.
 # In collaborative development, we would make a bunch of commits before
-# merging them into the trunk branch by a squash.
+# merging them into the upstream branch by a squash.
 #
 # Here is an example:
 #
 # Remote branches:
-#   trunk/master
-#   trunk/dev-1.0
+#   upstream/master
+#   upstream/dev-1.0
 #
 # Local branches:
 #   origin/master
 #   origin/dev-1.0
 #
-# When you attempt to merge origin/dev-1.0 into trunk/dev-1.0, run
+# When you attempt to merge origin/dev-1.0 into upstream/dev-1.0, run
 #   git4merge dev-1.0
 # under branch origin/dev-1.0. Then a new branch 4merge_dev-1.0 is ready
-# to merge to the remote branch trunk/dev-1.0.
+# to merge to the remote branch upstream/dev-1.0.
 # Check CLI options
 CUR_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 SRC_BRANCH=$CUR_BRANCH
-DST_BRANCH=trunk/$CUR_BRANCH
+DST_BRANCH=upstream/$CUR_BRANCH
 
 usage() {
   echo "USAGE: $0 [-h] [-m mergeBranch] [sourceBranch targetBranch]"
@@ -44,7 +44,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [[ $1 == "" ]]; then SRC_BRANCH=$CUR_BRANCH; else SRC_BRANCH=$1; fi
-if [[ $2 == "" ]]; then DST_BRANCH=trunk/$CUR_BRANCH; else DST_BRANCH=$2; fi
+if [[ $2 == "" ]]; then DST_BRANCH=upstream/$CUR_BRANCH; else DST_BRANCH=$2; fi
 
 MERGE_BRANCH=4merge_$(echo $DST_BRANCH | sed 's|/|_|g')
 
