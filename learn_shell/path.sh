@@ -36,3 +36,12 @@ if [ -z "$JAVA_HOME" ]; then
 else
   JAVA="$JAVA_HOME/bin/java"
 fi
+
+# Check command existence
+type foobar &> /dev/null
+hash foobar &> /dev/null
+command -v foobar &> /dev/null
+which foobar &> /dev/null
+(( $+commands[foobar] )) # (zsh only)
+
+testing-command && echo exist || echo non-exist

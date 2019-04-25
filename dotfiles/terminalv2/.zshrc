@@ -91,20 +91,10 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Java
-export JAVA_HOME=/usr/lib/jvm/java-9-oracle
-# export JAVA_HOME=$(/usr/libexec/java_home -v 1.7*) # For macOS
-export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
-export JRE_HOME=$JAVA_HOME/jre
-export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
-export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
-
-# virtualenvwrapper plugin
-export WORKON_HOME=~/.virtualenv
+alias zshconfig="vi ~/.zshrc"
+alias ohmyzsh="vi ~/.oh-my-zsh"
+alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:8123;export https_proxy=http://127.0.0.1:8123;export PROMPT="[PROXY] $PROMPT"'
+alias unproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
 
 # zsh-completions
 autoload -U compinit && compinit
@@ -114,3 +104,35 @@ source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # POWERLEVEL9K
 POWERLEVEL9K_MODE='awesome-patched'
 ZSH_THEME="powerlevel9k/powerlevel9k"
+
+# Java
+export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
+
+# virtualenvwrapper plugin
+export WORKON_HOME=~/.virtualenv
+
+# Go
+export GOROOT=/opt/go
+export GOPATH=~/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
+
+# k8s
+alias k='kubectl'
+alias ka='kubectl apply --recursive -f'
+alias kex='kubectl exec -i -t'
+alias klo='kubectl logs -f'
+alias kg='kubectl get'
+alias kga='kubectl get --all-namespaces'
+alias kd='kubectl describe'
