@@ -50,10 +50,8 @@ vi /etc/shadowsocks-libev/local.json
 * Edit `/etc/shadowsocks-libev/local.json` for local configuration as above
 * Test local configuration: `ss-local -c /etc/shadowsocks-libev/local.json`
 * Install python client `pip install git+https://github.com/shadowsocks/shadowsocks.git@master`
-* Test python client `sslocal -c /etc/shadowsocks.json -d start`
-* Auto start via init.d:
-
-Add `/etc/init.d/sslocal`: https://gist.github.com/caesar0301/d200ba2b8f5334b414911ecb24eb0923
+* Test python client `sslocal -c /etc/shadowsocks-libev/local.json -d start`
+* Auto start via `/etc/init.d/sslocal`: https://gist.github.com/caesar0301/d200ba2b8f5334b414911ecb24eb0923
 
 Enable autostart
 ```bash
