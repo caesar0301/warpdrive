@@ -53,73 +53,8 @@ vi /etc/shadowsocks-libev/local.json
 * Test python client `sslocal -c /etc/shadowsocks.json -d start`
 * Auto start via init.d:
 
-Add `/etc/init.d/sslocal`
-```bash
-#!/bin/bash
-# Author: lynnyq <lynnyq@gmail.com>
-name=sslocal
-BIN=/usr/local/bin/sslocal
-conf=/etc/shadowsocks-libev/local.json
+Add `/etc/init.d/sslocal`: https://gist.github.com/caesar0301/d200ba2b8f5334b414911ecb24eb0923
 
-start(){
-    $BIN -c $conf -d start
-    RETVAL=$?
-    if [ "$RETVAL" = "0" ]; then
-        echo "$name start success"
-    else
-        echo "$name start failed"
-    fi
-}
-
-stop(){
-    pid=`ps -ef | grep -v grep | grep -i "${BIN}" | awk '{print $2}'`
-    if [[ ! -z $pid ]]; then
-        $BIN -c $conf -d stop
-        RETVAL=$?
-        if [ "$RETVAL" = "0" ]; then
-            echo "$name stop success"
-        else
-            echo "$name stop failed"
-        fi
-    else
-        echo "$name is not running"
-        RETVAL=1
-    fi
-}
-
-status(){
-    pid=`ps -ef | grep -v grep | grep -i "${BIN}" | awk '{print $2}'`
-    if [[ -z $pid ]]; then
-        echo "$name is not running"
-        RETVAL=1
-    else
-        echo "$name is running with PID $pid"
-        RETVAL=0
-    fi
-}
-
-case "$1" in
-'start')
-    start
-    ;;
-'stop')
-    stop
-    ;;
-'status')
-    status
-    ;;
-'restart')
-    stop
-    start
-    RETVAL=$?
-    ;;
-*)
-    echo "Usage: $0 { start | stop | restart | status }"
-    RETVAL=1
-    ;;
-esac
-exit $RETVAL
-```
 Enable autostart
 ```bash
 sudo chmod +x /etc/init.d/sslocal
@@ -139,9 +74,6 @@ sudo apt install proxychains
 sudo vim /etc/proxychains.conf
 socks5   127.0.0.1   1080
 quiet_mode
-
-sudo vim /usr/lib/proxyresolv
-DNS_SERVER=8.8.8.8
 ```
 * Install polipo for http/https proxy
 ```bash
