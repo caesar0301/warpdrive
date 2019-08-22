@@ -41,3 +41,8 @@ stringA匹配pattern
 [ -r $file ] or [[ -r $file ]]	file文件存在且可读时为真
 [ -w $file ] or [[ -w $file ]]	file文件存在且可写时为真
 [ -x $file ] or [[ -x $file ]]	file文件存在且可执行时为真
+
+[[ $a == z* ]]   # True if $a starts with an "z" (pattern matching).
+[[ $a == "z*" ]] # True if $a is equal to z* (literal matching).
+[ $a == z* ]     # File globbing and word splitting take place.
+[ "$a" == "z*" ] # True if $a is equal to z* (literal matching).
