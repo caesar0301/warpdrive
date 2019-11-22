@@ -1,8 +1,6 @@
 # HowTo
 
-Source: https://blogs.technet.microsoft.com/jessicadeen/linux/macos-ohmyzsh-tmux-vim-iterm2-powerlevel9k-badass-terminal/
-
-# oh-my-zsh
+## oh-my-zsh
 
 ```bash
 cp .zshrc ~/.zshrc
@@ -17,7 +15,7 @@ cd /tmp && git clone https://github.com/powerline/fonts.git &&  sh fonts/install
 sudo chsh --shell=$(which zsh) $USER
 ```
 
-# Tmux
+## Tmux
 
 ```bash
 cp .tmux.conf ~/.tmux.conf
@@ -26,7 +24,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Run tmux; Prefix + I to install plugins
 ```
 
-# Vim
+## Vim
 
 ```bash
 sudo apt-get install vim python-autopep8
@@ -36,7 +34,9 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Get .vimrc and run `:PluginInstall` in vim
 ```
-Ref:
+
+## References:
+* https://blogs.technet.microsoft.com/jessicadeen/linux/macos-ohmyzsh-tmux-vim-iterm2-powerlevel9k-badass-terminal/
 * How to tabularize texts, see more https://github.com/godlygeek/tabular
 * How to use tabular auto completion, see https://github.com/ervandew/supertab
 * code formatter, see more https://github.com/Chiel92/vim-autoformat
