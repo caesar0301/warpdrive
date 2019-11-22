@@ -1,16 +1,23 @@
 #!/bin/bash
+# Install python dependencies: https://github.com/pyenv/pyenv/wiki
+# For ubuntu:
+# sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 # Install a specified version of Python.
 # E.g., install_py.sh 3.6.5
+set -ex
+
 VERSION=$1
 PYVER=$(echo $VERSION | egrep -o '[0-9]+.[0-9]+')
+PACKAGE=Python-$VERSION
 
-wget https://www.python.org/ftp/python/$VERSION/Python-$VERSION.tar.xz
-xz -d Python-$VERSION.tar.xz
-tar xvf Python-$VERSION.tar
+if [ ! -e $PACKAGE ]; then
+  wget https://www.python.org/ftp/python/$VERSION/$PACKAGE.tar.xz
+fi
+xz -d $PACKAGE.tar.xz && tar xvf $PACKAGE.tar
 
 cd Python-$VERSION
 ./configure --prefix=/usr/local
-make && make install && echo 'Python installed.'
+make && sudo make install && echo 'Python installed.'
 
 # wget https://bootstrap.pypa.io/ez_setup.py
 cat <<EOF >> ez_setup.py
