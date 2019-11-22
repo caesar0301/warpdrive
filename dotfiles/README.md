@@ -27,12 +27,17 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ## Vim
 
 ```bash
-sudo apt-get install vim python-autopep8
+cp .vimrc ~/.vimrc
+sudo pip3 install autopep8 flake8
 
 # Install Vundle to manage plugins
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-# Get .vimrc and run `:PluginInstall` in vim
+# Install YCM
+sudo apt install build-essential cmake python3-dev
+git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
+git submodule update --init --recursive
+python3 install.py --go-completer --rust-completer --java-completer
 ```
 
 ## References:
