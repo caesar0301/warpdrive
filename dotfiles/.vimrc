@@ -1,5 +1,19 @@
 set nocompatible              " required
 filetype off                  " required
+let mapleader=","
+set pastetoggle=<F10>
+syntax on
+set ic
+set nu
+set hlsearch
+set encoding=utf-8
+set fileencodings=utf-8,ucs-bom,GB2312,big5
+set cursorline
+set autoindent
+set smartindent
+set scrolloff=4
+set showmatch
+set autoread
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -61,7 +75,7 @@ let NERDTreeDirArrows = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nnoremap <F3> :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap  <C-l> :tabn<CR>
 nnoremap  <C-h> :tabp<CR>
 nnoremap  <C-n> :tabnew<CR>
@@ -134,7 +148,6 @@ au Syntax * RainbowParenthesesLoadBraces
 " Theme Dracula
 Plugin 'dracula/vim', { 'name': 'dracula' }
 
-
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -144,22 +157,7 @@ filetype plugin indent on    " required
 "*******************************************
 
 " General settings
-let mapleader=","
-" Toggle paste mode
-set pastetoggle=<F10>
-syntax on
 colorscheme dracula
-set ic
-set nu
-set hlsearch
-set encoding=utf-8
-set fileencodings=utf-8,ucs-bom,GB2312,big5
-set cursorline
-set autoindent
-set smartindent
-set scrolloff=4
-set showmatch
-set autoread
 
 " Filetype
 au BufNewFile,BufRead *.py
