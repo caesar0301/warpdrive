@@ -14,6 +14,26 @@ let g:ycm_autoclose_preview_window_after_completion=1
 " Go to definition ALT + G
 nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
+" Auto completion for Python
+Plugin 'davidhalter/jedi-vim'
+let g:jedi#completions_enabled = 1
+let g:jedi#auto_initialization = 1
+let g:jedi#auto_vim_configuration = 1
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "1"
+let g:jedi#goto_command = "<leader>b"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+
+" Auto completion for pairs
+Plugin 'jiangmiao/auto-pairs'
+let g:AutoPairsFlyMode = 0
+let g:AutoPairsShortcutBackInsert = '<M-b>'
+
 " Auto code formatter 
 Plugin 'Chiel92/vim-autoformat'
 let g:autoformat_autoindent = 0
@@ -24,11 +44,11 @@ nnoremap <F6> :Autoformat<CR>
 " Status bar enhancement
 Plugin 'bling/vim-airline'
 
-" File browser 
+" File browser NerdTree
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
-let g:nerdtree_tabs_open_on_console_startup=0
+let g:nerdtree_tabs_open_on_console_startup=1
 let NERDTreeShowLineNumbers=1
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=1
@@ -41,8 +61,43 @@ let NERDTreeDirArrows = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nnoremap <leader>f :NERDTreeToggle<CR>
-nnoremap <leader>t :NERDTreeTabsToggle<CR>
+nnoremap <F3> :NERDTreeToggle<CR>
+nnoremap  <C-l> :tabn<CR>
+nnoremap  <C-h> :tabp<CR>
+nnoremap  <C-n> :tabnew<CR>
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+
+" Awesome CtrlP fuzzy search
+Plugin 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_root_markers = [
+    \ 'pom.xml', 
+    \ '.p4ignore',
+    \ '.python-version',
+    \ 'cargo.toml'
+    \ ]
+let g:ctrlp_switch_buffer = 'et'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " Syntax checking
 Plugin 'w0rp/ale'
@@ -76,6 +131,10 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+" Theme Dracula
+Plugin 'dracula/vim', { 'name': 'dracula' }
+
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -89,6 +148,7 @@ let mapleader=","
 " Toggle paste mode
 set pastetoggle=<F10>
 syntax on
+colorscheme dracula
 set ic
 set nu
 set hlsearch
