@@ -28,10 +28,12 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ```bash
 cp .vimrc ~/.vimrc
-sudo pip3 install autopep8 flake8
 
 # Install Vundle to manage plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+# Install python deps to enable plugins
+sudo apt install build-essential cmake python3-dev
 
 # Install YCM
 sudo apt install build-essential cmake python3-dev
