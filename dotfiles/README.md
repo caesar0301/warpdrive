@@ -35,6 +35,14 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # Install python deps to enable plugins
 sudo apt install build-essential cmake python3-dev
 
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+sudo apt install nodejs
+sudo npm -g install instant-markdown-d
+
+rustup toolchain add nightly
+cargo +nightly install racer
+rustup component add rls-preview rust-analysis rust-src --toolchain nightly
+
 # Install YCM
 sudo apt install build-essential cmake python3-dev
 git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe

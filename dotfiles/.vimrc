@@ -1,6 +1,6 @@
 set nocompatible              " required
 filetype off                  " required
-let mapleader="."
+let mapleader=","
 set pastetoggle=<F10>
 syntax on
 set ic
@@ -8,7 +8,6 @@ set nu
 set hlsearch
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,GB2312,big5
-set cursorline
 set autoindent
 set smartindent
 set scrolloff=4
@@ -42,28 +41,13 @@ let g:ycm_show_diagnostics_ui = 0
 " Select with Enter 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 let g:ycm_min_num_of_chars_for_completion=2
-" Go to definition ALT + G
-nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
-
-" Auto completion for Python
-Plugin 'davidhalter/jedi-vim'
-let g:jedi#completions_enabled = 1
-let g:jedi#auto_initialization = 1
-let g:jedi#auto_vim_configuration = 1
-let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "1"
-let g:jedi#goto_command = "<leader>b"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>r"
+" Go to definition ALT + g
+" nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
 " Auto completion for pairs
-Plugin 'jiangmiao/auto-pairs'
-let g:AutoPairsFlyMode = 0
-let g:AutoPairsShortcutBackInsert = '<M-b>'
+"Plugin 'jiangmiao/auto-pairs'
+"let g:AutoPairsFlyMode = 1
+"let g:AutoPairsShortcutBackInsert = '<M-b>'
 
 " Auto code formatter 
 Plugin 'Chiel92/vim-autoformat'
@@ -95,7 +79,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap  <C-l> :tabn<CR>
 nnoremap  <C-h> :tabp<CR>
-nnoremap  <C-n> :tabnew<CR>
+"nnoremap  <C-n> :tabnew<CR>
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -136,6 +120,39 @@ let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
+let b:ale_linters = {'rust': ['rls','cargo','rustc']}
+let g:ale_fixers = {'rust': ['rustfmt']}
+nmap <leader>d :ALEGoToDefinitionInSplit<CR>
+nmap <leader>g :ALEFindReferences<CR>
+
+" Auto completion for Python
+Plugin 'davidhalter/jedi-vim'
+let g:jedi#completions_enabled = 1
+let g:jedi#auto_initialization = 1
+let g:jedi#auto_vim_configuration = 1
+let g:jedi#use_splits_not_buffers = "winwidth"
+let g:jedi#popup_select_first = 1
+let g:jedi#show_call_signatures = "1"
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+
+" Rust
+Plugin 'rust-lang/rust.vim'
+let g:rustfmt_autosave = 1
+
+" Markdown
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}
+let g:vim_markdown_folding_disabled = 1
+"let g:instant_markdown_slow = 1
+let g:instant_markdown_autostart = 0
+"let g:instant_markdown_mathjax = 1
+"let g:instant_markdown_autoscroll = 0
 
 " Colorful parentheses
 Plugin 'kien/rainbow_parentheses.vim'
