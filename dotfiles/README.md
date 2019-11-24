@@ -46,6 +46,8 @@ rustup component add rls-preview rust-analysis rust-src --toolchain nightly
 sudo apt install ctags
 go get -u github.com/jstemmer/gotags
 
+sudo apt install pandoc texlive-full
+
 # Install YCM
 sudo apt install build-essential cmake python3-dev
 git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe

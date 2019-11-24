@@ -108,11 +108,11 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
 let g:nerdtree_tabs_open_on_console_startup=1
-let NERDTreeShowLineNumbers=1
+let NERDTreeShowLineNumbers=0
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=1
 let NERDTreeWinSize=31
-let NERDTreeShowBookmarks=1
+let NERDTreeShowBookmarks=0
 let NERDTreeQuitOnOpen=1 
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
@@ -206,6 +206,16 @@ Plugin 'airblade/vim-gitgutter'
 " Go
 Plugin 'fatih/vim-go'
 
+" Latex
+Plugin 'lervag/vimtex'
+let g:vimtex_latexmk_options='-pdf -pdflatex="xelatex -synctex=1 \%S \%O" -verbose -file-line-error -interaction=nonstopmode'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='general'
+let g:vimtex_view_general_viewer='evince'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
 " Colorful parentheses
 Plugin 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [ ['brown',       'RoyalBlue3'],
@@ -243,7 +253,7 @@ filetype plugin indent on    " required
 "*******************************************
 
 " General settings
-"colorscheme dracula
+colorscheme dracula
 
 " Filetype
 au BufNewFile,BufRead *.py
