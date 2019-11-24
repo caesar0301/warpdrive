@@ -28,11 +28,11 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ```bash
 cp .vimrc ~/.vimrc
+cp .ctags ~/.ctags
 
 # Install Vundle to manage plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-# Install python deps to enable plugins
 sudo apt install build-essential cmake python3-dev
 
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
@@ -42,6 +42,9 @@ sudo npm -g install instant-markdown-d
 rustup toolchain add nightly
 cargo +nightly install racer
 rustup component add rls-preview rust-analysis rust-src --toolchain nightly
+
+sudo apt install ctags
+go get -u github.com/jstemmer/gotags
 
 # Install YCM
 sudo apt install build-essential cmake python3-dev

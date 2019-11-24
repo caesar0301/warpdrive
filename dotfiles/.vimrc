@@ -1,8 +1,8 @@
 set nocompatible              " required
 filetype off                  " required
+syntax on
 let mapleader=","
 set pastetoggle=<F10>
-syntax on
 set ic
 set nu
 set hlsearch
@@ -13,6 +13,7 @@ set smartindent
 set scrolloff=4
 set showmatch
 set autoread
+set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -41,7 +42,6 @@ let g:ycm_show_diagnostics_ui = 0
 " Select with Enter 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 let g:ycm_min_num_of_chars_for_completion=2
-" Go to definition ALT + g
 " nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
 " Auto completion for pairs
@@ -58,6 +58,50 @@ nnoremap <F6> :Autoformat<CR>
 
 " Status bar enhancement
 Plugin 'bling/vim-airline'
+
+" Show file structure
+Plugin 'majutsushi/tagbar'
+nmap <F9> :TagbarToggle<CR>
+let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits',
+        \'i:impls,trait implementations',
+    \]
+    \}
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
 
 " File browser NerdTree
 Plugin 'scrooloose/nerdtree'
@@ -79,7 +123,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap  <C-l> :tabn<CR>
 nnoremap  <C-h> :tabp<CR>
-"nnoremap  <C-n> :tabnew<CR>
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -107,10 +150,10 @@ let g:ctrlp_switch_buffer = 'et'
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'file': '\v\.(exe|so|dll)$',
+    \ 'link': 'some_bad_symbolic_links',
+    \ }
 let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
@@ -154,6 +197,15 @@ let g:instant_markdown_autostart = 0
 "let g:instant_markdown_mathjax = 1
 "let g:instant_markdown_autoscroll = 0
 
+" Jsonnet
+Plugin 'google/vim-jsonnet'
+
+" Git
+Plugin 'airblade/vim-gitgutter'
+
+" Go
+Plugin 'fatih/vim-go'
+
 " Colorful parentheses
 Plugin 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [ ['brown',       'RoyalBlue3'],
@@ -195,17 +247,17 @@ filetype plugin indent on    " required
 
 " Filetype
 au BufNewFile,BufRead *.py
-	\ set tabstop=4 |
-	\ set softtabstop=4 |
-	\ set shiftwidth=4 |
-	\ set textwidth=79 |
-	\ set expandtab |
-	\ set autoindent |
-	\ set fileformat=unix |
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
 au BufNewFile,BufRead *.js,*.html,*.css
-	\ set tabstop=2 |
-	\ set softtabstop=2 |
-	\ set shiftwidth=2 |
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
 
 " Keymap
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
