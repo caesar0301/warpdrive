@@ -215,6 +215,9 @@ let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
 
+" Jenkinsfile/Groovy
+Plugin 'martinda/Jenkinsfile-vim-syntax'
+
 " Colorful parentheses
 Plugin 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [ ['brown',       'RoyalBlue3'],
@@ -273,13 +276,13 @@ au BufNewFile,BufRead *.js,*.html,*.css
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 "" Splits
-"nnoremap <C-J> <C-W><C-J>
-"nnoremap <C-K> <C-W><C-K>
-"nnoremap <C-L> <C-W><C-L>
-"nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 "" Tab
-nnoremap <C-l> :tabn<CR>
-nnoremap <C-h> :tabp<CR>
+nnoremap <M-l> :tabn<CR>
+nnoremap <M-h> :tabp<CR>
 
 " Terminal
 fu! OpenTerminal()
