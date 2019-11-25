@@ -39,10 +39,12 @@ git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouComplet
 git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
 
+# Markdown instance preview
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt install nodejs
 sudo npm -g install instant-markdown-d
 
+# Rust
 rustup toolchain add nightly
 cargo +nightly install racer
 rustup component add rls-preview rust-analysis rust-src --toolchain nightly
@@ -50,6 +52,7 @@ rustup component add rls-preview rust-analysis rust-src --toolchain nightly
 sudo apt install ctags
 go get -u github.com/jstemmer/gotags
 
+# Latex
 sudo apt install pandoc texlive-full
 ```
 
