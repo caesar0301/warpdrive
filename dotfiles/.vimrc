@@ -282,7 +282,7 @@ nnoremap <C-h> :tabp<CR>
 
 " Terminal
 fu! OpenTerminal()
-  rightbelow split
+  botright split
   resize 15 
   :call term_start('zsh', {'curwin' : 1, 'term_finish' : 'close'})
 endf
