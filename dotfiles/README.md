@@ -39,6 +39,9 @@ git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouComplet
 git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
 
+# Python
+sudo pip3 install autopep8 flake8 jedi
+
 # Markdown instance preview
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt install nodejs
