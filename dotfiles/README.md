@@ -33,12 +33,21 @@ cp .ctags ~/.ctags
 # Install Vundle to manage plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
+# Install YCM
 sudo apt install build-essential cmake python3-dev
+git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
+git submodule update --init --recursive
+python3 install.py --go-completer --rust-completer --java-completer
 
+# Python
+sudo pip3 install autopep8 flake8 jedi
+
+# Markdown instance preview
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt install nodejs
 sudo npm -g install instant-markdown-d
 
+# Rust
 rustup toolchain add nightly
 cargo +nightly install racer
 rustup component add rls-preview rust-analysis rust-src --toolchain nightly
@@ -46,13 +55,8 @@ rustup component add rls-preview rust-analysis rust-src --toolchain nightly
 sudo apt install ctags
 go get -u github.com/jstemmer/gotags
 
+# Latex
 sudo apt install pandoc texlive-full
-
-# Install YCM
-sudo apt install build-essential cmake python3-dev
-git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
-python3 install.py --go-completer --rust-completer --java-completer
 ```
 
 ## References:
