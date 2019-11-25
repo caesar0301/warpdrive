@@ -121,8 +121,6 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 nnoremap <leader>f :NERDTreeToggle<CR>
-nnoremap  <C-l> :tabn<CR>
-nnoremap  <C-h> :tabp<CR>
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -269,7 +267,24 @@ au BufNewFile,BufRead *.js,*.html,*.css
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
 
-" Keymap
+" Shortcuts
+"" vimrc
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+"" Splits
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
+"" Tab
+nnoremap <C-l> :tabn<CR>
+nnoremap <C-h> :tabp<CR>
+
+" Terminal
+fu! OpenTerminal()
+  rightbelow split
+  resize 15 
+  :call term_start('zsh', {'curwin' : 1, 'term_finish' : 'close'})
+endf
+nnoremap <F4> :call OpenTerminal()<cr>
 
