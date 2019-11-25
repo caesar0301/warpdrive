@@ -107,7 +107,7 @@ let g:tagbar_type_go = {
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
-let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=0
 let NERDTreeShowLineNumbers=0
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=1
