@@ -164,6 +164,7 @@ let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 let b:ale_linters = {'rust': ['rls','cargo','rustc']}
 let g:ale_fixers = {'rust': ['rustfmt']}
+let g:ale_linters = {'go': ['gometalinter', 'gofmt']}
 nmap <leader>d :ALEGoToDefinitionInSplit<CR>
 nmap <leader>g :ALEFindReferences<CR>
 
