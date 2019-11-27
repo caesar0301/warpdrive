@@ -56,9 +56,6 @@ let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 nnoremap <F6> :Autoformat<CR>
 
-" Status bar enhancement
-Plugin 'bling/vim-airline'
-
 " Show file structure
 Plugin 'majutsushi/tagbar'
 nmap <F9> :TagbarToggle<CR>
@@ -243,8 +240,13 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Theme Dracula
+" Theme
 Plugin 'dracula/vim', { 'name': 'dracula' }
+
+" Status bar enhancement
+Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+"let g:airline_theme='simple'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
