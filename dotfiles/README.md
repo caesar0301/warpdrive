@@ -52,8 +52,10 @@ rustup toolchain add nightly
 cargo +nightly install racer
 rustup component add rls-preview rust-analysis rust-src --toolchain nightly
 
+# Go
 sudo apt install ctags
 go get -u github.com/jstemmer/gotags
+go get -u golang.org/x/tools/cmd/gopls
 
 # Latex
 sudo apt install pandoc texlive-full
