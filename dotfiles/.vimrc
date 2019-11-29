@@ -13,7 +13,11 @@ set smartindent
 set scrolloff=4
 set showmatch
 set autoread
-set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
+set tabstop=4
+set softtabstop=0
+set noexpandtab
+set shiftwidth=4
+set smarttab
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -42,7 +46,7 @@ let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cp
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_min_num_of_chars_for_completion=3
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-" nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
+"nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
 " Auto completion for pairs
 Plugin 'jiangmiao/auto-pairs'
@@ -189,10 +193,10 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}
 let g:vim_markdown_folding_disabled = 1
-"let g:instant_markdown_slow = 1
+let g:instant_markdown_slow = 0
 let g:instant_markdown_autostart = 0
-"let g:instant_markdown_mathjax = 1
-"let g:instant_markdown_autoscroll = 0
+let g:instant_markdown_mathjax = 0
+let g:instant_markdown_autoscroll = 1
 
 " Jsonnet
 Plugin 'google/vim-jsonnet'
@@ -218,22 +222,23 @@ Plugin 'martinda/Jenkinsfile-vim-syntax'
 
 " Colorful parentheses
 Plugin 'kien/rainbow_parentheses.vim'
-let g:rbpt_colorpairs = [ ['brown',       'RoyalBlue3'],
-                        \ ['Darkblue',    'SeaGreen3'],
-                        \ ['darkgray',    'DarkOrchid3'],
-                        \ ['darkgreen',   'firebrick3'],
-                        \ ['darkcyan',    'RoyalBlue3'],
-                        \ ['darkred',     'SeaGreen3'],
-                        \ ['darkmagenta', 'DarkOrchid3'],
-                        \ ['brown',       'firebrick3'],
-                        \ ['gray',        'RoyalBlue3'],
-                        \ ['darkmagenta', 'DarkOrchid3'],
-                        \ ['Darkblue',    'firebrick3'],
-                        \ ['darkgreen',   'RoyalBlue3'],
-                        \ ['darkcyan',    'SeaGreen3'],
-                        \ ['darkred',     'DarkOrchid3'],
-                        \ ['red',         'firebrick3'],
-                        \ ]
+let g:rbpt_colorpairs = [
+	\ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+\ ]
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
