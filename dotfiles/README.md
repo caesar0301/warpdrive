@@ -1,24 +1,15 @@
 # HowTo
 
 ## oh-my-zsh
-
 ```bash
 cp .zshrc ~/.zshrc
-sudo chsh --shell=$(which zsh) $USER
-sudo apt install zsh python-pip curl
+sudo apt install zsh python-pip curl fonts-powerline
 sudo pip install virtualenvwrapper
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
-cd /tmp && git clone https://github.com/powerline/fonts.git &&  sh fonts/install.sh && cd -
-git clone https://github.com/horosgrisa/mysql-colorize ~/.oh-my-zsh/custom/plugins/mysql-colorize
-
+./install_zsh_plugins.sh
+sudo chsh --shell=$(which zsh) $USER
 ```
 
 ## Tmux
-
 ```bash
 cp .tmux.conf ~/.tmux.conf
 sudo apt install tmux
@@ -27,7 +18,6 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 ## Vim
-
 ```bash
 cp .vimrc ~/.vimrc
 cp .ctags ~/.ctags
