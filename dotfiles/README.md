@@ -4,6 +4,7 @@
 
 ```bash
 cp .zshrc ~/.zshrc
+sudo chsh --shell=$(which zsh) $USER
 sudo apt install zsh python-pip curl
 sudo pip install virtualenvwrapper
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -12,7 +13,8 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 cd /tmp && git clone https://github.com/powerline/fonts.git &&  sh fonts/install.sh && cd -
-sudo chsh --shell=$(which zsh) $USER
+git clone https://github.com/horosgrisa/mysql-colorize ~/.oh-my-zsh/custom/plugins/mysql-colorize
+
 ```
 
 ## Tmux
