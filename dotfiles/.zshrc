@@ -19,13 +19,14 @@ zplug "plugins/taskwarrior",   from:oh-my-zsh
 zplug "plugins/tmux",   from:oh-my-zsh
 zplug "plugins/tmuxinator",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
+zplug "plugins/jsontools",   from:oh-my-zsh
 zplug "plugins/virtualenvwrapper",   from:oh-my-zsh
 zplug "zsh-users/zsh-completions", use:src
 zplug "zsh-users/zsh-autosuggestions", use:zsh-autosuggestions.zsh
 zplug "zsh-users/zsh-syntax-highlighting", use:zsh-syntax-highlighting.zsh
 zplug "zsh-users/zsh-history-substring-search"
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-# zplug "horosgrisa/mysql-colorize" from:github
+# zplug "horosgrisa/mysql-colorize" from:githubz
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -47,7 +48,7 @@ alias proxy='export OLD_PROMPT="$PROMPT"; \
     export http_proxy=http://127.0.0.1:8123; \
     export https_proxy=http://127.0.0.1:8123; \
     export PROMPT="[PROXY] $PROMPT"'
-alias unproxy='export PROMPT=$OLD_PROMPT; \
+alias noproxy='export PROMPT=$OLD_PROMPT; \
     unset http_proxy;unset https_proxy; \
     unset OLD_PROMPT'
 
