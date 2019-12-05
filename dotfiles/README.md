@@ -3,9 +3,10 @@
 ## oh-my-zsh
 ```bash
 cp .zshrc ~/.zshrc
-sudo apt install zsh python-pip curl fonts-powerline
+git clone https://github.com/zplug/zplug ~/.zplug
+git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+sudo apt install zsh python-pip curl fonts-powerline awk git
 sudo pip install virtualenvwrapper
-./install_zsh_plugins.sh
 sudo chsh --shell=$(which zsh) $USER
 ```
 
