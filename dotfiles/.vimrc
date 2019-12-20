@@ -291,8 +291,13 @@ nnoremap <C-H> <C-W><C-H>
 "" Tab
 nnoremap <M-l> :tabn<CR>
 nnoremap <M-h> :tabp<CR>
+"" Copy
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
 
-" Terminal
+"" Terminal
 fu! OpenTerminal()
   botright split
   resize 15 
