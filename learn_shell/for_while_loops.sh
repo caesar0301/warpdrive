@@ -57,3 +57,16 @@ do
   fi
   statements3
 done
+
+# While loop
+while [ condition ]; do commands; done
+while control-command; do COMMANDS; done
+
+counter=$1
+factorial=1
+while [ $counter -gt 0 ]
+do
+   factorial=$(( $factorial * $counter ))
+   counter=$(( $counter - 1 ))
+done
+echo $factorial
