@@ -1,7 +1,7 @@
 字符串判断	 
-[ stringA=stringB ]	stringA等于stringB
-[ stringA==stringB ]	stringA等于stringB
-[ stringA!=stringB ]	stringA不等于stringB
+[ stringA = stringB ]	stringA等于stringB
+[ stringA == stringB ]	stringA等于stringB
+[ stringA != stringB ]	stringA不等于stringB
 [ string ]	string不为空
 [ -z string ]	string长度为0
 [ -n string ]	string长度不为0
