@@ -90,3 +90,7 @@ export PATH="$HOME/.cargo/bin":$PATH
 
 # Postman
 export PATH="/opt/Postman/:$PATH"
+
+# kubectl auto completion
+if [ /home/chenxm/bin/kubectl ]; then source <(kubectl completion zsh); fi
+if [  ]; then source <(kubectl completion zsh); fi
