@@ -95,5 +95,4 @@ export PATH="/opt/Postman/:$PATH"
 export PATH="/opt/zotero/:$PATH"
 
 # kubectl auto completion
-# if [ /home/chenxm/bin/kubectl ]; then source <(kubectl completion zsh); fi
-# if [  ]; then source <(kubectl completion zsh); fi
+if [ -e /home/chenxm/bin/kubectl  ]; then source <(kubectl completion zsh); fi
