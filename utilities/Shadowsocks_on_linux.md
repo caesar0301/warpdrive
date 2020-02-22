@@ -66,19 +66,25 @@ sudo update-rc.d -f sslocal remove
 ## Install terminal and HTTP proxies
 
 ### Ubuntu/Debian/MXLinux
-* Install proxychains for terminal:
+* Install `proxychains` for terminal:
 ```bash
 sudo apt install proxychains
 sudo vim /etc/proxychains.conf
 socks5   127.0.0.1   1080
 quiet_mode
 ```
-* Install polipo for http/https proxy
+* Install `polipo` for http/https proxy (Global)
 ```bash
 sudo apt install polipo
 sudo vim /etc/polipo/config  # Http proxy for terminal, default port 8123
 socksParentProxy = "localhost:1080"
 socksProxyType = socks5
+```
+
+* Install `privoxy` for http/https proxy (Global & Auto)
+```bash
+sudo apt install privoxy
+# Ref: https://juejin.im/post/5c91ff5ee51d4534446edb9a
 ```
 
 ### CentOS
