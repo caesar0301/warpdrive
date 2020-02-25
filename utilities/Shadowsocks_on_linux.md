@@ -102,6 +102,12 @@ alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:8123
 alias unproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
 ```
 
+### Generate PAC
+```bash
+sudo pip install genpac
+genpac -p "SOCKS5 127.0.0.1:1080" --gfwlist-proxy="SOCKS5 127.0.0.1:1080" --gfwlist-url=https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt --output="autoproxy.pac"
+```
+
 ### Refrences
 * https://portal.shadowsocks.nu/clientarea.php?action=productdetails&id=1026915
 * https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu-16-04-17-10
