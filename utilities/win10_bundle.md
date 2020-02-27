@@ -48,18 +48,11 @@ exit
 REM End Copy
 ```
 
-## Zotero Symbolic Link
+## Recover grub2
+```
+sudo grub2-mkconfig > /dev/null 
 
-```bash
-# Soft link to a file
-mklink Link Target
-
-# Soft link to a directory
-mklink /D Link Target
-
-# Hard link to a file
-mklink /H Link Target
-
-# Hard link to a directory, or directory junction
-mklink /J Link Target
+# If windows apprears in the list, run following commands
+sudo cp /boot/grub2/grub.cfg /boot/grub2/grub.cfg.old
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg 
 ```
