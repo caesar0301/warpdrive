@@ -43,6 +43,11 @@ zplug load
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export EDITOR=vim
 
+# Alias
+alias pc='proxychains'
+alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:1081;export https_proxy=http://127.0.0.1:1081;export PROMPT="[PROXY] $PROMPT"'
+alias noproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
+
 # k8s
 alias k='kubectl'
 alias ka='kubectl apply --recursive -f'

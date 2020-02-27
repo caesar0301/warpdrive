@@ -1,4 +1,6 @@
-## Install Shadowsocks and configure client
+# Shadowsocks
+
+## Install Shadowsocks
 
 ### Ubuntu
 * Install dependencies
@@ -63,17 +65,51 @@ Disable autostart
 sudo update-rc.d -f sslocal remove
 ```
 
-## Install terminal and HTTP proxies
+
+## SS for terminal
 
 ### Ubuntu/Debian/MXLinux
-* Install `proxychains` for terminal:
+
+* `proxychains`:
 ```bash
 sudo apt install proxychains
 sudo vim /etc/proxychains.conf
 socks5   127.0.0.1   1080
 quiet_mode
 ```
-* Install `polipo` for http/https proxy (Global)
+
+### CentOS
+* `proxychains`:
+```bash
+wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
+sudo vim /etc/proxychains.conf
+sudo vim /usr/lib/proxyresolv
+```
+
+
+## SS to HTTP proxy
+
+### goproxy
+1. Download binary: https://github.com/snail007/goproxy/releases
+2. Configure: `/etc/systemd/system/socks2http.service`
+```
+[Unit]
+Description=socks2http
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/proxy sps -S socks -T tcp -P 127.0.0.1:1080 -t tcp -p :1081
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### polipo (Global)
 ```bash
 sudo apt install polipo
 sudo vim /etc/polipo/config  # Http proxy for terminal, default port 8123
@@ -81,34 +117,28 @@ socksParentProxy = "localhost:1080"
 socksProxyType = socks5
 ```
 
-* Install `privoxy` for http/https proxy (Global & Auto)
+### privoxy (Global & Auto)
 ```bash
 sudo apt install privoxy
 # Ref: https://juejin.im/post/5c91ff5ee51d4534446edb9a
 ```
 
-### CentOS
+### Shortcuts
+To `.bashrc`
 ```bash
-# Install proxychains
-wget -O- https://gist.githubusercontent.com/ifduyue/dea03b4e139c5758ca114770027cf65c/raw/install-proxychains-ng.sh | sudo bash -s
-sudo vim /etc/proxychains.conf
-sudo vim /usr/lib/proxyresolv
-```
-
-### HTTP proxy
-Proxy list for .bashrc
-```bash
-alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:8123;export https_proxy=http://127.0.0.1:8123;export PROMPT="[PROXY] $PROMPT"'
+alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:1081;export https_proxy=http://127.0.0.1:1081;exprt PROMPT="[PROXY] $PROMPT"'
 alias unproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
 ```
 
-### Generate PAC
+
+## Gfwlist
 ```bash
 sudo pip install genpac
 genpac -p "SOCKS5 127.0.0.1:1080" --gfwlist-proxy="SOCKS5 127.0.0.1:1080" --gfwlist-url=https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt --output="autoproxy.pac"
 ```
 
-### Refrences
+
+## Refrences
 * https://portal.shadowsocks.nu/clientarea.php?action=productdetails&id=1026915
 * https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu-16-04-17-10
 * https://www.linuxbabe.com/desktop-linux/how-to-use-proxychains-to-redirect-your-traffic-through-proxy-server
