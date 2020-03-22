@@ -72,6 +72,7 @@ export WORKON_HOME=~/.virtualenv
 export GOROOT=/opt/go
 export GOPATH=~/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+go env -w GOPROXY=https://goproxy.cn,direct
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
