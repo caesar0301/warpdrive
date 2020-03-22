@@ -55,6 +55,8 @@ go get -u golang.org/x/tools/cmd/gopls
 
 # Latex
 sudo apt install pandoc texlive-full
+
+vim +PluginInstall +qall
 ```
 
 ## References:
