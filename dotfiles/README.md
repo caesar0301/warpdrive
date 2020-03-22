@@ -28,8 +28,8 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Install YCM
 sudo apt install build-essential cmake python3-dev
-git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
+git clone --recursive https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
+# git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
 
 # Python
