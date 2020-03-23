@@ -18,6 +18,7 @@ set softtabstop=0
 set noexpandtab
 set shiftwidth=4
 set smarttab
+set backspace=2
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
