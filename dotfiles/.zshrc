@@ -25,8 +25,10 @@ zplug "zsh-users/zsh-completions", use:src
 zplug "zsh-users/zsh-autosuggestions", use:zsh-autosuggestions.zsh
 zplug "zsh-users/zsh-syntax-highlighting", use:zsh-syntax-highlighting.zsh
 zplug "zsh-users/zsh-history-substring-search"
-zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-# zplug "horosgrisa/mysql-colorize" from:githubz
+#zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+#zplug "horosgrisa/mysql-colorize" from:githubz
+zplug "themes/robbyrussell", from:oh-my-zsh
+#zplug "themes/ys", from:oh-my-zsh
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -59,6 +61,7 @@ alias kd='kubectl describe'
 
 # Java
 export JAVA_HOME=/usr/lib/jvm/default-java
+#export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
 export JRE_HOME=$JAVA_HOME/jre
 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
@@ -83,10 +86,8 @@ fi
 
 # Rust
 export PATH="$HOME/.cargo/bin":$PATH
-
 # Postman
 export PATH="/opt/Postman/:$PATH"
-
 # Zotero
 export PATH="/opt/zotero/:$PATH"
 
