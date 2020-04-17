@@ -26,7 +26,8 @@
     enable_statusline_mode = false
     statusline_unicode_symbols = false
     # Enable vim compatible mode, avoid changing origin vim key bindings
-    vimcompatible = true
+    vimcompatible = false
+    filemanager = "defx"
 
 # Enable autocomplete layer
 [[layers]]
