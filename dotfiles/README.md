@@ -20,6 +20,13 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ## Vim
 
+### SpaceVim (Recommended)
+Follow official SpaceVim guide.
+```bash
+mkdir ~/.SpaceVim.d/
+cp init.toml ~/.SpaceVim.d/
+```
+
 ### Custom
 ```bash
 cp .vimrc ~/.vimrc
@@ -59,13 +66,6 @@ go get -u golang.org/x/tools/cmd/gopls
 sudo apt install pandoc texlive-full
 
 vim +PluginInstall +qall
-```
-
-### SpaceVim
-Follow official SpaceVim guide.
-```bash
-mkdir ~/.SpaceVim.d/
-cp init.toml ~/.SpaceVim.d/
 ```
 
 ## References:
