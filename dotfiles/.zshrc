@@ -60,13 +60,12 @@ alias kga='kubectl get --all-namespaces'
 alias kd='kubectl describe'
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/default-java
-#export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-export JAVA_OPTIONS="-Xmx4096m -XX:MaxPermSize=2048m"
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_OPTIONS="-Xmx8192m -XX:MaxPermSize=4096m"
 export JRE_HOME=$JAVA_HOME/jre
 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
 export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=2048m"
+export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=4096m"
 
 # virtualenvwrapper plugin
 export WORKON_HOME=~/.virtualenv
