@@ -1,81 +1,98 @@
-#=============================================================================
-# basic.toml --- basic configuration example for SpaceVim
-# Copyright (c) 2016-2017 Wang Shidong & Contributors
-# Author: Wang Shidong < wsdjeg at 163.com >
-# URL: https://spacevim.org
-# License: GPLv3
-#=============================================================================
-
-# All SpaceVim option below [option] section
 [options]
-    # set spacevim theme. by default colorscheme layer is not loaded,
-    # if you want to use more colorscheme, please load the colorscheme
-    # layer
-    colorscheme = "gruvbox"
-    colorscheme_bg = "dark"
-    # Disable guicolors in basic mode, many terminal do not support 24bit
-    # true colors
-    enable_guicolors = true
-    # Disable statusline separator, if you want to use other value, please
-    # install nerd fonts
-    statusline_separator = "nil"
-    statusline_inactive_separator = "bar"
-    buffer_index_type = 4
-    windows_index_type = 3
-    enable_tabline_filetype_icon = false
-    enable_statusline_mode = false
-    statusline_unicode_symbols = false
-    # Enable vim compatible mode, avoid changing origin vim key bindings
-    vimcompatible = false
-    filemanager = "defx"
+colorscheme = "gruvbox"
+colorscheme_bg = "dark"
+enable_guicolors = true
+statusline_separator = "nil"
+statusline_inactive_separator = "bar"
+buffer_index_type = 4
+windows_index_type = 3
+enable_tabline_filetype_icon = false
+enable_statusline_mode = false
+statusline_unicode_symbols = false
+vimcompatible = false
+filemanager = "defx"
 
-# Language layers
+[[layers]]
+name = 'autocomplete'
+auto-completion-return-key-behavior = "complete"
+auto-completion-tab-key-behavior = "cycle"
+
+[[layers]]
+name = 'shell'
+default_position = 'bottom'
+default_height = 30
+
+[[layers]]
+name = "VersionControl"
+
+[[layers]]
+name = "colorscheme"
+
+[[layers]]
+name = "leaderf"
+
+[[layers]]
+name = "tmux"
+
 [[layers]]
 name = "lang#java"
 
 [[layers]]
-  name = "lang#rust"
+name = "lang#rust"
 
 [[layers]]
-  name = "lang#python"
+name = "lang#python"
 
 [[layers]]
-  name = "lang#go"
+name = "lang#go"
 
 [[layers]]
-  name = "lang#markdown"
+name = "lang#markdown"
 
 [[layers]]
-  name = "lang#c"
+name = "lang#c"
 
 [[layers]]
-  name = "lang#dockerfile"
+name = "lang#dockerfile"
 
 [[layers]]
-  name = "lang#latex"
+name = "lang#latex"
 
 [[layers]]
-  name = "lang#r"
+name = "lang#r"
 
 [[layers]]
-  name = "lang#scala"
+name = "lang#scala"
 
 [[layers]]
-  name = "lang#extra"
+name = "lang#extra"
 
 [[layers]]
-  name = "format"
+name = "format"
 
 [[layers]]
-  name = "lsp"
-  filetypes = [
+name = 'checkers'
+show_cursor_error = true
+[layer.clang_std]
+c = "c11"
+cpp = "c++1z"
+objc = "c11"
+objcpp = "c++1z"
+
+[[layers]]
+name = "lsp"
+filetypes = [
     "java",
     "rust",
     "python",
-  ]
-  [layers.override_cmd]
-    #JDT: https://download.eclipse.org/jdtls/snapshots/?d
-    java = [
+    "c",
+    "cpp"
+]
+[layers.override_cmd]
+c = ["clangd", "--limit-results=5"]
+cpp = ["clangd", "--limit-results=5"]
+## JDT: https://download.eclipse.org/jdtls/snapshots/?d
+java = [  
     "java",
     "-Declipse.application=org.eclipse.jdt.ls.core.id1",
     "-Dosgi.bundles.defaultStartLevel=4",
@@ -90,31 +107,8 @@ name = "lang#java"
     "/home/chenxm/.local/lib/jdt-language-server/config_linux",
     "-data",
     "/home/chenxm/.cache/javalsp"
-    ]
-
-# Enable autocomplete layer
-[[layers]]
-  name = 'autocomplete'
-  auto-completion-return-key-behavior = "complete"
-  auto-completion-tab-key-behavior = "cycle"
-
-[[layers]]
-  name = 'shell'
-  default_position = 'bottom'
-  default_height = 30
-
-[[layers]]
-  name = "VersionControl"
-
-[[layers]]
-  name = "colorscheme"
-
-[[layers]]
-  name = "tmux"
-
-[[layers]]
-  name = "leaderf"
+]
 
 [[custom_plugins]]
-    name = "mcmire/vim-grakn"
-    merged = false
+name = "mcmire/vim-grakn"
+merged = false
