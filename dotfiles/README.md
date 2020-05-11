@@ -21,11 +21,25 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ## Vim
 
 ### SpaceVim (Recommended)
-Follow official SpaceVim guide.
 ```bash
+curl -sLf https://spacevim.org/install.sh | bash
 mkdir ~/.SpaceVim.d/
 cp init.toml ~/.SpaceVim.d/
 ```
+
+Dependencies by lsp and others:
+* Java JDT: https://download.eclipse.org/jdtls/snapshots/?d
+* Python lsp: `pip install python-language-server`
+* Clangd on CentOS
+```bash
+sudo yum install epel-release
+sudo yum install snapd
+sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install clangd --classic
+export PATH=/snap/bin:$PATH
+```
+
 
 ### Custom
 ```bash
