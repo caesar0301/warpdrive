@@ -19,6 +19,7 @@ set noexpandtab
 set shiftwidth=4
 set smarttab
 set backspace=2
+set ruler
 
 ""=========== Vundle start =============
 set rtp+=~/.vim/bundle/Vundle.vim
