@@ -19,7 +19,6 @@ set noexpandtab
 set shiftwidth=4
 set smarttab
 set backspace=2
-set ruler
 
 ""=========== Vundle start =============
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -39,7 +38,7 @@ nnoremap <F6> :Autoformat<CR>
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
-let g:nerdtree_tabs_open_on_console_startup=0
+nnoremap <leader>f :NERDTreeToggle<CR>
 let NERDTreeShowLineNumbers=0
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=0
@@ -49,10 +48,8 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nnoremap <leader>f :NERDTreeToggle<CR>
+let NERDTreeMirrorOpen=1
+let g:nerdtree_tabs_open_on_console_startup=2
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
