@@ -44,7 +44,6 @@ export PATH=/snap/bin:$PATH
 ### Custom (basic)
 ```bash
 cp .vimrc ~/.vimrc
-# Install Vundle to manage plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 ```
