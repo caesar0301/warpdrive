@@ -39,6 +39,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'jistr/vim-nerdtree-tabs'
 nnoremap <leader>f :NERDTreeToggle<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
 let NERDTreeShowLineNumbers=0
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=0
@@ -50,6 +51,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeMirrorOpen=1
 let g:nerdtree_tabs_open_on_console_startup=2
+let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
