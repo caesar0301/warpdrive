@@ -1,5 +1,85 @@
-### Custom (Extended)
-```bash
+## Custom (Extended)
+
+### Syntax
+
+vim.rc
+```
+" Rust
+Plugin 'rust-lang/rust.vim'
+let g:rustfmt_autosave = 1
+
+" Markdown
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}
+let g:vim_markdown_folding_disabled = 1
+let g:instant_markdown_slow = 0
+let g:instant_markdown_autostart = 0
+let g:instant_markdown_mathjax = 0
+let g:instant_markdown_autoscroll = 1
+
+" Jsonnet
+Plugin 'google/vim-jsonnet'
+
+" Git
+Plugin 'airblade/vim-gitgutter'
+
+" Go
+Plugin 'fatih/vim-go'
+
+" Latex
+Plugin 'lervag/vimtex'
+let g:vimtex_latexmk_options='-pdf -pdflatex="xelatex -synctex=1 \%S \%O" -verbose -file-line-error -interaction=nonstopmode'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='general'
+let g:vimtex_view_general_viewer='evince'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
+" Jenkinsfile/Groovy
+Plugin 'martinda/Jenkinsfile-vim-syntax'
+```
+
+Dependencies
+```
+# Markdown instance preview
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+sudo apt install nodejs
+sudo npm -g install instant-markdown-d
+
+# Latex
+sudo apt install pandoc texlive-full
+```
+
+### YouCompleteMe
+
+vim.rc
+```
+Plugin 'ycm-core/YouCompleteMe'
+set completeopt-=preview 
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:syntastic_ignore_files=[".*\.py$"]
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_complete_in_comments = 1
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_auto_trigger = 1
+let g:ycm_key_list_select_completion = ['<c-n>', '<TAB>', 'Down']
+let g:ycm_key_list_previous_completion = ['<c-p>', '<S-TAB>', 'Up']
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_min_num_of_chars_for_completion=3
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+"nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
+```
+
+Dependencies
+```
 # Install vim against python3 (vi --version)
 https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-everything-is-installed-getting-the-source-is-easy
 
@@ -8,7 +88,12 @@ sudo apt install build-essential cmake python3-dev
 git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
 cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
+```
 
+
+### Others
+
+```bash
 # Python
 sudo pip3 install autopep8 flake8 jedi
 
@@ -33,26 +118,6 @@ sudo apt install pandoc texlive-full
 .vimrc
 ```
 " Autocompletion
-Plugin 'ycm-core/YouCompleteMe'
-set completeopt-=preview 
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:syntastic_ignore_files=[".*\.py$"]
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_complete_in_comments = 1
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_auto_trigger = 1
-let g:ycm_key_list_select_completion = ['<c-n>', '<TAB>', 'Down']
-let g:ycm_key_list_previous_completion = ['<c-p>', '<S-TAB>', 'Up']
-let g:ycm_complete_in_comments = 1
-let g:ycm_complete_in_strings = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_min_num_of_chars_for_completion=3
-"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-"nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
 " Show file structure
 Plugin 'majutsushi/tagbar'
@@ -125,41 +190,7 @@ let g:jedi#usages_command = "<leader>n"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 
-" Rust
-Plugin 'rust-lang/rust.vim'
-let g:rustfmt_autosave = 1
 
-" Markdown
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}
-let g:vim_markdown_folding_disabled = 1
-let g:instant_markdown_slow = 0
-let g:instant_markdown_autostart = 0
-let g:instant_markdown_mathjax = 0
-let g:instant_markdown_autoscroll = 1
-
-" Jsonnet
-Plugin 'google/vim-jsonnet'
-
-" Git
-Plugin 'airblade/vim-gitgutter'
-
-" Go
-Plugin 'fatih/vim-go'
-
-" Latex
-Plugin 'lervag/vimtex'
-let g:vimtex_latexmk_options='-pdf -pdflatex="xelatex -synctex=1 \%S \%O" -verbose -file-line-error -interaction=nonstopmode'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='general'
-let g:vimtex_view_general_viewer='evince'
-let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal='abdmg'
-
-" Jenkinsfile/Groovy
-Plugin 'martinda/Jenkinsfile-vim-syntax'
 
 " Status bar enhancement
 Plugin 'bling/vim-airline'
