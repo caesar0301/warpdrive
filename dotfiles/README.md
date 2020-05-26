@@ -1,12 +1,11 @@
 # HowTo
 
-## oh-my-zsh
+## Zsh with oh-my-zsh
 ```bash
 cp .zshrc ~/.zshrc
+sudo apt install zsh fonts-powerline
 git clone https://github.com/zplug/zplug ~/.zplug
 git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
-sudo apt install zsh python-pip curl fonts-powerline awk git
-sudo pip install virtualenvwrapper
 sudo chsh --shell=$(which zsh) $USER
 ```
 
