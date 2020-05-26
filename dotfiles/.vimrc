@@ -1,24 +1,16 @@
 set nocompatible
 filetype off
 syntax on
-let mapleader=","
 set pastetoggle=<F10>
-set ic
-set nu
-set hlsearch
+set ic nu hlsearch
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,GB2312,big5
-set autoindent
-set smartindent
-set scrolloff=4
+set autoindent smartindent
 set showmatch
 set autoread
-set tabstop=4
-set softtabstop=0
-set noexpandtab
-set shiftwidth=4
-set smarttab
-set backspace=2
+set softtabstop=0 noexpandtab expandtab
+set shiftwidth=4 backspace=2 tabstop=4 scrolloff=4
+set nowrap ruler cursorline
 
 ""=========== Vundle start =============
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -33,13 +25,9 @@ Plugin 'Chiel92/vim-autoformat'
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
-nnoremap <F6> :Autoformat<CR>
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'jistr/vim-nerdtree-tabs'
-nnoremap <leader>f :NERDTreeToggle<CR>
-nnoremap <leader>r :NERDTreeFind<CR>
 let NERDTreeShowLineNumbers=0
 let NERDTreeAutoCenter=1
 let NERDTreeShowHidden=0
@@ -49,41 +37,23 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let NERDTreeMirrorOpen=1
-let g:nerdtree_tabs_open_on_console_startup=2
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
 
 Plugin 'dracula/vim', { 'name': 'dracula' }
+
 Plugin 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'c'
+let g:ctrlp_switch_buffer = 'et'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 let g:ctrlp_root_markers = [
     \ 'pom.xml',
     \ '.p4ignore',
     \ '.python-version',
     \ 'cargo.toml'
     \ ]
-let g:ctrlp_switch_buffer = 'et'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-    \ 'file': '\v\.(exe|so|dll)$',
-    \ 'link': 'some_bad_symbolic_links',
+    \ 'dir':  '\v[\/]\.(git|hg|svn|m2|bzr)$',
     \ }
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 Plugin 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [
@@ -110,30 +80,31 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-call vundle#end()
-filetype plugin indent on
+Plugin 'thaerkh/vim-workspace'
+Plugin 'ap/vim-buftabline'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
 ""============ Vundle end =============
 
+let mapleader=","
 colorscheme dracula
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <F6> :Autoformat<CR>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-nnoremap <M-l> :tabn<CR>
-nnoremap <M-h> :tabp<CR>
 noremap <Leader>y "*y
 noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<cr>
+nnoremap <leader>t :NERDTreeToggle<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+noremap <F2> :mksession! ~/vim_session <cr>
+noremap <F3> :source ~/vim_session <cr>
