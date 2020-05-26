@@ -1,5 +1,24 @@
 set nocompatible
 filetype off
+""=========== Vundle start =============
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'thaerkh/vim-workspace'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+call vundle#end()            " required
+filetype plugin indent on    " required
+""============ Vundle end =============
+
+let mapleader=","
 syntax on
 set pastetoggle=<F10>
 set ic nu hlsearch
@@ -12,85 +31,8 @@ set softtabstop=0 noexpandtab expandtab
 set shiftwidth=4 backspace=2 tabstop=4 scrolloff=4
 set nowrap ruler cursorline
 
-""=========== Vundle start =============
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'jiangmiao/auto-pairs'
-let g:AutoPairsFlyMode = 0
-let g:AutoPairsShortcutBackInsert = '<M-b>'
-
-Plugin 'Chiel92/vim-autoformat'
-let g:autoformat_autoindent = 0
-let g:autoformat_retab = 0
-let g:autoformat_remove_trailing_spaces = 0
-
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-let NERDTreeShowLineNumbers=0
-let NERDTreeAutoCenter=1
-let NERDTreeShowHidden=0
-let NERDTreeWinSize=31
-let NERDTreeShowBookmarks=0
-let NERDTreeQuitOnOpen=1
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-
-Plugin 'dracula/vim', { 'name': 'dracula' }
-
-Plugin 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_working_path_mode = 'c'
-let g:ctrlp_switch_buffer = 'et'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-let g:ctrlp_root_markers = [
-    \ 'pom.xml',
-    \ '.p4ignore',
-    \ '.python-version',
-    \ 'cargo.toml'
-    \ ]
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|m2|bzr)$',
-    \ }
-
-Plugin 'kien/rainbow_parentheses.vim'
-let g:rbpt_colorpairs = [
-	\ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-	\ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-Plugin 'thaerkh/vim-workspace'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-let g:airline#extensions#tabline#enabled = 1
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-""============ Vundle end =============
-
-let mapleader=","
 colorscheme dracula
+
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <F6> :Autoformat<CR>
@@ -110,3 +52,66 @@ nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>g :e#<CR>
 noremap <F2> :mksession! ~/vim_session <cr>
 noremap <F3> :source ~/vim_session <cr>
+
+" auto-pairs
+let g:AutoPairsFlyMode = 0
+let g:AutoPairsShortcutBackInsert = '<M-b>'
+
+" vim-autoformat
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+
+" nerdtree
+let NERDTreeShowLineNumbers=0
+let NERDTreeAutoCenter=1
+let NERDTreeShowHidden=0
+let NERDTreeWinSize=31
+let NERDTreeShowBookmarks=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+" ctrlp
+let g:ctrlp_working_path_mode = 'c'
+let g:ctrlp_switch_buffer = 'et'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip 
+let g:ctrlp_user_command = 'find %s -type f'
+let g:ctrlp_root_markers = [
+    \ 'pom.xml',
+    \ '.p4ignore',
+    \ '.python-version',
+    \ 'cargo.toml'
+    \ ]
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|m2|bzr)$',
+    \ }
+
+" ainbow_parentheses.vim
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
