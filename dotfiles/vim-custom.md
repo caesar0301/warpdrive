@@ -7,7 +7,7 @@ https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-e
 ### Python
 ```
 # Ubuntu
-pip3 install --user autopep8 flake8 jedi yapf pylint jedi
+pip3 install --user autopep8 flake8 jedi yapf pylint
 
 " Vundle
 Plugin 'python-mode/python-mode'
@@ -50,10 +50,11 @@ au BufRead,BufNewFile SConscript set filetype=python
 
 ### Rust
 ```
-# Dep
+# Ubuntu
 rustup toolchain add nightly
 cargo +nightly install racer
 rustup component add rls-preview rust-analysis rust-src --toolchain nightly
+sudo apt install ctags
 
 " Vundle
 Plugin 'rust-lang/rust.vim'
@@ -83,7 +84,6 @@ let g:ale_linters = {'rust': ['rls','cargo','rustc']}
 ### GO
 ```
 # Ubuntu
-sudo apt install ctags
 go get -u github.com/jstemmer/gotags
 go get -u golang.org/x/tools/cmd/gopls
 
