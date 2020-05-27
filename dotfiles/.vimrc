@@ -133,12 +133,23 @@ let g:airline#extensions#tabline#enabled = 1
 
 "++++++++++++ Python +++++++++++++
 " jedi-vim
-let g:jedi#goto_command = "<leader>jd"
-let g:jedi#goto_assignments_command = "<leader>jg"
-let g:jedi#goto_stubs_command = "<leader>js"
+let g:jedi#goto_command = "<leader>nd"
+let g:jedi#goto_assignments_command = "<leader>ng"
+let g:jedi#goto_stubs_command = "<leader>ns"
 let g:jedi#goto_definitions_command = ""
-let g:jedi#documentation_command = "<leader>jk"
-let g:jedi#usages_command = "<leader>jn"
+let g:jedi#documentation_command = "<leader>nk"
+let g:jedi#usages_command = "<leader>nn"
 let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>jr"
+let g:jedi#rename_command = "<leader>nr"
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+au BufRead,BufNewFile SConstruct set filetype=python
+au BufRead,BufNewFile SConscript set filetype=python
 "------------ Python -------------
