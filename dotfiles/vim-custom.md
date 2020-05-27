@@ -61,7 +61,7 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'majutsushi/tagbar'
 
 " tagbar
-nnoremap <F9> :TagbarToggle<CR>
+nnoremap <F8> :TagbarToggle<CR>
 let g:tagbar_type_rust = {
     \ 'ctagstype' : 'rust',
     \ 'kinds' : [
