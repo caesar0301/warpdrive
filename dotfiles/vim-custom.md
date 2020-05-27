@@ -17,7 +17,6 @@ au BufRead,BufNewFile SConscript set filetype=python
 ### Rust
 ```
 Plugin 'rust-lang/rust.vim'
-let g:rustfmt_autosave = 1
 
 Plugin 'majutsushi/tagbar'
 nmap <F9> :TagbarToggle<CR>
@@ -67,7 +66,7 @@ let g:tagbar_type_go = {
     \ },
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
-    \ }
+\ }
 ```
 
 ### Custom
