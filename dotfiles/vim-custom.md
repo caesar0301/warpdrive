@@ -1,4 +1,4 @@
-### Pytho
+### Python
 ```
 Plugin 'davidhalter/jedi-vim'
 
