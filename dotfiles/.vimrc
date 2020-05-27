@@ -14,6 +14,7 @@ Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'thaerkh/vim-workspace'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'chrisbra/csv.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 ""============ Vundle end =============
