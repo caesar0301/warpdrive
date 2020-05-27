@@ -18,7 +18,6 @@ Plugin 'thaerkh/vim-workspace'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'chrisbra/csv.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
@@ -130,26 +129,3 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
-
-"++++++++++++ Python +++++++++++++
-" jedi-vim
-let g:jedi#goto_command = "<leader>nd"
-let g:jedi#goto_assignments_command = "<leader>ng"
-let g:jedi#goto_stubs_command = "<leader>ns"
-let g:jedi#goto_definitions_command = ""
-let g:jedi#documentation_command = "<leader>nk"
-let g:jedi#usages_command = "<leader>nn"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>nr"
-
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
-au BufRead,BufNewFile SConstruct set filetype=python
-au BufRead,BufNewFile SConscript set filetype=python
-"------------ Python -------------
