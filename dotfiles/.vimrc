@@ -21,16 +21,24 @@ filetype plugin indent on    " required
 
 let mapleader=","
 syntax on
-set pastetoggle=<F10>
-set ic nu hlsearch
-set encoding=utf-8
-set fileencodings=utf-8,ucs-bom,GB2312,big5
-set autoindent smartindent
-set showmatch
+set autoindent
 set autoread
-set softtabstop=0 noexpandtab expandtab
-set shiftwidth=4 backspace=2 tabstop=4 scrolloff=4
-set nowrap ruler cursorline
+set backspace=2
+set cursorline
+set encoding=utf-8
+set expandtab
+set fileencodings=utf-8,ucs-bom,GB2312,big5
+set hlsearch
+set ignorecase
+set nowrap
+set number
+set ruler
+set scrolloff=4
+set shiftwidth=4
+set showmatch
+set smartindent
+set softtabstop=0
+set tabstop=4
 
 colorscheme dracula
 
@@ -53,6 +61,11 @@ nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>g :e#<CR>
 noremap <F2> :mksession! ~/vim_session <cr>
 noremap <F3> :source ~/vim_session <cr>
+nnoremap <F10> :set invpaste paste?<CR>
+set pastetoggle=<F10>
+set showmode
+noremap <F11> :set invnumber<CR>
+inoremap <F11> <C-O>:set invnumber<CR>
 
 " auto-pairs
 let g:AutoPairsFlyMode = 0
