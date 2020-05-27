@@ -1,3 +1,75 @@
+### Pytho
+```
+Plugin 'davidhalter/jedi-vim'
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+au BufRead,BufNewFile SConstruct set filetype=python
+au BufRead,BufNewFile SConscript set filetype=python
+```
+
+### Rust
+```
+Plugin 'rust-lang/rust.vim'
+let g:rustfmt_autosave = 1
+
+Plugin 'majutsushi/tagbar'
+nmap <F9> :TagbarToggle<CR>
+let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits',
+        \'i:impls,trait implementations',
+    \]
+\}
+```
+
+### GO
+```
+Plugin 'fatih/vim-go'
+
+Plugin 'majutsushi/tagbar'
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
+```
+
 ### Custom
 
 ```bash
@@ -55,50 +127,6 @@ let g:ycm_min_num_of_chars_for_completion=3
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 "nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>  
 
-" Show file structure
-Plugin 'majutsushi/tagbar'
-nmap <F9> :TagbarToggle<CR>
-let g:tagbar_type_rust = {
-    \ 'ctagstype' : 'rust',
-    \ 'kinds' : [
-        \'T:types,type definitions',
-        \'f:functions,function definitions',
-        \'g:enum,enumeration names',
-        \'s:structure names',
-        \'m:modules,module names',
-        \'c:consts,static constants',
-        \'t:traits',
-        \'i:impls,trait implementations',
-    \]
-    \}
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
 " Syntax checking
 Plugin 'w0rp/ale'
 let g:ale_fix_on_save = 1
@@ -111,43 +139,8 @@ let g:ale_linters = {'go': ['gometalinter', 'gofmt']}
 nmap <leader>d :ALEGoToDefinitionInSplit<CR>
 nmap <leader>g :ALEFindReferences<CR>
 
-" Auto completion for Python
-Plugin 'davidhalter/jedi-vim'
-let g:jedi#completions_enabled = 1
-let g:jedi#auto_initialization = 1
-let g:jedi#auto_vim_configuration = 1
-let g:jedi#use_splits_not_buffers = "winwidth"
-let g:jedi#popup_select_first = 1
-let g:jedi#show_call_signatures = "1"
-let g:jedi#goto_command = "<leader>d"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>r"
-
-" Rust
-Plugin 'rust-lang/rust.vim'
-let g:rustfmt_autosave = 1
-
-" Markdown
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'suan/vim-instant-markdown', {'rtp': 'after'}
-let g:vim_markdown_folding_disabled = 1
-let g:instant_markdown_slow = 0
-let g:instant_markdown_autostart = 0
-let g:instant_markdown_mathjax = 0
-let g:instant_markdown_autoscroll = 1
-
 " Jsonnet
 Plugin 'google/vim-jsonnet'
-
-" Git
-Plugin 'airblade/vim-gitgutter'
-
-" Go
-Plugin 'fatih/vim-go'
 
 " Latex
 Plugin 'lervag/vimtex'
@@ -162,20 +155,6 @@ let g:tex_conceal='abdmg'
 " Jenkinsfile/Groovy
 Plugin 'martinda/Jenkinsfile-vim-syntax'
 
-" Status bar enhancement
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-"let g:airline_theme='simple'
-
-" Filetype
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
 au BufNewFile,BufRead *.js,*.html,*.css
     \ set tabstop=2 |
     \ set softtabstop=2 |
