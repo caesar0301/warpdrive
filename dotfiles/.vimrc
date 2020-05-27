@@ -48,19 +48,19 @@ set tabstop=4
 
 colorscheme dracula
 
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
-nnoremap <F6> :Autoformat<CR>
+" Shortcuts
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-nnoremap <leader>t :NERDTreeFind<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
 nnoremap <Leader>b :bp<CR>
 nnoremap <Leader>f :bn<CR>
-nnoremap <Leader>g :e#<CR>
-noremap <F2> :mksession! ~/vim_session <cr>
-noremap <F3> :source ~/vim_session <cr>
+nnoremap <Leader>e :e#<CR>
+nnoremap <F2> :mksession! ~/vim_session <cr>
+nnoremap <F3> :source ~/vim_session <cr>
+nnoremap <F5> :NERDTreeToggle<CR>
+nnoremap <F6> :Autoformat<CR>
 nnoremap <F10> :set invpaste paste?<CR>
 set pastetoggle=<F10>
 set showmode
