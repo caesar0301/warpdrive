@@ -11,8 +11,9 @@ pip3 install --user autopep8 flake8 jedi yapf pylint
 
 " Vundle
 Plugin 'dense-analysis/ale'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'python-mode/python-mode'
+"Plugin 'davidhalter/jedi-vim'
+"Plugin 'python-mode/python-mode'
+Plugin 'ycm-core/YouCompleteMe'
 
 " ale
 let g:ale_completion_enabled = 0
@@ -25,14 +26,19 @@ let g:ale_linters = {
 \   'python': ['flake8', 'pylint'],
 \}
 
-" jedi-vim
+" jedi-vim (without completion)
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+let g:jedi#completions_enabled = 0
+let g:jedi#completions_command = ""
+let g:jedi#show_call_signatures = "1"
 let g:jedi#goto_command = "<leader>gd"
 let g:jedi#goto_assignments_command = "<leader>gg"
 let g:jedi#goto_stubs_command = "<leader>gs"
 let g:jedi#goto_definitions_command = ""
 let g:jedi#documentation_command = "<leader>gk"
 let g:jedi#usages_command = "<leader>gu"
-let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>gr"
 
 " Misc
