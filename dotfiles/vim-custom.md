@@ -25,7 +25,7 @@ nnoremap <leader>gk :YcmCompleter GetDoc<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR> 
 ```
 
-#### Ctags (rust/go)
+#### Ctags (rust/go/cpp/java)
 ```
 sudo apt install ctags
 
