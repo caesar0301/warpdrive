@@ -10,9 +10,9 @@ https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-e
 pip3 install --user autopep8 flake8 jedi yapf pylint
 
 " Vundle
-Plugin 'python-mode/python-mode'
 Plugin 'dense-analysis/ale'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'python-mode/python-mode'
 
 " ale
 let g:ale_completion_enabled = 0
@@ -123,9 +123,9 @@ let g:tagbar_type_go = {
 ### YCM
 ```
 # Ubuntu
-sudo apt install build-essential cmake python3-dev
 git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
-cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive
+# For python2: git checkout legacy-py2
+git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
 
 " Autocompletion
