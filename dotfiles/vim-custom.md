@@ -13,7 +13,6 @@ pip3 install --user autopep8 flake8 jedi yapf pylint
 Plugin 'dense-analysis/ale'
 "Plugin 'davidhalter/jedi-vim'
 "Plugin 'python-mode/python-mode'
-Plugin 'ycm-core/YouCompleteMe'
 
 " ale
 let g:ale_completion_enabled = 0
@@ -134,7 +133,7 @@ git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouComplet
 git submodule update --init --recursive
 python3 install.py --go-completer --rust-completer --java-completer
 
-" Autocompletion
+" YouCompleteMe
 Plugin 'ycm-core/YouCompleteMe'
 set completeopt-=preview 
 let g:ycm_autoclose_preview_window_after_completion=1
