@@ -129,3 +129,7 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
+
+" vim-workspace
+let g:workspace_create_new_tabs = 0
+let g:workspace_session_disable_on_args = 1
