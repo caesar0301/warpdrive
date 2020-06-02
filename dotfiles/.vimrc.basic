@@ -1,6 +1,5 @@
 " My vim configuration of Vim 7.4+ or 8.0+
 " From xiaming.chen, chenxm35@gmail.com
-" Tested on CentOS 7, Ubuntu 20.04, MacOS X
 set nocompatible
 filetype off
 
@@ -22,10 +21,6 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'ycm-core/YouCompleteMe'
-Plugin 'majutsushi/tagbar'
-Plugin 'dense-analysis/ale'
-Plugin 'rust-lang/rust.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 "------------- Vundle end -------------
@@ -62,15 +57,10 @@ nnoremap <leader>r :NERDTreeFind<CR>
 nnoremap <Leader>b :bp<CR>
 nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>e :e#<CR>
-nnoremap <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <leader>gg :YcmCompleter GoToReferences<CR>
-nnoremap <leader>gk :YcmCompleter GetDoc<CR>
-nnoremap <leader>gt :YcmCompleter GetType<CR> 
 nnoremap <F2> :mksession! ~/vim_session <cr>
 nnoremap <F3> :source ~/vim_session <cr>
 nnoremap <F5> :NERDTreeToggle<CR>
 nnoremap <F6> :Autoformat<CR>
-nnoremap <F8> :TagbarToggle<CR>
 nnoremap <F10> :set invpaste paste?<CR>
 set pastetoggle=<F10>
 set showmode
@@ -143,48 +133,3 @@ let g:airline#extensions#tabline#enabled = 1
 " vim-workspace
 let g:workspace_create_new_tabs = 0
 let g:workspace_session_disable_on_args = 1
-
-" YCM
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_confirm_extra_conf = 0
-
-" tagbar
-let g:tagbar_type_rust = {
-    \ 'ctagstype' : 'rust',
-    \ 'kinds' : [
-        \'T:types,type definitions',
-        \'f:functions,function definitions',
-        \'g:enum,enumeration names',
-        \'s:structure names',
-        \'m:modules,module names',
-        \'c:consts,static constants',
-        \'t:traits',
-        \'i:impls,trait implementations',
-    \]
-  \}
-
-" ale
-let g:ale_completion_enabled = 0
-let g:airline#extensions#ale#enabled = 1
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['autopep8', 'yapf'],
-\   'rust': ['rustfmt'],
-\}
-let g:ale_linters = {
-\   'python': ['flake8', 'pylint'],
-\   'rust': ['rls','cargo','rustc'],
-\}
-
-" Misc Python
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
-au BufRead,BufNewFile SConstruct set filetype=python
-au BufRead,BufNewFile SConscript set filetype=python
