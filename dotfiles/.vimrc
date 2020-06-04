@@ -188,3 +188,4 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix |
 au BufRead,BufNewFile SConstruct set filetype=python
 au BufRead,BufNewFile SConscript set filetype=python
+au BufWritePre *.py :%s/\s\+$//e
