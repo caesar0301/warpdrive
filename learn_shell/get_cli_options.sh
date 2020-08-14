@@ -29,3 +29,26 @@ while [ $# -gt 0 ]; do
       ;;
   esac
 done
+
+### process options
+while getopts Fd:hHp:L:sv opt
+do
+	case $opt in
+	F)	opt_force=1 ;;
+	d)	opt_duration=1; duration=$OPTARG ;;
+	p)	opt_pid=1; pid=$OPTARG ;;
+	L)	opt_tid=1; tid=$OPTARG ;;
+	H)	opt_headers=1 ;;
+	s)	opt_stack=1 ;;
+	v)	opt_view=1 ;;
+	h|?)	usage ;;
+	esac
+done
+shift $(( $OPTIND - 1 ))
+(( $# )) || usage
+kprobe=$1
+shift
+if (( $# )); then
+	opt_filter=1
+	filter=$1
+fi
