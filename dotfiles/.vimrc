@@ -32,6 +32,7 @@ filetype plugin indent on    " required
 
 let mapleader=","
 syntax on
+set nocompatible  "For wsl
 set autoindent
 set autoread
 set backspace=2
