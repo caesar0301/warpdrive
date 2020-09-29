@@ -1,8 +1,6 @@
-### Vim
-```
-# Install vim against python3 (vi --version)
+### Vim built with python3
+
 https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-everything-is-installed-getting-the-source-is-easy
-```
 
 ### Programming (common)
 
