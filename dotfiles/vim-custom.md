@@ -3,7 +3,6 @@
 https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-everything-is-installed-getting-the-source-is-easy
 ```bash
 # with python2
-cd vim && git checkout v7.4.1580
 ./configure --with-features=huge \
             --enable-multibyte \
             --enable-pythoninterp \
@@ -30,6 +29,12 @@ nnoremap <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <leader>gg :YcmCompleter GoToReferences<CR>
 nnoremap <leader>gk :YcmCompleter GetDoc<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR> 
+```
+
+Generate [compilation database](https://github.com/ycm-core/YouCompleteMe#option-1-use-a-compilation-database).
+For scons, recommended using Bear to generate `compile_commands.json`
+```
+~/.local/bin/bear -l ~/.local/lib64/bear/libear.so scons -j16
 ```
 
 #### Ctags (rust/go/cpp/java)
