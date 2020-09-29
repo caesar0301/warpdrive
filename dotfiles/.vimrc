@@ -197,3 +197,5 @@ au BufNewFile,BufRead *.py
 au BufRead,BufNewFile SConstruct set filetype=python
 au BufRead,BufNewFile SConscript set filetype=python
 au BufWritePre *.py :%s/\s\+$//e
+
+set statusline=%f%m%r%h%w\ [%Y]\ [0x%02.2B]%<\ %F%4v,%4l\ %3p%%\ of\ %L\ lines
