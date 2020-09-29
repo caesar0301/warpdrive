@@ -1,6 +1,15 @@
-### Vim built with python3
+### Vim build
 
 https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source#3-once-everything-is-installed-getting-the-source-is-easy
+```bash
+# with python2
+cd vim && git checkout v7.4.1580
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-pythoninterp \
+            --with-python-config-dir=/lib64/python2.7/config \
+            --prefix=~/.local
+```
 
 ### Programming (common)
 
