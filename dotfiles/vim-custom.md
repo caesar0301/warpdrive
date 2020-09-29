@@ -25,6 +25,7 @@ Plugin 'ycm-core/YouCompleteMe'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_log_level = 'debug'
 nnoremap <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <leader>gg :YcmCompleter GoToReferences<CR>
 nnoremap <leader>gk :YcmCompleter GetDoc<CR>
@@ -36,6 +37,8 @@ For scons, recommended using Bear to generate `compile_commands.json`
 ```
 ~/.local/bin/bear -l ~/.local/lib64/bear/libear.so scons -j16
 ```
+
+Note: ycm logs: /tmp/ycmd_xxxx.log, /tmp/clangd_xxx.log
 
 #### Ctags (rust/go/cpp/java)
 ```
