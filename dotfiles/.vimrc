@@ -51,6 +51,7 @@ set showmatch
 set smartindent
 set softtabstop=0
 set tabstop=4
+set showmode
 
 colorscheme dracula
 
@@ -79,11 +80,6 @@ nnoremap <F3> :source ~/vim_session <cr>
 nnoremap <F5> :NERDTreeToggle<CR>
 nnoremap <F6> :Autoformat<CR>
 nnoremap <F8> :TagbarToggle<CR>
-nnoremap <F10> :set invpaste paste?<CR>
-set pastetoggle=<F10>
-set showmode
-noremap <F11> :set invnumber<CR>
-inoremap <F11> <C-O>:set invnumber<CR>
 
 " auto-pairs
 let g:AutoPairsFlyMode = 0
