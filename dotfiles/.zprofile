@@ -1,14 +1,15 @@
+export PATH=$HOME/bin:$PATH
+
 # Alias
-alias pc='proxychains'
-alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:1081;export https_proxy=http://127.0.0.1:1081;export PROMPT="[PROXY] $PROMPT"'
+alias pc='proxychains4 -f /usr/local/etc/proxychains.conf'
+alias proxy='export OLD_PROMPT="$PROMPT";export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890;export PROMPT="[PROXY] $PROMPT"'
 alias noproxy='export PROMPT=$OLD_PROMPT;unset http_proxy;unset https_proxy;unset OLD_PROMPT'
 
 # Java
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export JAVA_OPTIONS="-Xmx8192m -XX:MaxPermSize=4096m"
-export JRE_HOME=$JAVA_HOME/jre
-export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
 export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+export JRE_HOME=$JAVA_HOME/jre
+export JAVA_OPTIONS="-Xmx8192m -XX:MaxPermSize=4096m"
 export MAVEN_OPTS="-Xmx4096m -XX:MaxPermSize=4096m"
 
 # virtualenvwrapper plugin
@@ -29,8 +30,5 @@ fi
 
 # Rust
 export PATH="$HOME/.cargo/bin":$PATH
-# Postman
-export PATH="/opt/Postman/:$PATH"
-# Zotero
-export PATH="/opt/zotero/:$PATH"
-
+export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
