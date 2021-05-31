@@ -30,7 +30,15 @@ tic screen-256color.ti
 
 ## Vim
 
-### SpaceVim (Recommended)
+### Vundle
+```bash
+cp .vimrc ~/.vimrc
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
+```
+More extensions see [vim-custom.md](https://github.com/caesar0301/warp-drive/blob/master/dotfiles/vim-custom.md)
+
+### SpaceVim (optional)
 ```bash
 curl -sLf https://spacevim.org/install.sh | bash
 mkdir ~/.SpaceVim.d/
@@ -49,15 +57,6 @@ sudo ln -s /var/lib/snapd/snap /snap
 sudo snap install clangd --classic
 export PATH=/snap/bin:$PATH
 ```
-
-
-### Vundle (basics)
-```bash
-cp .vimrc ~/.vimrc
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-```
-More extensions see [vim-custom.md](https://github.com/caesar0301/warp-drive/blob/master/dotfiles/vim-custom.md)
 
 ## References:
 * https://blogs.technet.microsoft.com/jessicadeen/linux/macos-ohmyzsh-tmux-vim-iterm2-powerlevel9k-badass-terminal/
