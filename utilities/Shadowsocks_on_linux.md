@@ -66,7 +66,7 @@ sudo update-rc.d -f sslocal remove
 ```
 
 
-## SS for terminal
+## Shadowsocks in Terminal
 
 ### Ubuntu/Debian/MXLinux
 
@@ -87,7 +87,7 @@ sudo vim /usr/lib/proxyresolv
 ```
 
 
-## SS to HTTP proxy
+## Shadowsocks on HTTP
 
 ### goproxy
 1. Download binary: https://github.com/snail007/goproxy/releases
