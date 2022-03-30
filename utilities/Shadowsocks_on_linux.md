@@ -27,7 +27,7 @@ sudo systemctl restart shadowsocks-libev-local@local.service
 ```
 
 ### Debian
-* Install SS package: https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+* Install shadowsocks-libev: https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
 * Configure SS client similar to Ubuntu above
 
 ### CentOS 7
