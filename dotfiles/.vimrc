@@ -1,38 +1,73 @@
 " My vim configuration of Vim 7.4+ or 8.0+
-" From xiaming.chen, chenxm35@gmail.com
+"
+"  Author: xiaming.chen
+"  Email: chenxm35@gmail.com
+"
 " Tested on CentOS 7, Ubuntu 20.04, MacOS X
+
 set nocompatible
 filetype off
 
-"++++++++++++ Vundle start ++++++++++++
+"++++++++++ Vundle start ++++++++++++++
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
+" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+" UI
 Plugin 'dracula/vim', { 'name': 'dracula' }
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'thaerkh/vim-workspace'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'chrisbra/csv.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'ycm-core/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
+Plugin 'godlygeek/tabular'
+Plugin 'scrooloose/nerdtree'
+
+" Editor
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'ctrlpvim/ctrlp.vim'  " Finder
+Plugin 'thaerkh/vim-workspace' " Sessions
+
+" Git
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'airblade/vim-gitgutter'
+
+" Language servers
+"Plugin 'ycm-core/YouCompleteMe'
 Plugin 'dense-analysis/ale'
+
+" Semantics
+Plugin 'cdelledonne/vim-cmake'
+Plugin 'chrisbra/csv.vim'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'rust-lang/rust.vim'
+Plugin 'kovisoft/slimv' " for LISP
+
+" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 "------------- Vundle end -------------
 
+" -----------
+" General
+" -----------
 let mapleader=","
 syntax on
-set nocompatible  "For wsl
+set nocompatible
 set autoindent
 set autoread
 set backspace=2
@@ -51,18 +86,10 @@ set showmatch
 set smartindent
 set softtabstop=0
 set tabstop=4
-set showmode
 
-colorscheme dracula
-
-" True colour
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
-
+" -----------
 " Shortcuts
+" -----------
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -80,6 +107,27 @@ nnoremap <F3> :source ~/vim_session <cr>
 nnoremap <F5> :NERDTreeToggle<CR>
 nnoremap <F6> :Autoformat<CR>
 nnoremap <F8> :TagbarToggle<CR>
+nnoremap <F10> :set invpaste paste?<CR>
+set pastetoggle=<F10>
+set showmode
+noremap <F11> :set invnumber<CR>
+inoremap <F11> <C-O>:set invnumber<CR>
+
+" -----------
+" Interface
+" -----------
+colorscheme dracula
+
+" True colour
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+" -----------
+" Extensions
+" -----------
 
 " auto-pairs
 let g:AutoPairsFlyMode = 0
@@ -123,11 +171,6 @@ let g:rbpt_colorpairs = [
     \ ['darkgray',    'DarkOrchid3'],
     \ ['darkgreen',   'firebrick3'],
     \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
     \ ['Darkblue',    'firebrick3'],
     \ ['darkgreen',   'RoyalBlue3'],
     \ ['darkcyan',    'SeaGreen3'],
@@ -181,7 +224,7 @@ let g:ale_linters = {
 \   'rust': ['rls','cargo','rustc'],
 \}
 
-" Misc Python
+" Python
 au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
@@ -194,4 +237,9 @@ au BufRead,BufNewFile SConstruct set filetype=python
 au BufRead,BufNewFile SConscript set filetype=python
 au BufWritePre *.py :%s/\s\+$//e
 
-set statusline=%f%m%r%h%w\ [%Y]\ [0x%02.2B]%<\ %F%4v,%4l\ %3p%%\ of\ %L\ lines
+" LISP
+let g:slimv_swank_cmd = "!ros -e '(ql:quickload :swank) (swank:create-server)' wait &"
+let g:slimv_lisp = 'ros run'
+let g:slimv_impl = 'sbcl'
+
+" EOF
