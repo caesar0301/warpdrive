@@ -1,0 +1,4 @@
+#!/bin/bash
+y | docker container prune
+y | docker image prune
+y | docker volume prune
