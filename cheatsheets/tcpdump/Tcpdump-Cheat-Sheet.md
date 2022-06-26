@@ -169,6 +169,9 @@ There are 3 types of expression: `type`, `dir` and `proto`
    + Find cleartext http get requests
 
             $ tcpdump 'tcp[32:4] = 0x47455420'
+   + Find cleartext http post requests
+
+            $ tcpdump 'tcp[32:4] = 0x504F5354'
    + Find ssh connection on any port via (banner text)
         
             $ # tcpdump 'tcp[(tcp[12]>>2):4] = 0x5353482D'
