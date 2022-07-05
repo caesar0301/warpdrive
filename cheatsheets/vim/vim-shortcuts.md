@@ -262,6 +262,7 @@ CTRL+w v       -   Split current window vertically
 CTRL+w c       -   Close current window
 CTRL+w m       -   Move to window according to motion m
 CTRL+w o       -   Maxmize current window (note: this overwrites your current window configuration)
+CTRL+w z       -   Close preview window on the top
 
 # EX Mode
 :Vex           - Open Vertical Split in ex mode with file browser
