@@ -55,6 +55,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 Plug 'rust-lang/rust.vim'
+Plug 'sainnhe/sonokai'
 Plug 'sophacles/vim-bundle-mako'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
@@ -74,12 +75,8 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'https://gist.github.com/caesar0301/390b09ba0efa836a7e4092ec941d1b52',
-    \ { 'as': 'peaksea_color.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
-Plug 'https://gist.github.com/caesar0301/042889199e40445cd2170ca2d0771781',
-    \ { 'as': 'vim-irblack.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 call plug#end()
@@ -105,7 +102,7 @@ call plug#end()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
+" Basics => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -134,7 +131,7 @@ set nu
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
+" Basics => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
@@ -209,7 +206,7 @@ set foldcolumn=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+" Basics => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
@@ -242,7 +239,7 @@ set ffs=unix,dos,mac
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
+" Basics => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
 set nobackup
@@ -251,7 +248,7 @@ set noswapfile
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
+" Basics => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
@@ -273,7 +270,7 @@ set wrap "Wrap lines
 
 
 """"""""""""""""""""""""""""""
-" => Visual mode related
+" Basics => Visual mode related
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -282,7 +279,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
+" Basics => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
@@ -347,7 +344,7 @@ noremap <leader>bo :%bd\|e#\|bd#<cr>\|'""'
 
 
 """"""""""""""""""""""""""""""
-" => Status line
+" Basics => Status line
 """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
@@ -357,7 +354,7 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
+" Basics => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
@@ -391,7 +388,7 @@ endfun
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
+" Basics => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
@@ -404,7 +401,7 @@ map <leader>s? z=
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
+" Basics => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -420,7 +417,7 @@ map <leader>pp :setlocal paste!<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
+" Basics => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Returns true if paste mode is enabled
 function! HasPaste()
@@ -475,14 +472,11 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Languages:
-"    -> Python
-"    -> Javascript
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """"""""""""""""""""""""""""""
-" => Python section
+" Languages => Python section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
 au FileType python syn keyword pythonDecorator True None False self
@@ -506,7 +500,7 @@ autocmd BufRead,BufNewFile SConscript set filetype=python
 
 
 """"""""""""""""""""""""""""""
-" => JavaScript section
+" Languages => JavaScript section
 """""""""""""""""""""""""""""""
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
@@ -531,7 +525,7 @@ endfunction
 
 
 """"""""""""""""""""""""""""""
-" => CoffeeScript section
+" Languages => CoffeeScript section
 """""""""""""""""""""""""""""""
 function! CoffeeScriptFold()
     setl foldmethod=indent
@@ -543,7 +537,7 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
 
 """"""""""""""""""""""""""""""
-" => Shell section
+" Languages => Shell section
 """"""""""""""""""""""""""""""
 if exists('$TMUX')
     if has('nvim')
@@ -555,39 +549,37 @@ endif
 
 
 """"""""""""""""""""""""""""""
-" => Twig section
+" Languages => Twig section
 """"""""""""""""""""""""""""""
 autocmd BufRead *.twig set syntax=html filetype=html
 
 
 """"""""""""""""""""""""""""""
-" => Markdown
+" Languages => Markdown
 """"""""""""""""""""""""""""""
 let vim_markdown_folding_disabled = 1
 
 
 
 """"""""""""""""""""""""""""""
-" => JSON
+" Languages => JSON
 """"""""""""""""""""""""""""""
 autocmd Filetype json setlocal ts=2 sw=2 expandtab
 
 
 """"""""""""""""""""""""""""""
-" => XML
+" Languages => XML
 """"""""""""""""""""""""""""""
 autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins:
-"    -> Javascript
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """"""""""""""""""""""""""""""
-" => bufExplorer plugin
+" Plugins => bufExplorer plugin
 """"""""""""""""""""""""""""""
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
@@ -597,14 +589,14 @@ map <leader>o :BufExplorer<cr>
 
 
 """"""""""""""""""""""""""""""
-" => MRU plugin
+" Plugins => MRU plugin
 """"""""""""""""""""""""""""""
 let MRU_Max_Entries = 400
 map <leader>f :MRU<CR>
 
 
 """"""""""""""""""""""""""""""
-" => YankStack
+" Plugins => YankStack
 """"""""""""""""""""""""""""""
 let g:yankstack_yank_keys = ['y', 'd']
 
@@ -613,7 +605,7 @@ nmap <C-n> <Plug>yankstack_substitute_newer_paste
 
 
 """"""""""""""""""""""""""""""
-" => CTRL-P
+" Plugins => CTRL-P
 """"""""""""""""""""""""""""""
 let g:ctrlp_working_path_mode = 0
 
@@ -629,14 +621,14 @@ let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 
 
 """"""""""""""""""""""""""""""
-" => ZenCoding
+" Plugins => ZenCoding
 """"""""""""""""""""""""""""""
 " Enable all functions in all modes
 let g:user_zen_mode='a'
 
 
 """"""""""""""""""""""""""""""
-" => snipMate (beside <TAB> support <CTRL-j>)
+" Plugins => snipMate (beside <TAB> support <CTRL-j>)
 """"""""""""""""""""""""""""""
 ino <C-j> <C-r>=snipMate#TriggerSnippet()<cr>
 snor <C-j> <esc>i<right><C-r>=snipMate#TriggerSnippet()<cr>
@@ -644,14 +636,14 @@ let g:snipMate = { 'snippet_version' : 1 }
 
 
 """"""""""""""""""""""""""""""
-" => Vim grep
+" Plugins => Vim grep
 """"""""""""""""""""""""""""""
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
 set grepprg=/bin/grep\ -nH
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Nerd Tree
+" Plugins => Nerd Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=0
@@ -665,7 +657,7 @@ map <leader>nf :NERDTreeFind<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-multiple-cursors
+" Plugins => vim-multiple-cursors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:multi_cursor_use_default_mapping=0
 
@@ -681,7 +673,7 @@ let g:multi_cursor_quit_key            = '<Esc>'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => surround.vim config
+" Plugins => surround.vim config
 " Annotate strings with gettext
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap Si S(i_<esc>f)
@@ -689,7 +681,7 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => lightline
+" Plugins => lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -714,7 +706,7 @@ let g:lightline = {
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vimroom
+" Plugins => Vimroom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:goyo_width=100
 let g:goyo_margin_top = 2
@@ -723,7 +715,7 @@ nnoremap <silent> <leader>z :Goyo<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-javacomplete2
+" Plugins => vim-javacomplete2
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import nothing on default
 let g:JavaComplete_ImportDefault = -1
@@ -731,7 +723,7 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ale (syntax checker and linter)
+" Plugins => Ale (syntax checker and linter)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ale_linters = {
 \   'zsh': ['shell'],
@@ -779,7 +771,7 @@ let g:airline#extensions#tabline#enabled = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-lsp
+" Plugins => vim-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Folding
 set foldmethod=expr
@@ -804,20 +796,20 @@ endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Git gutter (Git diff)
+" Plugins => Git gutter (Git diff)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gitgutter_enabled=0
 nnoremap <silent> <leader>gu :GitGutterToggle<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => EditorConfig (project-specific EditorConfig rule)
+" Plugins => EditorConfig (project-specific EditorConfig rule)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Fugitive
+" Plugins => Fugitive
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Copy the link to the line of a Git repository to the clipboard
 nnoremap <leader>v :.GBrowse!<CR>
@@ -825,7 +817,7 @@ xnoremap <leader>v :'<'>GBrowse!<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => tagbar
+" Plugins => tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>tt :TagbarToggle<CR>
 let g:tagbar_position = 'right'
@@ -834,7 +826,7 @@ let g:tagbar_sort = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-autoformat
+" Plugins => vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>af :Autoformat<CR>
 
@@ -855,7 +847,7 @@ let g:formatters_cmake=['cmakefmt']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-airline
+" Plugins => vim-airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme='dark'
 let g:airline#extensions#tagbar#enabled = 0
@@ -863,13 +855,13 @@ let g:airline#extensions#tabline#enabled = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => bclose
+" Plugins => bclose
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <Leader>bd :Bclose<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => AnyJump
+" Plugins => AnyJump
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:any_jump_disable_default_keybindings = 1
 nnoremap <leader>aj :AnyJump<CR>
@@ -879,7 +871,7 @@ nnoremap <leader>al :AnyJumpLastResults<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => fzf
+" Plugins => fzf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " If installed using Homebrew
 "set rtp+=/usr/local/opt/fzf
@@ -897,7 +889,7 @@ map <Leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => GUI related
+" Extended => GUI related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
 if has("mac") || has("macunix")
@@ -918,13 +910,9 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 
-" Colorscheme
-set background=dark
-colorscheme peaksea
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Turn persistent undo on 
+" Extended => Turn persistent undo on 
 "    means that you can undo even when you close a buffer/VIM
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
@@ -935,7 +923,7 @@ endtry
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Command mode related
+" Extended => Command mode related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Smart mappings on the command line
 cno $h e ~/
@@ -962,7 +950,7 @@ imap ½ $
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket
+" Extended => Parenthesis/bracket
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
@@ -982,13 +970,13 @@ vnoremap $e <esc>`>a`<esc>`<i`<esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General abbreviations
+" Extended => General abbreviations
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 iab xdate <C-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Omni complete functions
+" Extended => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
@@ -1002,7 +990,7 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 "inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ack searching and cope displaying
+" Extended => Ack searching and cope displaying
 "    requires ack.vim - it's much better than vimgrep/grep
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use the the_silver_searcher if possible (much faster than Ack)
@@ -1040,7 +1028,7 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
+" Extended => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 func! DeleteTillSlash()
     let g:cmd = getcmdline()
