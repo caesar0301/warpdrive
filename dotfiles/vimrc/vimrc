@@ -4,13 +4,7 @@
 "       Xiaming Chen - @caesar0301
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Auto installation vim-plug
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
+" Vim-plug
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'airblade/vim-gitgutter'
@@ -22,7 +16,6 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'dense-analysis/ale'
 Plug 'digitaltoad/vim-pug'
 Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
@@ -55,7 +48,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 Plug 'rust-lang/rust.vim'
-Plug 'sainnhe/sonokai'
 Plug 'sophacles/vim-bundle-mako'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
@@ -75,10 +67,26 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
+
+" Vim-specific plugins
+if !has('nvim')
+Plug 'dense-analysis/ale'
+endif
+
+" Nvim-specific plugins
+if has('nvim')
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+endif
+
 call plug#end()
 
 
@@ -220,8 +228,6 @@ try
     colorscheme desert
 catch
 endtry
-
-set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -725,12 +731,11 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Ale (syntax checker and linter)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if !has('nvim')
 let g:ale_linters = {
-\   'zsh': ['shell'],
 \   'python': ['flake8', 'pylint'],
 \   'go': ['gofmt', 'golint'],
 \   'cpp': ['clangd'],
-\   'text': [],
 \}
 
 let g:ale_fixers = {
@@ -768,32 +773,7 @@ command! LintOn call JACKtoggleALE()
 " Airline - connect to ALE
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => vim-lsp
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Folding
-set foldmethod=expr
-  \ foldexpr=lsp#ui#vim#folding#foldexpr()
-  \ foldtext=lsp#ui#vim#folding#foldtext()
-
-" C completion
-if executable('clangd')
-    augroup lsp_clangd
-        autocmd!
-        autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'clangd',
-                    \ 'cmd': {server_info->['clangd']},
-                    \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-                    \ })
-        autocmd FileType c setlocal omnifunc=lsp#complete
-        autocmd FileType cpp setlocal omnifunc=lsp#complete
-        autocmd FileType objc setlocal omnifunc=lsp#complete
-        autocmd FileType objcpp setlocal omnifunc=lsp#complete
-    augroup end
 endif
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Git gutter (Git diff)
@@ -828,15 +808,14 @@ let g:tagbar_sort = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>af :Autoformat<CR>
-
+if !has('nvim') " For nvim we use official lsp functionality
 " Disable the fallback to vim defaults
 let g:autoformat_autoindent=0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 
 " Verbose mode
-let g:autoformat_verbosemode=1
+let g:autoformat_verbosemode=0
 
 " Formatters
 let g:formatdef_google_java_format='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
@@ -844,6 +823,9 @@ let g:formatters_java=['google_java_format']
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
+
+nnoremap <leader>af :Autoformat<CR>
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
