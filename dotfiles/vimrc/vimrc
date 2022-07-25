@@ -654,12 +654,19 @@ let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-" map <leader>nn :NERDTreeToggle<cr>
-" Employ vim-nerdtree-tabs to enforce consistent nerdtree
-map <leader>nn :NERDTreeTabsToggle<CR>
-map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nf :NERDTreeFind<cr>
 
+function MyNerdToggle()
+    if &filetype == 'nerdtree'
+        :NERDTreeTabsToggle
+    else
+        :NERDTreeFind
+    endif
+endfunction
+
+" vim-nerdtree-tabs enforces consistent nerdtree
+map <leader>nb :NERDTreeFromBookmark<Space>
+map <leader>nn :call MyNerdToggle()<cr>
+map <F8> :call MyNerdToggle()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-multiple-cursors
@@ -767,11 +774,10 @@ let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 
 if !has('nvim')
-nmap <silent> <leader>gd :ALEGoToDefinition<cr>
-nmap <silent> <leader>gr :ALEFindReferences<cr>
-nmap <silent> <leader>gs :ALESymbolSearch<cr>
-nmap <silent> <leader>rn :ALERename<cr>
-nmap <silent> <leader>le :ALENext<cr>
+nmap <silent> gd :ALEGoToDefinition<cr>
+nmap <silent> gr :ALEFindReferences<cr>
+nmap <silent> gs :ALESymbolSearch<cr>
+nmap <silent> rn :ALERename<cr>
 endif
 
 

@@ -2,6 +2,9 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
 
+" Clangd source/header switcher
+nnoremap csh :ClangdSwitchSourceHeader<CR>
+
 lua <<EOF
 
 -- nvim-lspconfig
@@ -20,16 +23,30 @@ local my_on_attach = function(client, bufnr)
 
   -- Mappings.
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
-  vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+end
+
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
+for _, lsp in ipairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = my_on_attach,
+    capabilities = capabilities,
+    settings = {
+      --["clangd"] = {"--background-index=true"}              
+    }
+  }
 end
 
 -- nvim-cmp setup
@@ -80,16 +97,5 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
-for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = my_on_attach,
-    capabilities = capabilities,
-  }
-end
 
 EOF
