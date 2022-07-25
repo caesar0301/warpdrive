@@ -16,6 +16,7 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'dense-analysis/ale'
 Plug 'digitaltoad/vim-pug'
 Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
@@ -72,11 +73,6 @@ Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
-
-" Vim-specific plugins
-if !has('nvim')
-Plug 'dense-analysis/ale'
-endif
 
 " Nvim-specific plugins
 if has('nvim')
@@ -224,10 +220,8 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme desert
-catch
-endtry
+colorscheme gruvbox
+set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -421,6 +415,11 @@ map <leader>x :e ~/buffer.md<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
+" Edit vimr configuration file
+nnoremap <leader>ve :e $MYVIMRC<CR>
+
+" Reload vimr configuration file
+nnoremap <leader>vr :source $MYVIMRC<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Helper functions
@@ -731,7 +730,6 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Ale (syntax checker and linter)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if !has('nvim')
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint'],
 \   'go': ['gofmt', 'golint'],
@@ -747,12 +745,6 @@ let g:ale_completion_enabled = 0
 let g:ale_completion_autoimport = 0
 let g:ale_lint_on_enter = 0
 let g:ale_fix_on_save = 0
-
-nmap <silent> <leader>gd :ALEGoToDefinition<cr>
-nmap <silent> <leader>gr :ALEFindReferences<cr>
-nmap <silent> <leader>gs :ALESymbolSearch<cr>
-nmap <silent> <leader>rn :ALERename<cr>
-nmap <silent> <leader>le :ALENext<cr>
 
 " The commands built-into ALE for turning it off still let switchers be active.
 function! JACKtoggleALE()
@@ -773,7 +765,38 @@ command! LintOn call JACKtoggleALE()
 " Airline - connect to ALE
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
+
+if !has('nvim')
+nmap <silent> <leader>gd :ALEGoToDefinition<cr>
+nmap <silent> <leader>gr :ALEFindReferences<cr>
+nmap <silent> <leader>gs :ALESymbolSearch<cr>
+nmap <silent> <leader>rn :ALERename<cr>
+nmap <silent> <leader>le :ALENext<cr>
 endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => vim-autoformat
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Disable the fallback to vim defaults
+let g:autoformat_autoindent=0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+
+" Verbose mode
+let g:autoformat_verbosemode=0
+
+" Formatters
+let g:formatdef_google_java_format='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
+let g:formatters_java=['google_java_format']
+let g:formatdef_gofmt_1='"gofmt"'
+let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
+let g:formatters_cmake=['cmakefmt']
+
+if !has('nvim') " For nvim we use official lsp functionality
+nnoremap <leader>af :Autoformat<CR>
+endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Git gutter (Git diff)
@@ -803,29 +826,6 @@ nnoremap <leader>tt :TagbarToggle<CR>
 let g:tagbar_position = 'right'
 " Sort by positions in file
 let g:tagbar_sort = 0
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => vim-autoformat
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if !has('nvim') " For nvim we use official lsp functionality
-" Disable the fallback to vim defaults
-let g:autoformat_autoindent=0
-let g:autoformat_retab = 0
-let g:autoformat_remove_trailing_spaces = 0
-
-" Verbose mode
-let g:autoformat_verbosemode=0
-
-" Formatters
-let g:formatdef_google_java_format='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
-let g:formatters_java=['google_java_format']
-let g:formatdef_gofmt_1='"gofmt"'
-let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
-let g:formatters_cmake=['cmakefmt']
-
-nnoremap <leader>af :Autoformat<CR>
-endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
