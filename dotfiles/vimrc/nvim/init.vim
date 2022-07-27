@@ -14,7 +14,7 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local my_on_attach = function(client, bufnr)
+local common_on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -30,6 +30,10 @@ local my_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+end
+
+local clangd_on_attach = function(client, bufnr)
+  common_on_attach(client, bufnr)
   vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
 end
 
@@ -39,17 +43,14 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
 for _, lsp in ipairs(servers) do
   require('lspconfig')[lsp].setup {
-    on_attach = my_on_attach,
+    on_attach = common_on_attach,
     capabilities = capabilities,
-    settings = {
-      --["clangd"] = {"--background-index=true"}              
-    }
   }
 end
 
 require('lspconfig')['clangd'].setup {
   cmd = {"clangd", "--background-index=false"},
-  on_attach = my_on_attach,
+  on_attach = clangd_on_attach,
   capabilities = capabilities,
   root_dir = require('lspconfig.util').root_pattern('build/compile_commands.json', '.git'),
 }

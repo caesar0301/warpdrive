@@ -221,7 +221,6 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 colorscheme gruvbox
-set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -386,6 +385,12 @@ endfun
 "    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 "endif
 
+" Highlight variable under cursor
+augroup highlight_current_word
+  au!
+  au CursorHold * :exec 'match Search /\V\<' . expand('<cword>') . '\>/'
+  set updatetime=1000
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Spell checking
