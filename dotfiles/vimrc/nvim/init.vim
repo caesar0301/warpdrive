@@ -2,9 +2,6 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
 
-" Clangd source/header switcher
-nnoremap csh :ClangdSwitchSourceHeader<CR>
-
 lua <<EOF
 
 -- nvim-lspconfig
@@ -33,12 +30,13 @@ local my_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
 end
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver' }
+local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
 for _, lsp in ipairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = my_on_attach,
@@ -49,12 +47,18 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+require('lspconfig')['clangd'].setup {
+  cmd = {"clangd", "--background-index=false"},
+  on_attach = my_on_attach,
+  capabilities = capabilities,
+  root_dir = require('lspconfig.util').root_pattern('build/compile_commands.json', '.git'),
+}
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
-	  vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
 	  require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
 	  -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
 	  -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
@@ -73,7 +77,7 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    ['<C-j>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
@@ -82,7 +86,7 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ['<C-k>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -99,3 +103,4 @@ cmp.setup {
 }
 
 EOF
+

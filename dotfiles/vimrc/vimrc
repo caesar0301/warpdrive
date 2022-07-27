@@ -800,7 +800,11 @@ let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
 
 if !has('nvim') " For nvim we use official lsp functionality
-nnoremap <leader>af :Autoformat<CR>
+  nnoremap <leader>af :Autoformat<CR>
+endif
+
+if has('nvim')
+  let g:python3_host_prog="/usr/bin/python3"
 endif
 
 
@@ -866,7 +870,7 @@ nnoremap <leader>al :AnyJumpLastResults<CR>
 " If installed using git
 set rtp+=~/.fzf
 " map <Leader>+F to search in ag the word under the cursor
-map <Leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
+map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
