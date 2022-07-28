@@ -11,7 +11,6 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'amix/vim-zenroom2'
 Plug 'artur-shaik/vim-javacomplete2'
@@ -21,7 +20,6 @@ Plug 'chrisbra/csv.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dense-analysis/ale'
 Plug 'digitaltoad/vim-pug'
-Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'garbas/vim-snipmate'
 Plug 'groenewege/vim-less'
@@ -41,7 +39,6 @@ Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'maximbaz/lightline-ale'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nvie/vim-flake8'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -54,7 +51,6 @@ Plug 'rust-lang/rust.vim'
 Plug 'sophacles/vim-bundle-mako'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'therubymug/vim-pyte'
 Plug 'tomtom/tlib_vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -66,13 +62,20 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
+
+" colorscheme
+Plug 'altercation/vim-colors-solarized'
+Plug 'dracula/vim'
+Plug 'morhetz/gruvbox'
+Plug 'therubymug/vim-pyte'
+Plug 'vim-scripts/mayansmoke'
+Plug 'tomasiser/vim-code-dark'
 
 " Nvim-specific plugins
 if has('nvim')
@@ -81,6 +84,10 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
+Plug 'nvim-lua/lsp-status.nvim'
+
+" colorscheme
+Plug 'rafamadriz/neon'
 endif
 
 call plug#end()
@@ -220,7 +227,13 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme gruvbox
+colorscheme codedark
+
+if has('nvim')
+lua <<EOF
+--vim.cmd[[colorscheme neon]]
+EOF
+endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -349,7 +362,7 @@ noremap <leader>bo :%bd\|e#\|bd#<cr>\|'""'
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ helloCWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -590,7 +603,6 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 " Plugins:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
 """"""""""""""""""""""""""""""
@@ -777,10 +789,6 @@ endfunction
 command! LintOff call JACKtoggleALE()
 command! LintOn call JACKtoggleALE()
 
-" Airline - connect to ALE
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-
 if !has('nvim')
 nmap <silent> gd :ALEGoToDefinition<cr>
 nmap <silent> gr :ALEFindReferences<cr>
@@ -851,6 +859,7 @@ let g:tagbar_sort = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme='dark'
 let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 
 
@@ -882,11 +891,163 @@ map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-lspconfig & nvim-cmp
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+lua <<EOF
+-- Mappings.
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+local lsp_status = require('lsp-status')
+lsp_status.register_progress()
+local lspconfig = require('lspconfig')
+
+-- Use an on_attach function after the language server attaches to the current buffer
+local common_on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Mappings.
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+end
+
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- General servers
+local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = common_on_attach,
+    capabilities = capabilities,
+  }
+end
+
+-- clangd server
+local clangd_on_attach = function(client, bufnr)
+  common_on_attach(client, bufnr)
+  vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
+  lsp_status.on_attach(client)
+end
+lspconfig['clangd'].setup {
+  handlers = lsp_status.extensions.clangd.setup(),
+  init_options = {
+    clangdFileStatus = true
+  },
+  cmd = {"clangd", "--background-index=false"},
+  on_attach = clangd_on_attach,
+  capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
+  root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
+}
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+	  require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+	  -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+	  -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<C-j>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<C-k>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+EOF
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-treesitter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+}
+EOF
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => lsp-status
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+  return ''
+endfunction
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended
 "    -> GUI related
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended => GUI related
