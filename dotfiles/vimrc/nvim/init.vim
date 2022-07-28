@@ -2,9 +2,10 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
 
+"-----------------
+"nvim-lspconfig & nvim-cmp
+"-----------------
 lua <<EOF
-
--- nvim-lspconfig
 -- Mappings.
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
@@ -102,6 +103,31 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
 EOF
 
+
+"-----------------
+"nvim-treesitter
+"-----------------
+lua <<EOF
+-- nvim-treesitter
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+}
+EOF

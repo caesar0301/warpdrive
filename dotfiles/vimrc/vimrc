@@ -7,6 +7,9 @@
 " Vim-plug
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'amix/open_file_under_cursor.vim'
@@ -33,7 +36,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kovisoft/slimv/'
 Plug 'leafgarland/typescript-vim'
-Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'mattn/vim-gist'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'maximbaz/lightline-ale'
@@ -42,7 +44,7 @@ Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nvie/vim-flake8'
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'pangloss/vim-javascript'
 Plug 'pechorin/any-jump.vim'
 Plug 'plasticboy/vim-markdown'
@@ -66,8 +68,6 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
@@ -386,11 +386,14 @@ endfun
 "endif
 
 " Highlight variable under cursor
-augroup highlight_current_word
-  au!
-  au CursorHold * :exec 'match Search /\V\<' . expand('<cword>') . '\>/'
-  set updatetime=1000
-augroup END
+"augroup highlight_current_word
+"  au!
+"  au CursorHold * :exec 'match Search /\V\<' . expand('<cword>') . '\>/'
+"  set updatetime=1000
+"augroup END
+
+nnoremap gr :s/<c-r>///g<left><left>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Spell checking
