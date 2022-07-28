@@ -13,7 +13,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'amix/vim-zenroom2'
-Plug 'artur-shaik/vim-javacomplete2'
 Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
@@ -58,8 +57,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mru.vim'
@@ -77,6 +74,11 @@ Plug 'therubymug/vim-pyte'
 Plug 'vim-scripts/mayansmoke'
 Plug 'tomasiser/vim-code-dark'
 
+" VIM-specific plugins
+if !has('nvim')
+Plug 'artur-shaik/vim-javacomplete2'
+endif
+
 " Nvim-specific plugins
 if has('nvim')
 Plug 'neovim/nvim-lspconfig'
@@ -85,9 +87,7 @@ Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'nvim-lua/lsp-status.nvim'
-
-" colorscheme
-Plug 'rafamadriz/neon'
+Plug 'RishabhRD/popfix'
 endif
 
 call plug#end()
@@ -227,13 +227,10 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme codedark
-
-if has('nvim')
-lua <<EOF
---vim.cmd[[colorscheme neon]]
-EOF
-endif
+try
+    colorscheme desert
+catch
+endtry
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -720,12 +717,13 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ ['mode', 'paste'],
       \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-      \   'right': [ [ 'lineinfo' ], ['percent'] ]
+      \   'right': [ ['lineinfo'], ['percent'], ['lspstatus'] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}'
+      \   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}',
+      \   'lspstatus': '%{exists("*LspStatus")?LspStatus():""}'
       \ },
       \ 'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
@@ -749,9 +747,11 @@ nnoremap <silent> <leader>z :Goyo<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-javacomplete2
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if !has('nvim')
 " Import nothing on default
 let g:JavaComplete_ImportDefault = -1
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -855,15 +855,6 @@ let g:tagbar_sort = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => vim-airline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:airline_theme='dark'
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => bclose
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <Leader>bd :Bclose<CR>
@@ -902,8 +893,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
-local lsp_status = require('lsp-status')
-lsp_status.register_progress()
 local lspconfig = require('lspconfig')
 
 -- Use an on_attach function after the language server attaches to the current buffer
@@ -938,20 +927,33 @@ for _, lsp in ipairs(servers) do
 end
 
 -- clangd server
-local clangd_on_attach = function(client, bufnr)
-  common_on_attach(client, bufnr)
-  vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
-  lsp_status.on_attach(client)
-end
-lspconfig['clangd'].setup {
+local lsp_status = require('lsp-status')
+lsp_status.register_progress()
+
+lspconfig.clangd.setup {
   handlers = lsp_status.extensions.clangd.setup(),
   init_options = {
     clangdFileStatus = true
   },
   cmd = {"clangd", "--background-index=false"},
-  on_attach = clangd_on_attach,
-  capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
+  on_attach = function(client, bufnr)
+    lsp_status.on_attach(client)
+    common_on_attach(client, bufnr)
+    vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
+  end,
+  -- capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
+  capabilities = lsp_status.capabilities,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
+}
+
+-- java
+lspconfig.jdtls.setup{
+  on_attach = function(client, bufnr)
+    common_on_attach(client, bufnr)
+    require'completion'.on_attach(client)
+  end,
+  cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
+  root_dir = require'lspconfig/util'.root_pattern(".git", "pom.xml"),
 }
 
 -- nvim-cmp setup
@@ -1071,6 +1073,8 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 
+set background=dark
+colorscheme codedark
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Extended => Turn persistent undo on 
