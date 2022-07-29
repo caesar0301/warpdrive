@@ -950,7 +950,6 @@ lspconfig.clangd.setup {
 lspconfig.jdtls.setup{
   on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
-  root_dir = require'lspconfig/util'.root_pattern(".git", "pom.xml"),
 }
 
 -- nvim-cmp setup
