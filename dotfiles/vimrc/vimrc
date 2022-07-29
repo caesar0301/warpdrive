@@ -948,10 +948,7 @@ lspconfig.clangd.setup {
 
 -- java
 lspconfig.jdtls.setup{
-  on_attach = function(client, bufnr)
-    common_on_attach(client, bufnr)
-    require'completion'.on_attach(client)
-  end,
+  on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
   root_dir = require'lspconfig/util'.root_pattern(".git", "pom.xml"),
 }
