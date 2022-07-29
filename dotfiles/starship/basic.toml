@@ -1,0 +1,30 @@
+add_newline = false
+
+[package]
+disabled = true
+
+[cmd_duration]
+min_time = 10_000
+format = "took [$duration]($style)"
+
+# Git
+
+[git_branch]
+symbol = "🌱 "
+truncation_symbol = ""
+
+[git_commit]
+commit_hash_length = 4
+tag_symbol = "🔖 "
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total )\)]($style) '
+cherry_pick = "[🍒 PICKING](bold red)"
+
+[git_metrics]
+added_style = "bold blue"
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[git_status]
+up_to_date = "✓"
+staged = '[++\($count\)](green)'
