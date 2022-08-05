@@ -17,7 +17,6 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'dense-analysis/ale'
 Plug 'digitaltoad/vim-pug'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'garbas/vim-snipmate'
@@ -30,12 +29,12 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kovisoft/slimv/'
 Plug 'leafgarland/typescript-vim'
 Plug 'mattn/vim-gist'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'maximbaz/lightline-ale'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mileszs/ack.vim'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -439,6 +438,10 @@ nnoremap <leader>ve :e $MYVIMRC<CR>
 " Reload vimr configuration file
 nnoremap <leader>vr :source $MYVIMRC<CR>
 
+" Quickly quit terminal mode: <C-\><C-n>
+tnoremap <leader>kt <C-\><C-n>
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -755,74 +758,27 @@ endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => Ale (syntax checker and linter)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ale_linters = {
-\   'python': ['flake8', 'pylint'],
-\   'go': ['gofmt', 'golint'],
-\   'cpp': ['clangd'],
-\}
-
-let g:ale_fixers = {
-\   'cpp': ['clang-format'],
-\}
-
-" Only run linting when saving the file
-let g:ale_completion_enabled = 0
-let g:ale_completion_autoimport = 0
-let g:ale_lint_on_enter = 0
-let g:ale_fix_on_save = 0
-
-" The commands built-into ALE for turning it off still let switchers be active.
-function! JACKtoggleALE()
-  if (g:ale_fix_on_save == 1)
-    let g:ale_fix_on_save=0
-    :ALEDisable
-    :echo "Linting disabled"
-  else
-    let g:ale_fix_on_save=1
-    :ALEEnable
-    :echo "Linting enabled"
-  endif
-endfunction
-
-command! LintOff call JACKtoggleALE()
-command! LintOn call JACKtoggleALE()
-
-if !has('nvim')
-nmap <silent> gd :ALEGoToDefinition<cr>
-nmap <silent> gr :ALEFindReferences<cr>
-nmap <silent> gs :ALESymbolSearch<cr>
-nmap <silent> rn :ALERename<cr>
-endif
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:autoformat_verbosemode=0
 " Disable the fallback to vim defaults
 let g:autoformat_autoindent=0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
-
-" Verbose mode
-let g:autoformat_verbosemode=0
-
 " Formatters
-let g:formatdef_google_java_format='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
-let g:formatters_java=['google_java_format']
+let g:formatdef_gjf='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
+let g:formatters_java=['gjf']
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
-
-if !has('nvim') " For nvim we use official lsp functionality
+let g:formatters_python=['black']
+" keymap
+if !has('nvim')
   nnoremap <leader>af :Autoformat<CR>
 endif
-
 if has('nvim')
-  let g:python3_host_prog="/usr/bin/python3"
+  let g:python3_host_prog="/usr/local/opt/python@3.9/bin/python3"
 endif
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Git gutter (Git diff)
