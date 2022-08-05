@@ -355,18 +355,23 @@ if [ -e "/usr/local/cuda" ]; then
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 fi
 
+# MacOSX
 if [[ $OSTYPE == darwin*  ]]; then
 
 # Python3
-if command -v brew &>/dev/null && [ $(brew --prefix python3) ]; then
-    PYTHON3_HOME=$(brew --prefix python3)
-    export PATH=$PYTHON3_HOME/libexec/bin:$PYTHON3_HOME/bin:$PATH
+brew_installed=(python3 java11 gcc)
+if command -v brew &>/dev/null; then
+    for i in ${brew_installed[@]}; do
+        INSTALLED_HOME=$(brew --prefix ${i})
+        if [[ "x$?" == "x0" ]]; then
+            export PATH=$INSTALLED_HOME/bin:$PATH
+        fi
+    done
 fi
 
 # Enable GNU GCC by default
 if command -v brew &>/dev/null && [ $(brew --prefix gcc) ]; then
     GNU_GCC_HOME=$(brew --prefix gcc)
-    export PATH=$GNU_GCC_HOME/bin:$PATH
     if [[ -e "$GNU_GCC_HOME/bin/gcc-12" ]]; then
         GCC_VER="12"
     elif [[ -e "$GNU_GCC_HOME/bin/gcc-11" ]]; then
