@@ -876,7 +876,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- General servers
-local servers = { 'rust_analyzer', 'pyright', 'tsserver' }
+local servers = { 'rust_analyzer', 'tsserver' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = common_on_attach,
@@ -887,7 +887,6 @@ end
 -- clangd server
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
-
 lspconfig.clangd.setup {
   handlers = lsp_status.extensions.clangd.setup(),
   init_options = {
@@ -908,6 +907,12 @@ lspconfig.clangd.setup {
 lspconfig.jdtls.setup{
   on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
+}
+
+-- python
+lspconfig.pyright.setup{
+  on_attach = common_on_attach,
+  cmd = {"/home/xiaming.cxm/.local/bin/pyright-langserver", "--stdio"},
 }
 
 -- nvim-cmp setup
