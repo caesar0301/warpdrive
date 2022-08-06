@@ -126,9 +126,9 @@ zi ice pick "zsh-syntax-highlighting.zsh"
 zi load zsh-users/zsh-syntax-highlighting
 
 # Personal extensions
-for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
-    zi snippet $i
-done
+if [ -e ${MYEXT_HOME} ]; then
+  for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do zi snippet $i; done
+fi
 
 # Profiling perf
 if [[ ${PROFILE_PERF} == 1 ]]; then
