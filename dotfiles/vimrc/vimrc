@@ -836,7 +836,7 @@ set rtp+=~/.fzf
 " map <Leader>+F to search in ag the word under the cursor
 map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 " map <Leader>+W to search in ag everywhere
-map <leader>W :Ag<Space>
+map <leader>W :Ag<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
