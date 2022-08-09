@@ -85,8 +85,13 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
+" Lsp status for clangd
 Plug 'nvim-lua/lsp-status.nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'kosayoda/nvim-lightbulb'
+" Optimized pop-up of quickfix etc. (depends on bat)
 Plug 'RishabhRD/popfix'
+Plug 'RishabhRD/nvim-lsputils'
 endif
 
 call plug#end()
@@ -898,8 +903,8 @@ lspconfig.clangd.setup {
     common_on_attach(client, bufnr)
     vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
   end,
-  -- capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
-  capabilities = lsp_status.capabilities,
+  capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
+  --capabilities = lsp_status.capabilities,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
@@ -916,13 +921,16 @@ lspconfig.pyright.setup{
 }
 
 -- nvim-cmp setup
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
-	  require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-	  -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-	  -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+	  require('luasnip').lsp_expand(args.body)
     end,
   },
   window = {
@@ -938,16 +946,19 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<C-j>'] = cmp.mapping(function(fallback)
+    -- luasnip: https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
       else
         fallback()
       end
     end, { 'i', 's' }),
-    ['<C-k>'] = cmp.mapping(function(fallback)
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -1003,6 +1014,61 @@ function! LspStatus() abort
   endif
   return ''
 endfunction
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-lsputils
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+lua <<EOF
+if vim.fn.has('nvim-0.5.1') == 1 then
+  vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+  vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+  vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+  vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+  vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+  vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+  vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+  vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+else
+  local bufnr = vim.api.nvim_buf_get_number(0)
+  vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
+      require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
+  end
+  vim.lsp.handlers['textDocument/references'] = function(_, _, result)
+      require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
+  end
+  vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
+      require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+  end
+  vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
+      require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+  end
+  vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
+      require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+  end
+  vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
+      require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+  end
+  vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
+      require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
+  end
+  vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
+      require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
+  end
+end
+EOF
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-lightbulb
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+lua <<EOF
+require('nvim-lightbulb').setup({autocmd = {enabled = true}})
+EOF
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
