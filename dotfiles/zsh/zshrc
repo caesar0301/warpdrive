@@ -357,7 +357,6 @@ fi
 
 # MacOSX
 if [[ $OSTYPE == darwin*  ]]; then
-
 # Python3
 brew_installed=(python3 java11 gcc)
 if command -v brew &>/dev/null; then
@@ -368,29 +367,6 @@ if command -v brew &>/dev/null; then
         fi
     done
 fi
-
-# Enable GNU GCC by default
-if command -v brew &>/dev/null && [ $(brew --prefix gcc) ]; then
-    GNU_GCC_HOME=$(brew --prefix gcc)
-    if [[ -e "$GNU_GCC_HOME/bin/gcc-12" ]]; then
-        GCC_VER="12"
-    elif [[ -e "$GNU_GCC_HOME/bin/gcc-11" ]]; then
-        GCC_VER="11"
-    elif [[ -e "$GNU_GCC_HOME/bin/gcc-10" ]]; then
-        GCC_VER="10"
-    elif [[ -e "$GNU_GCC_HOME/bin/gcc-9" ]]; then
-        GCC_VER="9"
-    elif [[ -e "$GNU_GCC_HOME/bin/gcc-8" ]]; then
-        GCC_VER="8"
-    fi
-    if [ "x$GCC_VER" != "x" ]; then
-        alias gcc=$GNU_GCC_HOME/bin/gcc-${GCC_VER}
-        alias g++=$GNU_GCC_HOME/bin/g++-${GCC_VER}
-        export CC=$GNU_GCC_HOME/bin/gcc-${GCC_VER}
-        export CXX=$GNU_GCC_HOME/bin/g++-${GCC_VER}
-    fi
-fi
-
 fi # end $OSTYPE == darwin*
 
 
