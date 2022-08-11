@@ -81,13 +81,13 @@ endif
 
 " Nvim-specific plugins
 if has('nvim')
-
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'nvim-lua/lsp-status.nvim'
+Plug 'nvim-lua/completion-nvim'
 " Code navigation
 Plug 'onsails/lspkind.nvim'
 Plug 'antoinemadec/FixCursorHold.nvim'
@@ -96,7 +96,6 @@ Plug 'simrat39/symbols-outline.nvim'
 " Optimized pop-up of quickfix etc. (depends on bat)
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
-
 endif
 
 call plug#end()
@@ -368,7 +367,7 @@ imap <C-e> <ESC>A
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ helloCWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -851,6 +850,13 @@ lua <<EOF
 local lspconfig = require('lspconfig')
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
+lsp_status.config({
+  indicator_errors = 'E',
+  indicator_warnings = 'W',
+  indicator_info = 'i',
+  indicator_hint = '?',
+  indicator_ok = 'Ok',
+})
 
 -- Mappings.
 local opts = { noremap=true, silent=true }
@@ -861,6 +867,8 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function after the language server attaches to the current buffer
 local common_on_attach = function(client, bufnr)
+  print("LSP started.");
+  require'completion'.on_attach(client)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   -- Mappings.
@@ -871,10 +879,15 @@ local common_on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
   vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<leader>=', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<leader>gw', vim.lsp.buf.document_symbol, bufopts)
+  vim.keymap.set('n', '<leader>gW', vim.lsp.buf.workspace_symbol, bufopts)
   vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
+  vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
   -- lsp-status
   lsp_status.on_attach(client)
 end
@@ -947,7 +960,7 @@ cmp.setup {
       select = true,
     },
     -- luasnip: https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    ['<C-n>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
@@ -958,7 +971,7 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ['<C-p>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -1023,9 +1036,10 @@ endif
 " Plugins => lsp-status
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
+" FIXME: messed line format on clangd with multiple buffers
+"  if luaeval('#vim.lsp.buf_get_clients() > 0')
+"    return luaeval("require('lsp-status').status()")
+"  endif
   return ''
 endfunction
 
@@ -1050,6 +1064,39 @@ nnoremap <leader>so :SymbolsOutline<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('nvim')
 lua <<EOF
+local border_chars = {
+    TOP_LEFT = '┌',
+    TOP_RIGHT = '┐',
+    MID_HORIZONTAL = '─',
+    MID_VERTICAL = '│',
+    BOTTOM_LEFT = '└',
+    BOTTOM_RIGHT = '┘',
+}
+vim.g.lsp_utils_location_opts = {
+    height = 24,
+    mode = 'editor',
+    preview = {
+        title = 'Location Preview',
+        border = true,
+        border_chars = border_chars
+    },
+    keymaps = {
+        n = {
+            ['<C-n>'] = 'j',
+            ['<C-p>'] = 'k',
+        }
+    }
+}
+vim.g.lsp_utils_symbols_opts = {
+    height = 24,
+    mode = 'editor',
+    preview = {
+        title = 'Symbols Preview',
+        border = true,
+        border_chars = border_chars
+    },
+    prompt = {},
+}
 if vim.fn.has('nvim-0.5.1') == 1 then
   vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
   vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
