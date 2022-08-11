@@ -89,12 +89,13 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'nvim-lua/lsp-status.nvim'
 " Code navigation
-Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
-Plug 'ray-x/navigator.lua'
 Plug 'onsails/lspkind.nvim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'kosayoda/nvim-lightbulb'
 Plug 'simrat39/symbols-outline.nvim'
+" Optimized pop-up of quickfix etc. (depends on bat)
+Plug 'RishabhRD/popfix'
+Plug 'RishabhRD/nvim-lsputils'
 
 endif
 
@@ -847,7 +848,6 @@ map <leader>W :Ag<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('nvim')
 lua <<EOF
-require('navigator').setup()
 local lspconfig = require('lspconfig')
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
@@ -894,6 +894,10 @@ for _, lsp in ipairs(servers) do
 end
 
 -- clangd server
+local clangd_on_attach = function(client, bufnr)
+  common_on_attach(client, bufnr)
+  vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
+end
 lspconfig.clangd.setup {
   handlers = lsp_status.extensions.clangd.setup(),
   init_options = {
@@ -901,10 +905,7 @@ lspconfig.clangd.setup {
   },
   cmd = {"clangd", "--background-index=false"},
   capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    common_on_attach(client, bufnr)
-    vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
-  end,
+  on_attach = clangd_on_attach,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
@@ -1005,6 +1006,14 @@ require'nvim-treesitter.configs'.setup {
       node_decremental = "grm",
     },
   },
+  refactor = {
+    highlight_definitions = {
+      enable = true,
+      -- Set to false if you have an `updatetime` of ~100.
+      clear_on_cursor_move = true,
+    },
+	highlight_current_scope = { enable = true },
+  },
 }
 EOF
 endif
@@ -1035,6 +1044,39 @@ endif
 " Plugins => symbols-outline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>so :SymbolsOutline<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-lsputils
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+lua <<EOF
+local bufnr = vim.api.nvim_buf_get_number(0)
+vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
+  require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
+end
+vim.lsp.handlers['textDocument/references'] = function(_, _, result)
+  require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
+end
+vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
+  require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
+  require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
+  require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
+  require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
+  require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
+end
+vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
+  require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
+end
+EOF
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
