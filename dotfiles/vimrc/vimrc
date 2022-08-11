@@ -1073,8 +1073,13 @@ local border_chars = {
     BOTTOM_RIGHT = '┘',
 }
 vim.g.lsp_utils_location_opts = {
-    height = 24,
+    height = 20,
     mode = 'editor',
+    list = {
+        numbering = true,
+        border = true,
+        border_chars = border_chars
+    },
     preview = {
         title = 'Location Preview',
         border = true,
@@ -1088,8 +1093,13 @@ vim.g.lsp_utils_location_opts = {
     }
 }
 vim.g.lsp_utils_symbols_opts = {
-    height = 24,
+    height = 20,
     mode = 'editor',
+    list = {
+        numbering = true,
+        border = true,
+        border_chars = border_chars
+    },
     preview = {
         title = 'Symbols Preview',
         border = true,
