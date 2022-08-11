@@ -313,6 +313,9 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
+" Close other buffers but this one
+map <leader>bo :%bd\|e#\|bd#<cr>\|'""'
+
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
 
@@ -351,9 +354,6 @@ map <C-a> <ESC>^
 imap <C-a> <ESC>I
 map <C-e> <ESC>$
 imap <C-e> <ESC>A
-
-" Close other buffers but this one
-noremap <leader>bo :%bd\|e#\|bd#<cr>\|'""'
 
 
 """"""""""""""""""""""""""""""
@@ -809,16 +809,10 @@ xnoremap <leader>v :'<'>GBrowse!<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>tt :TagbarToggle<CR>
+nnoremap <leader>tb :TagbarToggle<CR>
 let g:tagbar_position = 'right'
 " Sort by positions in file
 let g:tagbar_sort = 0
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => bclose
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <Leader>bd :Bclose<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -857,6 +851,8 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 local lspconfig = require('lspconfig')
+local lsp_status = require('lsp-status')
+lsp_status.register_progress()
 
 -- Use an on_attach function after the language server attaches to the current buffer
 local common_on_attach = function(client, bufnr)
@@ -874,11 +870,14 @@ local common_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
+  -- lsp-status
+  lsp_status.on_attach(client)
 end
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
 -- General servers
 local servers = { 'rust_analyzer', 'tsserver' }
@@ -890,21 +889,17 @@ for _, lsp in ipairs(servers) do
 end
 
 -- clangd server
-local lsp_status = require('lsp-status')
-lsp_status.register_progress()
 lspconfig.clangd.setup {
   handlers = lsp_status.extensions.clangd.setup(),
   init_options = {
     clangdFileStatus = true
   },
   cmd = {"clangd", "--background-index=false"},
+  capabilities = capabilities,
   on_attach = function(client, bufnr)
-    lsp_status.on_attach(client)
     common_on_attach(client, bufnr)
     vim.keymap.set('n', '<leader>sh', ":ClangdSwitchSourceHeader<CR>", bufopts)
   end,
-  capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities),
-  --capabilities = lsp_status.capabilities,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
