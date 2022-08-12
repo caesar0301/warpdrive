@@ -780,14 +780,14 @@ let g:formatters_java=['gjf']
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
-let g:formatters_python=['black']
+let g:formatdef_pyfmt='"black -"'
+let g:formatters_python=['pyfmt']
 " keymap
+nnoremap <leader>af :Autoformat<CR>
 if !has('nvim')
-  nnoremap <leader>af :Autoformat<CR>
+  command! -nargs=0 Format :Autoformat <args>
 endif
-if has('nvim')
-  let g:python3_host_prog="/usr/local/opt/python@3.9/bin/python3"
-endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Git gutter (Git diff)
@@ -860,10 +860,11 @@ lsp_status.config({
 
 -- Mappings.
 local opts = { noremap=true, silent=true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '<leader>eq', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<leader>ee', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
 
 -- Use an on_attach function after the language server attaches to the current buffer
 local common_on_attach = function(client, bufnr)
@@ -871,7 +872,7 @@ local common_on_attach = function(client, bufnr)
   require'completion'.on_attach(client)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  -- Mappings.
+  -- keymap
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -885,6 +886,7 @@ local common_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>=', vim.lsp.buf.formatting, bufopts)
   vim.keymap.set('n', '<leader>gw', vim.lsp.buf.document_symbol, bufopts)
   vim.keymap.set('n', '<leader>gW', vim.lsp.buf.workspace_symbol, bufopts)
+  vim.keymap.set('n', '<leader>gl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
   vim.keymap.set('n', '<leader>af', vim.lsp.buf.formatting, bufopts)
   vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
   vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
