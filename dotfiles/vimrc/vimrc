@@ -902,7 +902,12 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
 -- General servers
-local servers = { 'rust_analyzer', 'tsserver' }
+local servers = {
+  'rust_analyzer',
+  'tsserver',
+  'r_language_server',
+  'jdtls',
+}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = common_on_attach,
