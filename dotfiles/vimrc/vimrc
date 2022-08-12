@@ -922,13 +922,13 @@ lspconfig.clangd.setup {
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
--- java
+-- java server
 lspconfig.jdtls.setup{
   on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
 }
 
--- python
+-- python server
 lspconfig.pyright.setup{
   on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/bin/pyright-langserver", "--stdio"},
