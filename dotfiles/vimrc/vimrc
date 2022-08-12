@@ -2,6 +2,10 @@
 " Maintainer:
 "       Amir Salihefendic — @amix3k
 "       Xiaming Chen - @caesar0301
+"
+" Prerequisites:
+"       vim-plug: https://github.com/junegunn/vim-plug
+"       neovim: (recommended) https://neovim.io/
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Vim-plug

@@ -1,13 +1,17 @@
-########################################
-# Filename: .zshrc
-# About: init script of zsh
-# Maintained by xiaming.cxm
-# 2022-07-25
-########################################
+#############################################################
+# Filename: ~/.zshrc
+#     About: init script of zsh
+#     Maintained by xiaming.cxm
+#     2022-07-25
+#
+# Install:
+#     mkdir -p ~/.zi
+#     git clone https://github.com/z-shell/zi.git ~/.zi/bin
+#############################################################
 
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
 # Basics and commons 
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
 
 # Editor
 export EDITOR=nvim
@@ -41,11 +45,9 @@ if [[ $OSTYPE == darwin*  ]]; then
     export LD_LIBRARY_PATH="/opt/local/lib:$LD_LIBRARY_PATH"
 fi
 
-#----------------------------
-# zi: plugin manager
-# mkdir -p ~/.zi
-# git clone https://github.com/z-shell/zi.git ~/.zi/bin
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
+# ZI manager
+#+++++++++++++++++++++++++++++++++++++++
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
@@ -135,10 +137,10 @@ if [[ ${PROFILE_PERF} == 1 ]]; then
     zprof
 fi
 
+#+++++++++++++++++++++++++++++++++++++++
+# ALIAS
+#+++++++++++++++++++++++++++++++++++++++
 
-#----------------------------
-# alias
-#----------------------------
 # Use nvim as default
 alias vi=nvim
 
@@ -180,9 +182,9 @@ alias cmake="cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1"
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
 
-#----------------------------
-# Functions
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
+# FUNCTIONS
+#+++++++++++++++++++++++++++++++++++++++
 
 # Reload zshrc
 function zshld {
@@ -293,18 +295,18 @@ function disablePrefixLocal {
     export CPLUS_INCLUDE_PATH=$OLD_LP_CPPINCLUDE
 }
 
-#----------------------------
-# Plugin configs
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
+# PLUGINS
+#+++++++++++++++++++++++++++++++++++++++
 
 if [ -e "$HOME/.fzf.zsh" ]; then
     source ~/.fzf.zsh
 fi
 
 
-#----------------------------
-# Devtools config
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
+# DEVTOOLS
+#+++++++++++++++++++++++++++++++++++++++
 
 # golang
 export GOPATH=${HOME}/go
@@ -370,7 +372,7 @@ fi
 fi # end $OSTYPE == darwin*
 
 
-#----------------------------
-# User-defined as following
-#----------------------------
+#+++++++++++++++++++++++++++++++++++++++
+# USER-DEFINED
+#+++++++++++++++++++++++++++++++++++++++
 
