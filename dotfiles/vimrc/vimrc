@@ -102,6 +102,7 @@ Plug 'simrat39/symbols-outline.nvim'
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
 Plug 'mfussenegger/nvim-jdtls'
+Plug 'mfussenegger/nvim-dap'
 endif
 
 call plug#end()
@@ -927,7 +928,6 @@ local servers = {
   'rust_analyzer',
   'tsserver',
   'r_language_server',
-  --'jdtls',
   'pyright'
 }
 for _, lsp in ipairs(servers) do
@@ -984,9 +984,6 @@ local function mk_config()
     };
     handlers = {},
     capabilities = capabilities;
-    on_init = on_init;
-    on_attach = on_attach;
-    on_exit = on_exit;
     init_options = {},
     settings = {},
   }
@@ -1004,9 +1001,6 @@ config.on_attach = function(client, bufnr)
   vim.keymap.set('v', 'crm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], opts)
   vim.keymap.set('n', "crc", jdtls.extract_constant, opts)
   local create_command = vim.api.nvim_buf_create_user_command
-  create_command(bufnr, 'W', require('me.lsp.ext').remove_unused_imports, {
-    nargs = 0,
-  })
 end
 config.settings = {
   java = {
