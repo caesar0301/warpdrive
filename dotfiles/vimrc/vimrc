@@ -101,6 +101,7 @@ Plug 'simrat39/symbols-outline.nvim'
 " Optimized pop-up of quickfix etc. (depends on bat)
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
+Plug 'mfussenegger/nvim-jdtls'
 endif
 
 call plug#end()
@@ -926,7 +927,8 @@ local servers = {
   'rust_analyzer',
   'tsserver',
   'r_language_server',
-  'jdtls',
+  --'jdtls',
+  'pyright'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -951,13 +953,7 @@ lspconfig.clangd.setup {
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
--- python server
-lspconfig.pyright.setup{
-  on_attach = common_on_attach,
-  cmd = {"/home/xiaming.cxm/.local/bin/pyright-langserver", "--stdio"},
-}
-
--- python server
+-- yaml server
 require('lspconfig').yamlls.setup {
   on_attach = common_on_attach,
   settings = {
@@ -968,6 +964,123 @@ require('lspconfig').yamlls.setup {
     },
   }
 }
+
+-- java on nvim-jdtls
+local jdtls = require('jdtls')
+local home = os.getenv("HOME")
+local jdtls_install_dir = home .. "/.local/jdtls"
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+local workspace_dir = home .. "/.cache/jdtls/" .. project_name
+local configuration = jdtls_install_dir .. '/config_mac'
+local function mk_config()
+  local lsp = require 'vim.lsp'
+  local capabilities = lsp.protocol.make_client_capabilities()
+  capabilities.workspace.configuration = true
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  return {
+    flags = {
+      debounce_text_changes = 80,
+      allow_incremental_sync = true,
+    };
+    handlers = {},
+    capabilities = capabilities;
+    on_init = on_init;
+    on_attach = on_attach;
+    on_exit = on_exit;
+    init_options = {},
+    settings = {},
+  }
+end
+local config = mk_config()
+config.on_attach = function(client, bufnr)
+  common_on_attach(client, bufnr)
+  jdtls.setup_dap({hotcodereplace = 'auto'})
+  jdtls.setup.add_commands()
+  local opts = { silent = true, buffer = bufnr }
+  vim.keymap.set('n', "<A-o>", jdtls.organize_imports, opts)
+  vim.keymap.set('n', "<leader>df", jdtls.test_class, opts)
+  vim.keymap.set('n', "<leader>dn", jdtls.test_nearest_method, opts)
+  vim.keymap.set('n', "crv", jdtls.extract_variable, opts)
+  vim.keymap.set('v', 'crm', [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], opts)
+  vim.keymap.set('n', "crc", jdtls.extract_constant, opts)
+  local create_command = vim.api.nvim_buf_create_user_command
+  create_command(bufnr, 'W', require('me.lsp.ext').remove_unused_imports, {
+    nargs = 0,
+  })
+end
+config.settings = {
+  java = {
+    signatureHelp = { enabled = true };
+    contentProvider = { preferred = 'fernflower' };
+    completion = {
+      favoriteStaticMembers = {
+        "org.hamcrest.MatcherAssert.assertThat",
+        "org.hamcrest.Matchers.*",
+        "org.hamcrest.CoreMatchers.*",
+        "org.junit.jupiter.api.Assertions.*",
+        "java.util.Objects.requireNonNull",
+        "java.util.Objects.requireNonNullElse",
+        "org.mockito.Mockito.*"
+      },
+      filteredTypes = {
+        "com.sun.*",
+        "io.micrometer.shaded.*",
+        "java.awt.*",
+        "jdk.*",
+        "sun.*",
+      },
+    };
+    sources = {
+      organizeImports = {
+        starThreshold = 9999;
+        staticStarThreshold = 9999;
+      };
+    };
+    codeGeneration = {
+      toString = {
+        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
+      },
+      hashCodeEquals = {
+        useJava7Objects = true,
+      },
+      useBlocks = true,
+    };
+    format = {
+      comments = {
+        enabled = false,
+      },
+      settings = {
+        url = "https://gist.githubusercontent.com/ikws4/7880fdcb4e3bf4a38999a628d287b1ab/raw/9005c451ed1ff629679d6100e22d63acc805e170/jdtls-formatter-style.xml",
+      },
+    };
+  };
+}
+config.cmd = {
+    'java',
+    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+    '-Dosgi.bundles.defaultStartLevel=4',
+    '-Declipse.product=org.eclipse.jdt.ls.core.product',
+    '-Dlog.protocol=true',
+    '-Dlog.level=ALL',
+    '-Xms4g',
+    '--add-modules=ALL-SYSTEM',
+    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+    '-jar', vim.fn.glob(jdtls_install_dir .. '/plugins/org.eclipse.equinox.launcher_*.jar'),
+    '-configuration', configuration,
+    '-data', workspace_dir,
+}
+local bundles = {}
+local extendedClientCapabilities = jdtls.extendedClientCapabilities;
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true;
+config.init_options = {
+  bundles = bundles;
+  extendedClientCapabilities = extendedClientCapabilities;
+}
+-- mute; having progress reports is enough
+config.handlers['language/status'] = function() end
+jdtls.start_or_attach(config)
+require('jdtls').start_or_attach(config)
 
 -- nvim-cmp setup
 local cmp = require('cmp')
@@ -1093,6 +1206,7 @@ endif
 " Plugins => symbols-outline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>so :SymbolsOutline<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => nvim-lsputils
