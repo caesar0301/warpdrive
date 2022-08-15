@@ -64,6 +64,7 @@ Plug 'tpope/vim-surround'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mru.vim'
+Plug 'tarekbecker/vim-yaml-formatter'
 
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
@@ -941,6 +942,18 @@ lspconfig.jdtls.setup{
 lspconfig.pyright.setup{
   on_attach = common_on_attach,
   cmd = {"/home/xiaming.cxm/.local/bin/pyright-langserver", "--stdio"},
+}
+
+-- python server
+require('lspconfig').yamlls.setup {
+  on_attach = common_on_attach,
+  settings = {
+    yaml = {
+      schemas = {
+        ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = "/*.k8s.yaml",
+      },
+    },
+  }
 }
 
 -- nvim-cmp setup
