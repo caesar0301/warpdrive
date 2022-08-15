@@ -798,7 +798,7 @@ let g:autoformat_autoindent=0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 " Formatters
-let g:formatdef_gjf='"java -jar ~/.vim_runtime/sources_non_forked/bin/google-java-format-1.15.0-all-deps.jar -"'
+let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
 let g:formatters_java=['gjf']
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
@@ -949,12 +949,6 @@ lspconfig.clangd.setup {
   capabilities = capabilities,
   on_attach = clangd_on_attach,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
-}
-
--- java server
-lspconfig.jdtls.setup{
-  on_attach = common_on_attach,
-  cmd = {"/home/xiaming.cxm/.local/jdt.ls/bin/jdtls"},
 }
 
 -- python server
