@@ -773,6 +773,24 @@ endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-autoformat
+"
+" Some dependencies:
+"   Python: sudo pip install black
+"   JS & JSON: npm install -g js-beautify
+"   HTTP: npm install -g js-beautify
+"   CSS: npm install -g js-beautify
+"   Ruby: gem install ruby-beautify
+"   Golang: gofmt
+"   Rust: rustfmt
+"   Perl: cpanm Perl::Tidy
+"   Haskell: stylish-haskell
+"   Markdown: npm install -g remark-cli
+"   Shell: shfmt
+"   Lua: luafmt
+"   SQL: pip install sqlformat
+"   CMake: pip install cmake_format
+"   LaTeX: brew install latexindent
+"   OCaml: opam install ocamlformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:autoformat_verbosemode=1
 " Disable the fallback to vim defaults
@@ -787,6 +805,7 @@ let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
 let g:formatdef_pyfmt='"black -"'
 let g:formatters_python=['pyfmt']
+let g:formatdef_latexindent = '"latexindent -"'
 " keymap
 nnoremap <leader>af :Autoformat<CR>
 command! -nargs=0 Format :Autoformat <args>
