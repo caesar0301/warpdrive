@@ -153,6 +153,22 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 " Show line number
 set nu
 
+" Detect OS type
+if !exists("g:os_type")
+  if has("win64") || has("win32") || has("win16")
+    let g:os_type = "Windows"
+  else
+    let g:os_type = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
+" In case default invalid default python version
+if g:os_type == "Darwin"
+  let g:python3_host_prog =system('brew --prefix python3')
+else
+  let g:python3_host_prog = "~/.local/bin/python3"
+endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => VIM user interface
