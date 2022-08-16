@@ -164,7 +164,7 @@ endif
 
 " In case default invalid default python version
 if g:os_type == "Darwin"
-  let g:python3_host_prog =system('brew --prefix python3')
+  let g:python3_host_prog = substitute(system('brew --prefix python3'), '\n', '', '') .. '/bin/python3'
 else
   let g:python3_host_prog = "~/.local/bin/python3"
 endif
