@@ -275,25 +275,6 @@ function disableProxy {
     unset OLD_PROMPT
 }
 
-# Set local header and libs
-function enablePrefixLocal {
-    export OLD_LP_PATH=$PATH
-    export OLD_LP_LDPATH=$LD_LIBRARY_PATH
-    export OLD_LP_CINCLUDE=$C_INCLUDE_PATH
-    export OLD_LP_CPPINCLUDE=$CPLUS_INCLUDE_PATH
-
-    export PATH=$HOME/.local/bin:$PATH
-    export LD_LIBRARY_PATH=$HOME/.local/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
-    export C_INCLUDE_PATH=$HOME/.local/include:$C_INCLUDE_PATH
-    export CPLUS_INCLUDE_PATH=$HOME/.local/include:$CPLUS_INCLUDE_PATH
-}
-
-function disablePrefixLocal {
-    export PATH=$OLD_LP_PATH
-    export LD_LIBRARY_PATH=$OLD_LP_LDPATH
-    export C_INCLUDE_PATH=$OLD_LP_CINCLUDE
-    export CPLUS_INCLUDE_PATH=$OLD_LP_CPPINCLUDE
-}
 
 #+++++++++++++++++++++++++++++++++++++++
 # PLUGINS
