@@ -655,8 +655,8 @@ map <leader>f :MRU<CR>
 """"""""""""""""""""""""""""""
 let g:yankstack_yank_keys = ['y', 'd']
 
-nmap <C-p> <Plug>yankstack_substitute_older_paste
-nmap <C-n> <Plug>yankstack_substitute_newer_paste
+"nmap <C-p> <Plug>yankstack_substitute_older_paste
+"nmap <C-n> <Plug>yankstack_substitute_newer_paste
 
 
 """"""""""""""""""""""""""""""
@@ -1298,10 +1298,10 @@ iab xdate <C-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 " Auto complete with tab
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
+"inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+"inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 "inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
 "inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
