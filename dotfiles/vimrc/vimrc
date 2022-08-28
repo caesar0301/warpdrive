@@ -101,6 +101,7 @@ Plug 'simrat39/symbols-outline.nvim'
 " Optimized pop-up of quickfix etc. (depends on bat)
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
+Plug 'Olical/conjure'
 endif
 
 call plug#end()
