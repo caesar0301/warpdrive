@@ -101,7 +101,9 @@ Plug 'simrat39/symbols-outline.nvim'
 " Optimized pop-up of quickfix etc. (depends on bat)
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
+" Clojure
 Plug 'Olical/conjure'
+Plug 'PaterJason/cmp-conjure'
 endif
 
 call plug#end()
@@ -944,6 +946,7 @@ local servers = {
   'tsserver',
   'r_language_server',
   'jdtls',
+  'clojure_lsp'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -1036,6 +1039,7 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'conjure' }
   },
   formatting = {
     format = require('lspkind').cmp_format({
