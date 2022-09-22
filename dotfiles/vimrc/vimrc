@@ -944,10 +944,11 @@ capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 local servers = {
   'rust_analyzer',
   'tsserver',
-  'r_language_server',
-  'jdtls',
-  'clojure_lsp',
-  'hls',   -- Haskell
+  'r_language_server',  -- Rlang
+  'jdtls',              -- Java
+  'clojure_lsp',        -- Clojure
+  'hls',                -- Haskell
+  'metals',             -- Scala
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
