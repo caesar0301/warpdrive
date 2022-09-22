@@ -946,7 +946,8 @@ local servers = {
   'tsserver',
   'r_language_server',
   'jdtls',
-  'clojure_lsp'
+  'clojure_lsp',
+  'hls',   -- Haskell
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
