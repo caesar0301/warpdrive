@@ -826,7 +826,6 @@ let g:formatdef_pyfmt='"black -"'
 let g:formatters_python=['pyfmt']
 let g:formatdef_latexindent = '"latexindent -"'
 " keymap
-nnoremap <leader>af :Autoformat<CR>
 command! -nargs=0 Format :Autoformat <args>
 
 
