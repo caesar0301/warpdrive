@@ -10,179 +10,6 @@
 #############################################################
 
 #+++++++++++++++++++++++++++++++++++++++
-# Basics and commons 
-#+++++++++++++++++++++++++++++++++++++++
-
-# Editor
-export EDITOR=nvim
-
-# zsh history
-export HISTFILE=$HOME/.zhistory
-export HISTSIZE=9999
-export SAVEHIST=9999
-
-# Diagnose perf
-PROFILE_PERF=0
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zmodload zsh/zprof
-fi
-
-# zsh bundled
-autoload -U parseopts
-autoload -U zargs
-autoload -U zcalc
-autoload -U zed
-autoload -U zmv
-autoload -U compinit && compinit
-
-# Common path values
-export PATH=$HOME/bin:$PATH
-
-# MacPort
-if [[ $OSTYPE == darwin*  ]]; then
-    export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-    export C_INCLUDE_PATH="/opt/local/include:$C_INCLUDE_PATH"
-    export LD_LIBRARY_PATH="/opt/local/lib:$LD_LIBRARY_PATH"
-fi
-
-#+++++++++++++++++++++++++++++++++++++++
-# ZI manager
-#+++++++++++++++++++++++++++++++++++++++
-
-# Init zi manager
-ZI_HOME="${HOME}/.zi"
-MYEXT_HOME="${HOME}/.zsh_myext"
-source "${ZI_HOME}/bin/zi.zsh"
-
-autoload -Uz _zi
-(( ${+_comps}  )) && _comps[zi]=_zi
-
-# OMZ libs
-zi snippet OMZL::clipboard.zsh
-zi snippet OMZL::compfix.zsh
-zi snippet OMZL::completion.zsh
-zi snippet OMZL::correction.zsh
-zi snippet OMZL::directories.zsh
-zi snippet OMZL::functions.zsh
-zi snippet OMZL::git.zsh
-zi snippet OMZL::spectrum.zsh
-zi snippet OMZL::theme-and-appearance.zsh
-
-if [[ $OSTYPE == darwin*  ]]; then
-    zi snippet OMZP::brew
-    zi snippet OMZP::iterm2
-fi
-
-# Efficiency
-zi snippet OMZP::alias-finder
-zi snippet OMZP::cp
-zi snippet OMZP::extract
-zi snippet OMZP::vi-mode
-zi snippet OMZP::fzf
-zi snippet OMZP::dirhistory
-
-zi ice pick"z.sh"
-zi load rupa/z
-
-# Colored
-zi snippet OMZP::colored-man-pages
-
-# Dev
-zi snippet OMZP::git
-zi snippet OMZP::gitignore
-zi snippet OMZP::mvn
-
-# Share
-zi snippet OMZP::transfer
-
-# Web
-zi snippet OMZP::web-search
-zi snippet OMZP::urltools
-
-# Tmux
-zi snippet OMZP::tmux
-zi snippet OMZP::tmuxinator
-
-# Python
-zi snippet OMZP::pyenv
-zi snippet OMZP::virtualenv
-
-# Theme
-zi cdclear -q
-setopt promptsubst
-zi snippet OMZT::robbyrussell
-zi snippet OMZP::themes
-
-# Completion
-zi ice pick"zsh-history-substring-search.zsh"
-zi load zsh-users/zsh-history-substring-search
-
-zi ice pick"src"
-zi load zsh-users/zsh-completions
-fpath=($HOME/.zi/plugins/zsh-users---zsh-completions/src $fpath)
-
-# Fish-shell likes
-zi ice pick"zsh-autosuggestions.zsh"
-zi load zsh-users/zsh-autosuggestions
-zi ice pick "zsh-syntax-highlighting.zsh"
-zi load zsh-users/zsh-syntax-highlighting
-
-# Personal extensions
-if [ -e ${MYEXT_HOME} ]; then
-  for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do zi snippet $i; done
-fi
-
-# Profiling perf
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zprof
-fi
-
-#+++++++++++++++++++++++++++++++++++++++
-# ALIAS
-#+++++++++++++++++++++++++++++++++++++++
-
-# Use nvim as default
-alias vi=nvim
-
-# Common
-alias duh="du -hs .[^.]*"
-alias em='emacs'
-alias diff='diff -r'
-
-# configs
-alias ccvi='${=EDITOR} $HOME/.vimrc'
-alias ccnv='${=EDITOR} $HOME/.config/nvim/init.vim'
-alias ccnv2='${=EDITOR} $HOME/.config/nvim/init.lua'
-alias cczsh='${=EDITOR} $HOME/.zshrc'
-alias cctu='${=EDITOR} $HOME/.tmux.conf'
-
-# batch
-alias team="pssh -i -h $HOME/.pssh_hosts"
-
-# Proxy shortcut
-alias pc="proxychains4 -q"
-
-# Git
-alias ga="git add"
-alias gb="git branch"
-alias gba="git branch -av"
-alias gd="git diff --ws-error-highlight=all"
-alias gdc="git diff --cached"
-alias ghf="git log --follow -p --"
-alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
-alias gsrh="git submodule foreach --recursive git reset --hard"
-
-# java
-alias cfr="java -jar ~/bin/cfr-0.152.jar"
-
-# cmake with compile_commands.json output
-alias cmake="cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1"
-
-# Perf
-alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-
-
-#+++++++++++++++++++++++++++++++++++++++
 # FUNCTIONS
 #+++++++++++++++++++++++++++++++++++++++
 
@@ -275,6 +102,243 @@ function disableProxy {
     unset OLD_PROMPT
 }
 
+function _initPyenv {
+    if [ -e "$HOME/.pyenv" ]; then
+        export PYENV_ROOT="$HOME/.pyenv"
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        if command -v pyenv 1>/dev/null 2>&1; then
+            # Load pyenv automatically
+            eval "$(pyenv init --path)"
+            # Load pyenv-virtualenv automatically
+            eval "$(pyenv virtualenv-init -)"
+        fi
+    fi
+}
+
+function _initJenv {
+    if command -v jenv &>/dev/null && [ -e "$HOME/.jenv" ]; then
+        export PATH="$HOME/.jenv/bin:$PATH"
+        eval "$(jenv init -)"
+    fi
+}
+
+function _initRBenv {
+    if command -v rbenv &>/dev/null && [ -e "$HOME/.rbenv" ]; then
+        export PATH="$HOME/.rbenv/bin:$PATH"
+        eval "$(rbenv init - zsh)"
+    fi
+}
+
+function _initGoenv {
+    export GOPATH=${HOME}/go
+    export PATH=$GOPATH/bin:$PATH
+    export GO111MODULE=on
+    export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+}
+
+function _initRustEnv {
+    if command -v rustc &>/dev/null; then
+        export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+        export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+    fi
+    if command -v cargo &>/dev/null; then
+        if [ -e "$HOME/.cargo" ]; then
+            export PATH="$HOME/.cargo/bin":$PATH
+        fi
+    fi
+}
+
+function _initCuda {
+    if [ -e "/usr/local/cuda" ]; then
+        export PATH="/usr/local/cuda/bin$PATH"
+        export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    fi
+}
+
+function _initMacEnv {
+    # homebrew
+    brew_installed=(python3 java11 gcc) #***
+    if command -v brew &>/dev/null; then
+        for i in ${brew_installed[@]}; do
+            INSTALLED_HOME=$(brew --prefix ${i})
+            if [[ "x$?" == "x0" ]]; then
+                export PATH=$INSTALLED_HOME/bin:$PATH
+            fi
+        done
+    fi
+    # macports
+    export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+    export C_INCLUDE_PATH="/opt/local/include:$C_INCLUDE_PATH"
+    export LD_LIBRARY_PATH="/opt/local/lib:$LD_LIBRARY_PATH"
+}
+
+
+#+++++++++++++++++++++++++++++++++++++++
+# Basics and commons 
+#+++++++++++++++++++++++++++++++++++++++
+
+# Editor
+export EDITOR=nvim
+
+# zsh history
+export HISTFILE=$HOME/.zhistory
+export HISTSIZE=9999
+export SAVEHIST=9999
+
+# Diagnose perf
+PROFILE_PERF=0
+if [[ ${PROFILE_PERF} == 1 ]]; then
+    zmodload zsh/zprof
+fi
+
+# zsh bundled
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv
+autoload -U compinit && compinit
+
+# Common path values
+export PATH=$HOME/bin:$PATH
+
+
+#+++++++++++++++++++++++++++++++++++++++
+# ZI manager
+#+++++++++++++++++++++++++++++++++++++++
+
+# Init zi manager
+ZI_HOME="${HOME}/.zi"
+MYEXT_HOME="${HOME}/.zsh_myext"
+source "${ZI_HOME}/bin/zi.zsh"
+
+autoload -Uz _zi
+(( ${+_comps}  )) && _comps[zi]=_zi
+
+# OMZ libs
+zi snippet OMZL::clipboard.zsh
+zi snippet OMZL::compfix.zsh
+zi snippet OMZL::completion.zsh
+zi snippet OMZL::correction.zsh
+zi snippet OMZL::directories.zsh
+zi snippet OMZL::functions.zsh
+zi snippet OMZL::git.zsh
+zi snippet OMZL::spectrum.zsh
+zi snippet OMZL::theme-and-appearance.zsh
+
+if [[ $OSTYPE == darwin*  ]]; then
+    zi snippet OMZP::brew
+    zi snippet OMZP::iterm2
+fi
+
+# Efficiency
+zi snippet OMZP::alias-finder
+zi snippet OMZP::cp
+zi snippet OMZP::extract
+zi snippet OMZP::vi-mode
+zi snippet OMZP::fzf
+zi snippet OMZP::dirhistory
+
+zi ice pick"z.sh"
+zi load rupa/z
+
+# Colored
+zi snippet OMZP::colored-man-pages
+
+# Dev
+zi snippet OMZP::git
+zi snippet OMZP::gitignore
+zi snippet OMZP::mvn
+
+# Share
+zi snippet OMZP::transfer
+
+# Web
+zi snippet OMZP::web-search
+zi snippet OMZP::urltools
+
+# Tmux
+zi snippet OMZP::tmux
+zi snippet OMZP::tmuxinator
+
+# Python
+_initPyenv
+zi snippet OMZP::pyenv
+zi snippet OMZP::virtualenv
+
+# Theme
+zi cdclear -q
+setopt promptsubst
+zi snippet OMZT::robbyrussell
+zi snippet OMZP::themes
+
+# Completion
+zi ice pick"zsh-history-substring-search.zsh"
+zi load zsh-users/zsh-history-substring-search
+
+zi ice pick"src"
+zi load zsh-users/zsh-completions
+fpath=($HOME/.zi/plugins/zsh-users---zsh-completions/src $fpath)
+
+# Fish-shell likes
+zi ice pick"zsh-autosuggestions.zsh"
+zi load zsh-users/zsh-autosuggestions
+zi ice pick "zsh-syntax-highlighting.zsh"
+zi load zsh-users/zsh-syntax-highlighting
+
+# Personal extensions
+if [ -e ${MYEXT_HOME} ]; then
+  for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do zi snippet $i; done
+fi
+
+# Profiling perf
+if [[ ${PROFILE_PERF} == 1 ]]; then
+    zprof
+fi
+
+#+++++++++++++++++++++++++++++++++++++++
+# ALIAS
+#+++++++++++++++++++++++++++++++++++++++
+
+# Use nvim as default
+alias vi=nvim
+
+# Common
+alias duh="du -hs .[^.]*"
+alias em='emacs'
+alias diff='diff -r'
+
+# configs
+alias ccvi='${=EDITOR} $HOME/.vimrc'
+alias ccnv='${=EDITOR} $HOME/.config/nvim/init.vim'
+alias ccnv2='${=EDITOR} $HOME/.config/nvim/init.lua'
+alias cczsh='${=EDITOR} $HOME/.zshrc'
+alias cctu='${=EDITOR} $HOME/.tmux.conf'
+
+# batch
+alias team="pssh -i -h $HOME/.pssh_hosts"
+
+# Proxy shortcut
+alias pc="proxychains4 -q"
+
+# Git
+alias ga="git add"
+alias gb="git branch"
+alias gba="git branch -av"
+alias gd="git diff --ws-error-highlight=all"
+alias gdc="git diff --cached"
+alias ghf="git log --follow -p --"
+alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
+alias gsrh="git submodule foreach --recursive git reset --hard"
+
+# java
+alias cfr="java -jar ~/bin/cfr-0.152.jar"
+
+# cmake with compile_commands.json output
+alias cmake="cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+
+# Perf
+alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
 #+++++++++++++++++++++++++++++++++++++++
 # PLUGINS
@@ -289,71 +353,17 @@ fi
 # DEVTOOLS
 #+++++++++++++++++++++++++++++++++++++++
 
-# golang
-export GOPATH=${HOME}/go
-export PATH=$GOPATH/bin:$PATH
-export GO111MODULE=on
-export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
-
-# pyenv
-if [ -e "$HOME/.pyenv" ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    if command -v pyenv 1>/dev/null 2>&1; then
-        # Load pyenv automatically
-        eval "$(pyenv init --path)"
-        # Load pyenv-virtualenv automatically
-        eval "$(pyenv virtualenv-init -)"
-    fi
-fi
-
-# Rust
-if command -v rustc &>/dev/null; then
-    export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
-    export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
-fi
-
-# Cargo
-if command -v cargo &>/dev/null; then
-    if [ -e "$HOME/.cargo" ]; then
-        export PATH="$HOME/.cargo/bin":$PATH
-    fi
-fi
-
-# jenv
-if command -v jenv &>/dev/null && [ -e "$HOME/.jenv" ]; then
-    export PATH="$HOME/.jenv/bin:$PATH"
-    eval "$(jenv init -)"
-fi
-
-# rbenv
-if command -v rbenv &>/dev/null && [ -e "$HOME/.rbenv" ]; then
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init - zsh)"
-fi
-
-# cuda
-if [ -e "/usr/local/cuda" ]; then
-    export PATH="/usr/local/cuda/bin$PATH"
-    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-fi
-
-# MacOSX
+_initJenv
+_initRBenv
+_initGoenv
+_initRustEnv
+_initCuda
 if [[ $OSTYPE == darwin*  ]]; then
-# Python3
-brew_installed=(python3 java11 gcc)
-if command -v brew &>/dev/null; then
-    for i in ${brew_installed[@]}; do
-        INSTALLED_HOME=$(brew --prefix ${i})
-        if [[ "x$?" == "x0" ]]; then
-            export PATH=$INSTALLED_HOME/bin:$PATH
-        fi
-    done
+    _initMacEnv
 fi
-fi # end $OSTYPE == darwin*
 
 
 #+++++++++++++++++++++++++++++++++++++++
-# USER-DEFINED
+# USER-DEFINED Afterwards
 #+++++++++++++++++++++++++++++++++++++++
 
