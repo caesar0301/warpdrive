@@ -944,6 +944,7 @@ capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 local servers = {
   'rust_analyzer',
   'tsserver',
+  'pyright',            -- Python
   'r_language_server',  -- Rlang
   'jdtls',              -- Java
   'clojure_lsp',        -- Clojure
@@ -971,12 +972,6 @@ lspconfig.clangd.setup {
   capabilities = capabilities,
   on_attach = clangd_on_attach,
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
-}
-
--- python server
-lspconfig.pyright.setup{
-  on_attach = common_on_attach,
-  cmd = {"/home/xiaming.cxm/.local/bin/pyright-langserver", "--stdio"},
 }
 
 -- python server
