@@ -157,7 +157,7 @@ function _initCuda {
 
 function _initMacEnv {
     # homebrew
-    brew_installed=(python3 java11 gcc) #***
+    brew_installed=(python3 gcc) #***
     if command -v brew &>/dev/null; then
         for i in ${brew_installed[@]}; do
             INSTALLED_HOME=$(brew --prefix ${i})
