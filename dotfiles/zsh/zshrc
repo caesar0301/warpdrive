@@ -118,14 +118,18 @@ function _initPyenv {
 function _initJenv {
     if [ -e "$HOME/.jenv" ]; then
         export PATH="$HOME/.jenv/bin:$PATH"
-        eval "$(jenv init -)"
+        if command -v jenv 1>/dev/null 2>&1; then
+            eval "$(jenv init -)"
+        fi
     fi
 }
 
 function _initRBenv {
     if [ -e "$HOME/.rbenv" ]; then
         export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init - zsh)"
+        if command -v rbenv 1>/dev/null 2>&1; then
+            eval "$(rbenv init - zsh)"
+        fi
     fi
 }
 
@@ -141,10 +145,8 @@ function _initRustEnv {
         export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
         export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
     fi
-    if command -v cargo &>/dev/null; then
-        if [ -e "$HOME/.cargo" ]; then
-            export PATH="$HOME/.cargo/bin":$PATH
-        fi
+    if [ -e "$HOME/.cargo" ]; then
+        export PATH="$HOME/.cargo/bin":$PATH
     fi
 }
 
