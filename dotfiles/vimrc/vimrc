@@ -812,10 +812,9 @@ endif
 "   OCaml: opam install ocamlformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:autoformat_verbosemode=1
-" Disable the fallback to vim defaults
-let g:autoformat_autoindent=0
-let g:autoformat_retab = 0
-let g:autoformat_remove_trailing_spaces = 0
+let g:autoformat_autoindent=1
+let g:autoformat_retab=1
+let g:autoformat_remove_trailing_spaces=1
 " Formatters
 let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
 let g:formatters_java=['gjf']
