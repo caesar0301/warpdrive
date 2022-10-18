@@ -267,10 +267,6 @@ zi snippet OMZP::transfer
 zi snippet OMZP::web-search
 zi snippet OMZP::urltools
 
-# Tmux
-zi snippet OMZP::tmux
-zi snippet OMZP::tmuxinator
-
 # Python
 _initPyenv
 zi snippet OMZP::pyenv
