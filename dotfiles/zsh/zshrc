@@ -209,9 +209,6 @@ autoload -U zed
 autoload -U zmv
 autoload -U compinit && compinit
 
-# Common path values
-export PATH=$HOME/bin:$PATH
-
 
 #+++++++++++++++++++++++++++++++++++++++
 # ZI manager
@@ -373,4 +370,3 @@ fi
 #+++++++++++++++++++++++++++++++++++++++
 # USER-DEFINED Afterwards
 #+++++++++++++++++++++++++++++++++++++++
-
