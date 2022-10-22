@@ -134,8 +134,8 @@ function _initRBenv {
 }
 
 function _initGoenv {
-    export GOPATH=${HOME}/go
-    export PATH=$GOPATH/bin:$PATH
+    export GOPATH=$(go env GOPATH)
+    export PATH=$PATH:$GOPATH/bin
     export GO111MODULE=on
     export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 }
