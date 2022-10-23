@@ -323,6 +323,8 @@ alias ccvi='${=EDITOR} $HOME/.vimrc'
 alias ccnv='${=EDITOR} $HOME/.config/nvim/init.vim'
 alias ccnv2='${=EDITOR} $HOME/.config/nvim/init.lua'
 alias cczsh='${=EDITOR} $HOME/.zshrc'
+alias cczrc='${=EDITOR} $HOME/.zshrc'
+alias ccze='${=EDITOR} $HOME/.zshenv'
 alias cctu='${=EDITOR} $HOME/.tmux.conf'
 
 # batch
