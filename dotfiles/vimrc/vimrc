@@ -66,7 +66,7 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mru.vim'
 Plug 'tarekbecker/vim-yaml-formatter'
-Plug 'neovimhaskell/haskell-vim'
+Plug 'neovimhaskell/haskell-vim' "Syntax Highlighting and Indentation
 
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
