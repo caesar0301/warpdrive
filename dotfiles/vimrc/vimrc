@@ -31,6 +31,7 @@ Plug 'jalvesaq/Nvim-R'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'kassio/neoterm'
