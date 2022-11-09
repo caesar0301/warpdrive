@@ -1,5 +1,7 @@
 # Deploy k8s with kubeadm
 
+NOTE: docker, kubernetes, kubeadm之间有版本依赖的约束，兼容矩阵信息一般在kubernetes更新日志中，例如[CHANGELOG-1.14.md](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.14.md#external-dependencies)
+
 ## DOCKER
 
 Install docker community version:
