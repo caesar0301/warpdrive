@@ -123,3 +123,8 @@ $ ifconfig cni0 down
 $ ifconfig flannel.1 down
 $ ifconfig docker0 down
 ```
+
+## Reset kubeadm
+```
+kubeadm reset
+```
