@@ -100,6 +100,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
+对于老版本的k8s，请参考flannel官方说明：https://github.com/flannel-io/flannel/blob/master/Documentation/kubernetes.md#annotations
 
 ## Join working nodes
 ```
