@@ -67,6 +67,11 @@ apiVersion: kubelet.config.k8s.io/v1beta1
 cgroupDriver: cgroupfs
 ```
 
+### Pull images
+```
+kubeadm config images pull --config kubeadm.conf
+```
+
 ### Deploy master, i.e. apiserver
 ```
 sudo kubeadm init --config=kubeadm.conf --ignore-preflight-errors=all
