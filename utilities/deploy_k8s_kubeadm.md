@@ -6,7 +6,7 @@ NOTE: docker, kubernetes, kubeadm之间有版本依赖的约束，兼容矩阵�
 
 Install docker community version:
 ```bash
-sudo yum install docker-ce -b test
+sudo yum install docker-ce
 ```
 
 ### Configure docker
