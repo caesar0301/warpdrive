@@ -33,6 +33,20 @@ sudo usermod -aG docker $USER
 groups #USER
 ```
 
+### Move docker overlay data
+```bash
+# stop
+sudo systemctl stop docker
+# add to /etc/docker/daemon.json
+{
+    "data-root": "/new/path/docker-data-root"
+}
+# Move data
+rsync -avxP /var/lib/docker/ /new/path/docker-data-root
+# restart
+sudo systemctl start docker
+```
+
 ## KUBEADM
 
 ### Configure yum repo
