@@ -813,21 +813,23 @@ endif
 "   LaTeX: brew install latexindent
 "   OCaml: opam install ocamlformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <silent> <leader>af :Autoformat<cr>
 let g:autoformat_verbosemode=1
 let g:autoformat_autoindent=0
 let g:autoformat_retab=1
 let g:autoformat_remove_trailing_spaces=1
-" Formatters
+" Formatter definer
 let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
-let g:formatters_java=['gjf']
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
-let g:formatters_cmake=['cmakefmt']
+let g:formatdef_clangformat= '"/usr/local/bin/clang-format -"'
 let g:formatdef_pyfmt='"black -"'
+" Formatter user
+let g:formatters_java=['gjf']
+let g:formatters_cmake=['cmakefmt']
+let g:formatters_cpp=['clangformat']
 let g:formatters_python=['pyfmt']
 let g:formatdef_latexindent = '"latexindent -"'
-" keymap
-command! -nargs=0 Format :Autoformat <args>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -946,7 +948,7 @@ local common_on_attach = function(client, bufnr)
   print("LSP started.");
   require'completion'.on_attach(client)
   -- Overwrite :Format command in lsp buffers
-  vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
+  --vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   -- keymap
@@ -1040,7 +1042,7 @@ end
 cmp.setup {
   snippet = {
     expand = function(args)
-	  require('luasnip').lsp_expand(args.body)
+      require('luasnip').lsp_expand(args.body)
     end,
   },
   window = {
@@ -1123,7 +1125,7 @@ require'nvim-treesitter.configs'.setup {
       -- Set to false if you have an `updatetime` of ~100.
       clear_on_cursor_move = true,
     },
-	highlight_current_scope = { enable = true },
+    highlight_current_scope = { enable = true },
   },
 }
 EOF
@@ -1276,7 +1278,7 @@ set background=dark
 colorscheme codedark
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Extended => Turn persistent undo on 
+" Extended => Turn persistent undo on
 "    means that you can undo even when you close a buffer/VIM
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
@@ -1296,13 +1298,13 @@ cno $j e ./
 cno $c e <C-\>eCurrentFileDir("e")<cr>
 
 " $q is super useful when browsing on the command line
-" it deletes everything until the last slash 
+" it deletes everything until the last slash
 cno $q <C-\>eDeleteTillSlash()<cr>
 
 " Bash like keys for the command line
-cnoremap <C-A>		<Home>
-cnoremap <C-E>		<End>
-cnoremap <C-K>		<C-U>
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
 
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
@@ -1366,7 +1368,7 @@ endif
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " Open Ack and put the cursor in the right position
-map <leader>g :Ack 
+map <leader>g :Ack
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
@@ -1409,7 +1411,7 @@ func! DeleteTillSlash()
         else
             let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
         endif
-    endif   
+    endif
 
     return g:cmd_edited
 endfunc
