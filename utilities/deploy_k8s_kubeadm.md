@@ -116,6 +116,11 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 ```
 对于老版本的k8s，请参考flannel官方说明：https://github.com/flannel-io/flannel/blob/master/Documentation/kubernetes.md#annotations
 
+## storageclass
+
+We use basic local-path storageclass from rancher: https://github.com/rancher/local-path-provisioner
+
+
 ## Join working nodes
 ```
 kubeadm join <master-ip>:6443 --token <tokenstring> --discovery-token-ca-cert-hash <sha256string>
