@@ -123,8 +123,19 @@ We use basic local-path storageclass from rancher: https://github.com/rancher/lo
 
 ## Join working nodes
 ```
-kubeadm join <master-ip>:6443 --token <tokenstring> --discovery-token-ca-cert-hash <sha256string>
+kubeadm join <master-ip>:6443 --token <tokenName> --discovery-token-ca-cert-hash sha256:<casha>
 ```
+
+tokenName:
+```
+kubeadm token list
+```
+
+casha: 
+```
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+
 
 ## Diagnosis
 
