@@ -24,12 +24,12 @@ function zshld {
 # start or access tmux dev session
 function bingo {
     unset TMUX
-    tmux start-server
-    tmux has-session -t dev
+    tmux -u start-server
+    tmux -u has-session -t dev
     if [ $? != 0 ]; then
-        tmux new-session -d -s dev
+        tmux -u new-session -d -s dev
     fi
-    tmux attach -t dev
+    tmux -u attach -t dev
 }
 
 # Prune all docker junk data
@@ -312,6 +312,7 @@ fi
 
 # Use nvim as default
 alias vi=nvim
+alias tmux='tmux -u' #unicode-mode to fix nerdfont
 
 # Common
 alias duh="du -hs .[^.]*"
@@ -325,7 +326,7 @@ alias ccnv2='${=EDITOR} $HOME/.config/nvim/init.lua'
 alias cczsh='${=EDITOR} $HOME/.zshrc'
 alias cczrc='${=EDITOR} $HOME/.zshrc'
 alias ccze='${=EDITOR} $HOME/.zshenv'
-alias cctu='${=EDITOR} $HOME/.tmux.conf'
+alias cctmux='${=EDITOR} $HOME/.tmux.conf'
 alias ccclash='${=EDITOR} $HOME/.config/clash/config.yaml'
 
 # batch
