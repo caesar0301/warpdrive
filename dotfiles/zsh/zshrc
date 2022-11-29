@@ -279,7 +279,8 @@ zi snippet OMZP::virtualenv
 # Theme
 zi cdclear -q
 setopt promptsubst
-zi snippet OMZT::robbyrussell
+#zi snippet OMZT::robbyrussell
+zi snippet OMZT::candy
 zi snippet OMZP::themes
 
 # Completion
