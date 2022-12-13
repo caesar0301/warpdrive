@@ -223,7 +223,7 @@ autoload -U compinit && compinit
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
-MYEXT_HOME="${HOME}/.zsh_myext"
+MYEXT_HOME="${HOME}/.config/zsh_myext"
 source "${ZI_HOME}/bin/zi.zsh"
 
 autoload -Uz _zi
