@@ -15,8 +15,9 @@
 
 # Reload zshrc
 function zshld {
+    myextdir=$(basename $(echo "${MYEXT_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
     if [ -e $HOME/.zi ]; then
-        ls -d $HOME/.zi/snippets/* | grep "\.zsh_myext" | xargs rm -rf
+        ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
     source $HOME/.zshrc
 }
