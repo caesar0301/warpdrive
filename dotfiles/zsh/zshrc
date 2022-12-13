@@ -22,6 +22,20 @@ function zshld {
     source $HOME/.zshrc
 }
 
+# Load my extensions under $MYEXT_HOME
+function _load_my_zsh_extensions {
+    if [ -e ${MYEXT_HOME} ]; then
+        # Load plugins
+        for plugin in $(ls -d $MYEXT_HOME/*); do
+            zi load $plugin
+        done
+        # Load plain zsh scripts
+        for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
+            zi snippet $i;
+        done
+    fi
+}
+
 # start or access tmux dev session
 function bingo {
     unset TMUX
@@ -192,7 +206,7 @@ function _initHaskellEnv {
 }
 
 #+++++++++++++++++++++++++++++++++++++++
-# Basics and commons 
+# Basics and commons
 #+++++++++++++++++++++++++++++++++++++++
 
 # Editor
@@ -298,10 +312,8 @@ zi load zsh-users/zsh-autosuggestions
 zi ice pick "zsh-syntax-highlighting.zsh"
 zi load zsh-users/zsh-syntax-highlighting
 
-# Personal extensions
-if [ -e ${MYEXT_HOME} ]; then
-  for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do zi snippet $i; done
-fi
+# my extensions
+_load_my_zsh_extensions
 
 # Profiling perf
 if [[ ${PROFILE_PERF} == 1 ]]; then
