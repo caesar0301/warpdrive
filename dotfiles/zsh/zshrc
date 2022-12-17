@@ -97,16 +97,18 @@ function openw {
 # Proxy triggers
 function enableProxy {
     export OLD_PROMPT="$PROMPT"
-    PROXYH="${HTTP_PROXY_HOST:-127.0.0.1}"
+    HHOST="${PROXY_HTTP_HOST:-127.0.0.1}"
+    HPORT="${PROXY_HTTP_PORT:-7890}"
+    SPORT="${PROXY_SOCKS_PORT:-7891}"
     if [[ $(uname -r) =~ "microsoft-standard" ]]; then
         PROXYH=$(/mnt/c/Windows/system32/ipconfig.exe /all |
             sed -n -E "s|.*IPv4 Address.*([0-9]{3}(\.[0-9]*){3})\(Preferred\)|\1|p" |
             grep 192.168.0 |
             tr -d '\r\n\t[:blank:]')
     fi
-    export http_proxy="http://${PROXYH}:7890" \
-        https_proxy="http://${PROXYH}:7890" \
-        all_proxy="socks5://${PROXYH}:7891"
+    export http_proxy="http://${HHOST}:${HPORT}" \
+        https_proxy="http://${HHOST}:${HPORT}" \
+        all_proxy="socks5://${HHOST}:${SPORT}"
     export PROMPT="[P] $PROMPT"
 }
 
