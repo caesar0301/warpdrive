@@ -100,7 +100,7 @@ Plug 'onsails/lspkind.nvim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'kosayoda/nvim-lightbulb'
 Plug 'simrat39/symbols-outline.nvim'
-" Optimized pop-up of quickfix etc. (depends on bat)
+" Optimized pop-up of quickfix etc. (depends on https://github.com/sharkdp/bat)
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-lsputils'
 " Clojure
