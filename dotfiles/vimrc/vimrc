@@ -1102,7 +1102,7 @@ endif
 if has('nvim')
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c",  "cpp", "go", "haskell", "lua", "python", "vim"},
+  ensure_installed = {},
   sync_install = false,
   auto_install = false,
   ignore_install = {},
