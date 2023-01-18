@@ -119,6 +119,7 @@ function disableProxy {
     unset OLD_PROMPT
 }
 
+# Consume 15% startup time
 function _initPyenv {
     if [ -e "$HOME/.pyenv" ]; then
         export PYENV_ROOT="$HOME/.pyenv"
@@ -126,8 +127,6 @@ function _initPyenv {
         if command -v pyenv 1>/dev/null 2>&1; then
             # Load pyenv automatically
             eval "$(pyenv init --path)"
-            # Load pyenv-virtualenv automatically
-            eval "$(pyenv virtualenv-init -)"
         fi
     fi
 }
@@ -231,7 +230,7 @@ autoload -U zargs
 autoload -U zcalc
 autoload -U zed
 autoload -U zmv
-autoload -U compinit && compinit
+autoload -U compinit
 
 
 #+++++++++++++++++++++++++++++++++++++++
@@ -257,18 +256,11 @@ zi snippet OMZL::git.zsh
 zi snippet OMZL::spectrum.zsh
 zi snippet OMZL::theme-and-appearance.zsh
 
-if [[ $OSTYPE == darwin*  ]]; then
-    zi snippet OMZP::brew
-    zi snippet OMZP::iterm2
-fi
-
 # Efficiency
 zi snippet OMZP::alias-finder
-zi snippet OMZP::cp
 zi snippet OMZP::extract
 zi snippet OMZP::vi-mode
 zi snippet OMZP::fzf
-zi snippet OMZP::dirhistory
 
 zi ice pick"z.sh"
 zi load rupa/z
@@ -281,11 +273,7 @@ zi snippet OMZP::git
 zi snippet OMZP::gitignore
 zi snippet OMZP::mvn
 
-# Share
-zi snippet OMZP::transfer
-
 # Web
-zi snippet OMZP::web-search
 zi snippet OMZP::urltools
 
 # Python
