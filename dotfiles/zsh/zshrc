@@ -39,12 +39,13 @@ function _load_my_zsh_extensions {
 # start or access tmux dev session
 function bingo {
     unset TMUX
+    HOSTNAME=$(hostname | sed -E "s/\./_/g")
     tmux -u start-server
-    tmux -u has-session -t dev
+    tmux -u has-session -t $HOSTNAME
     if [ $? != 0 ]; then
-        tmux -u new-session -d -s dev
+        tmux -u new-session -d -s $HOSTNAME
     fi
-    tmux -u attach -t dev
+    tmux -u attach -t $HOSTNAME
 }
 
 # Prune all docker junk data
