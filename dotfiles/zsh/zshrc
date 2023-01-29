@@ -231,7 +231,7 @@ autoload -U zargs
 autoload -U zcalc
 autoload -U zed
 autoload -U zmv
-autoload -U compinit
+autoload -U compinit && compinit
 
 
 #+++++++++++++++++++++++++++++++++++++++
