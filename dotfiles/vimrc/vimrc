@@ -639,6 +639,13 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
+" Plugins => neoterm
+""""""""""""""""""""""""""""""
+" Disable default ,tt
+let g:neoterm_automap_keys = ''
+
+
+""""""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
 """"""""""""""""""""""""""""""
 let g:bufExplorerDefaultHelp=0
@@ -856,7 +863,7 @@ xnoremap <leader>v :'<'>GBrowse!<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>tb :TagbarToggle<CR>
+nnoremap <leader>tt :TagbarToggle<CR>
 let g:tagbar_position = 'right'
 " Sort by positions in file
 let g:tagbar_sort = 0
