@@ -710,7 +710,7 @@ let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
 
-function MyNerdToggle()
+function NerdTreeToggleOrFind()
     if &filetype == 'nerdtree'
         :NERDTreeTabsToggle
     else
@@ -719,9 +719,10 @@ function MyNerdToggle()
 endfunction
 
 " vim-nerdtree-tabs enforces consistent nerdtree
+map <F8> :NERDTreeTabsToggle<CR>
 map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nn :call MyNerdToggle()<cr>
-map <F8> :call MyNerdToggle()<CR>
+map <leader>nn :call NerdTreeToggleOrFind()<cr>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-multiple-cursors
