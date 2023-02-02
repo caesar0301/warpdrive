@@ -25,6 +25,10 @@ function install_vim() {
     echo "Configuring vim..."
     mkdir -p $HOME/.config/nvim
     cp $thispath/vim/nvim/init.vim $HOME/.config/nvim/init.vim
+    mkdir -p $HOME/.vim/autoload
+    cp $thispath/vim/vim-plug/plug.vim $HOME/.vim/autoload/plug.vim
+    mkdir -p $HOME/.local/share/nvim/site/autoload
+    cp $thispath/vim/vim-plug/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/vim/vimrc $HOME/.vimrc
     else
