@@ -2,6 +2,7 @@
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 thispath=$(dirname $abspath)
 
+# Change to 0 to install a copy instead of soft link
 SOFTLINK=1
 
 function install_zsh() {
