@@ -353,9 +353,6 @@ alias gsrh="git submodule foreach --recursive git reset --hard"
 # java
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
 
-# cmake with compile_commands.json output
-alias cmake="cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1"
-
 # Perf
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
