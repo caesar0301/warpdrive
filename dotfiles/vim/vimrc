@@ -814,7 +814,7 @@ endif
 "   LaTeX: brew install latexindent
 "   OCaml: opam install ocamlformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufWrite * :Autoformat
+au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py :Autoformat
 nnoremap <silent> <leader>af :Autoformat<cr>
 let g:autoformat_verbosemode=1
 let g:autoformat_autoindent=0
@@ -823,8 +823,8 @@ let g:autoformat_remove_trailing_spaces=1
 " Formatter definer
 let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
 let g:formatdef_gofmt_1='"gofmt"'
-let g:formatdef_cmakefmt='"/usr/local/bin/cmake-format -"'
-let g:formatdef_clangformat= '"/usr/local/bin/clang-format -"'
+let g:formatdef_cmakefmt='"cmake-format -"'
+let g:formatdef_clangformat= '"clang-format -"'
 let g:formatdef_pyfmt='"black -"'
 " Formatter user
 let g:formatters_java=['gjf']
