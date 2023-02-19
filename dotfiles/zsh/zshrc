@@ -333,6 +333,7 @@ alias cczrc='${=EDITOR} $HOME/.zshrc'
 alias ccze='${=EDITOR} $HOME/.zshenv'
 alias cctmux='${=EDITOR} $HOME/.tmux.conf'
 alias ccclash='${=EDITOR} $HOME/.config/clash/config.yaml'
+alias ccem='${=EDITOR} $HOME/.emacs'
 
 # batch
 alias team="pssh -i -h $HOME/.pssh_hosts"
