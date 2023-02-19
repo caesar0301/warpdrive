@@ -814,7 +814,7 @@ endif
 "   LaTeX: brew install latexindent
 "   OCaml: opam install ocamlformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py :Autoformat
+"au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py :Autoformat
 nnoremap <silent> <leader>af :Autoformat<cr>
 let g:autoformat_verbosemode=1
 let g:autoformat_autoindent=0

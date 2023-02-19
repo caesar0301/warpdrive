@@ -57,12 +57,14 @@ function install_emacs() {
     echo "Configuring emacs..."
     if [ -e $HOME/.emacs.d ]; then
         echo "~/.emacs.d existed, skip"
+    else
+        mkdir ~/.emacs.d
     fi
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/emacs/.emacs.d $HOME/.emacs.d
+        ln -sf $thispath/emacs/.emacds.d/settings $HOME/.emacs.d/settings
         ln -sf $thispath/emacs/.emacs $HOME/.emacs
     else
-        cp -r $thispath/emacs/.emacs.d $HOME
+        cp -r $thispath/emacs/.emacs.d/settings $HOME/.emacs.d/
         cp $thispath/emacs/.emacs $HOME/.emacs
     fi
     echo "Emacs configured"

@@ -375,9 +375,9 @@ _initGoenv
 _initRustEnv
 _initCuda
 _initHaskellEnv
-if [[ $OSTYPE == darwin*  ]]; then
-    _initMacEnv
-fi
+#if [[ $OSTYPE == darwin*  ]]; then
+#    _initMacEnv
+#fi
 
 
 #+++++++++++++++++++++++++++++++++++++++
