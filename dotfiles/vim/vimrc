@@ -168,9 +168,7 @@ if !exists("g:os_type")
 endif
 
 " In case default invalid default python version
-if g:os_type == "Darwin"
-  let g:python3_host_prog = substitute(system('brew --prefix python3'), '\n', '', '') .. '/bin/python3'
-else
+if !executable("python3")
   let g:python3_host_prog = substitute(system('echo ${PYTHON_HOME}'), '\n', '', '') .. '/bin/python3'
 endif
 

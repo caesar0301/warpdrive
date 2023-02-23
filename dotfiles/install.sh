@@ -60,6 +60,9 @@ function install_emacs() {
     else
         mkdir ~/.emacs.d
     fi
+    if [ -e $HOME/.emacs.d/settings ]; then
+        rm -rf $HOME/.emacs.d/settings
+    fi
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/emacs/.emacs.d/settings $HOME/.emacs.d/settings
         ln -sf $thispath/emacs/.emacs $HOME/.emacs
