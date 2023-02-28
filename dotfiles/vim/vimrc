@@ -168,7 +168,8 @@ if !exists("g:os_type")
 endif
 
 " In case default invalid default python version
-if !executable("python3")
+" PYTHON_HOME in use with higher priority. Otherwise in PATH
+if $PYTHON_HOME != ""
   let g:python3_host_prog = substitute(system('echo ${PYTHON_HOME}'), '\n', '', '') .. '/bin/python3'
 endif
 
@@ -955,13 +956,6 @@ lua <<EOF
 local lspconfig = require('lspconfig')
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
-lsp_status.config({
-  indicator_errors = 'E',
-  indicator_warnings = 'W',
-  indicator_info = 'i',
-  indicator_hint = '?',
-  indicator_ok = 'Ok',
-})
 
 -- Mappings.
 local opts = { noremap=true, silent=true }
