@@ -70,6 +70,12 @@
 ;;; lisp
 (package-install 'slime)
 
+;;; neotree
+(package-install 'neotree)
+
+;;; themes
+(package-install 'solarized-theme)
+
 ;; misc utilities
 (package-install 'flycheck)
 (package-install 'helm)

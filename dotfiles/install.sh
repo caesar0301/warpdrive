@@ -65,10 +65,10 @@ function install_emacs() {
     fi
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/emacs/.emacs.d/settings $HOME/.emacs.d/settings
-        ln -sf $thispath/emacs/.emacs $HOME/.emacs
+        ln -sf $thispath/emacs/.emacs.d/init.el $HOME/.emacs.d/init.el
     else
         cp -r $thispath/emacs/.emacs.d/settings $HOME/.emacs.d/
-        cp $thispath/emacs/.emacs $HOME/.emacs
+        cp $thispath/emacs/.emacs.d/init.el $HOME/.emacs.d/
     fi
     echo "Emacs configured"
 }

@@ -1,47 +1,31 @@
-;;; emacs-config -- my emacs configuration
-;;;
-;;; By Xiaming Chen <chen@xiaming.me>
+;-------------------
+;;; Custom Functions
+;--------------------
 
-;; path where settings files are kept
-(add-to-list 'load-path "~/.emacs.d/settings")
-(require 'custom-functions)
-(require 'melpa-settings)
+(defun system-is-mac ()
+  (interactive)
+  (string-equal system-type "darwin"))
 
-;; plugins
-(setq enable-auto-complete t)
-(setq enable-camelcase t)
-(setq enable-helm t)
-(setq enable-ido t)
-(setq enable-latex t)
-(setq enable-markdown t)
-(setq enable-matlab nil)
-(setq enable-pig nil)
-(setq enable-python t)
-(setq enable-rstat nil)
-(setq enable-scss nil)
-(setq enable-slime t)
-(setq enable-web-dev nil)
-(setq enable-yaml t)
-(setq enable-yasnippet t)
-(setq enable-zotero nil)
+(defun system-is-linux ()
+  (interactive)
+  (string-equal system-type "gnu/linux"))
 
-;; plugin settings
-(when enable-auto-complete (require 'auto-complete-settings))
-(when enable-camelcase (require 'camelcase-settings))
-(when enable-helm (require 'helm-settings))
-(when enable-ido (require 'ido-settings))
-(when enable-latex (require 'latex-settings))
-(when enable-markdown (require 'markdown-settings))
-(when enable-matlab (require 'matlab-settings))
-(when enable-pig (require 'pig-settings))
-(when enable-python (require 'python-settings))
-(when enable-rstat (require 'r-settings))
-(when enable-scss (require 'scss-settings))
-(when enable-slime (require 'slime-settings))
-(when enable-web-dev (require 'web-dev-settings))
-(when enable-yaml (require 'yaml-settings))
-(when enable-yasnippet (require 'yasnippet) (yas-global-mode 1))
-(when enable-zotero (require 'zotero))
+(defun system-is-windows()
+  (interactive)
+  (string-equal system-type "windows-nt"))
+
+(defun create-directory (dir)
+  (unless (file-exists-p dir)
+    (make-directory dir)))
+
+; set PATH, when we don't load .bashrc
+; function from https://gist.github.com/jakemcc/3887459
+(defun set-exec-path-from-shell-PATH ()
+  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo -n $PATH'")))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
 
 ;;-----------
 ;; Systems
@@ -207,32 +191,5 @@
 
 ;; truncate lines even in partial-width windows
 (setq truncate-partial-width-windows 0)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(zotelo helm-descbinds helm flycheck jedi auto-complete-auctex auctex yaml-mode markdown-mode matlab-mode r-autoyas ess scss-mode el-autoyas java-snippets yasnippet auto-complete use-package))
- '(safe-local-variable-values
-   '((c-file-offsets
-      (innamespace . 0)
-      (substatement-open . 0)
-      (c . c-lineup-dont-change)
-      (inextern-lang . 0)
-      (comment-intro . c-lineup-dont-change)
-      (arglist-cont-nonempty . c-lineup-arglist)
-      (block-close . 0)
-      (statement-case-intro . ++)
-      (brace-list-intro . ++)
-      (cpp-define-intro . +))
-     (c-auto-align-backslashes)
-     (whitespace-style quote
-                       (face trailing empty tabs))
-     (whitespace-action))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(provide 'basic-settings)
