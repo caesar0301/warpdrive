@@ -1,32 +1,3 @@
-;-------------------
-;;; Custom Functions
-;--------------------
-
-(defun system-is-mac ()
-  (interactive)
-  (string-equal system-type "darwin"))
-
-(defun system-is-linux ()
-  (interactive)
-  (string-equal system-type "gnu/linux"))
-
-(defun system-is-windows()
-  (interactive)
-  (string-equal system-type "windows-nt"))
-
-(defun create-directory (dir)
-  (unless (file-exists-p dir)
-    (make-directory dir)))
-
-; set PATH, when we don't load .bashrc
-; function from https://gist.github.com/jakemcc/3887459
-(defun set-exec-path-from-shell-PATH ()
-  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo -n $PATH'")))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-
 ;;-----------
 ;; Systems
 ;;-----------
@@ -135,6 +106,11 @@
 
 ;; set default font size
 (set-face-attribute 'default nil :height 140)
+
+;;---------
+;; Theme
+;;---------
+(load-theme 'darcula t)
 
 ;;---------
 ;; Windows

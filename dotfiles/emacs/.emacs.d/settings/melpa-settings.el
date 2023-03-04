@@ -69,12 +69,15 @@
 
 ;;; lisp
 (package-install 'slime)
+(package-install 'lispy)
 
-;;; neotree
+;;; projectile and neotree
+(package-install 'projectile)
 (package-install 'neotree)
 
 ;;; themes
 (package-install 'solarized-theme)
+(package-install 'darcula-theme)
 
 ;; misc utilities
 (package-install 'flycheck)

@@ -2,6 +2,9 @@
 ;;; lisp mode  ;;;
 ;;---------------;
 
+;;-------
+;; slime
+;;-------
 (require 'slime)
 (setq inferior-lisp-program "clasp")
 
@@ -16,4 +19,9 @@
           (lambda ()
             (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup)))
 
-(provide 'slime-settings)
+;;-------
+;; lispy
+;;-------
+(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+
+(provide 'lisp-settings)
