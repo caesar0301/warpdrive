@@ -19,6 +19,7 @@
 (setq enable-python t)
 (setq enable-rstat nil)
 (setq enable-scss nil)
+(setq enable-slime t)
 (setq enable-web-dev nil)
 (setq enable-yaml t)
 (setq enable-yasnippet t)
@@ -36,6 +37,7 @@
 (when enable-python (require 'python-settings))
 (when enable-rstat (require 'r-settings))
 (when enable-scss (require 'scss-settings))
+(when enable-slime (require 'slime-settings))
 (when enable-web-dev (require 'web-dev-settings))
 (when enable-yaml (require 'yaml-settings))
 (when enable-yasnippet (require 'yasnippet) (yas-global-mode 1))
@@ -211,7 +213,23 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(zotelo helm-descbinds helm flycheck jedi auto-complete-auctex auctex yaml-mode markdown-mode matlab-mode r-autoyas ess scss-mode el-autoyas java-snippets yasnippet auto-complete use-package)))
+   '(zotelo helm-descbinds helm flycheck jedi auto-complete-auctex auctex yaml-mode markdown-mode matlab-mode r-autoyas ess scss-mode el-autoyas java-snippets yasnippet auto-complete use-package))
+ '(safe-local-variable-values
+   '((c-file-offsets
+      (innamespace . 0)
+      (substatement-open . 0)
+      (c . c-lineup-dont-change)
+      (inextern-lang . 0)
+      (comment-intro . c-lineup-dont-change)
+      (arglist-cont-nonempty . c-lineup-arglist)
+      (block-close . 0)
+      (statement-case-intro . ++)
+      (brace-list-intro . ++)
+      (cpp-define-intro . +))
+     (c-auto-align-backslashes)
+     (whitespace-style quote
+                       (face trailing empty tabs))
+     (whitespace-action))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

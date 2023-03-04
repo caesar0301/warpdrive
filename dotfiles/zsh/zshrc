@@ -321,7 +321,7 @@ alias tmux='tmux -u' #unicode-mode to fix nerdfont
 
 # Common
 alias duh="du -hs .[^.]*"
-alias em='emacs'
+alias em='emacs -nw'
 alias diff='diff -r'
 
 # configs

@@ -67,6 +67,9 @@
 ;;; python
 (package-install 'jedi)
 
+;;; lisp
+(package-install 'slime)
+
 ;; misc utilities
 (package-install 'flycheck)
 (package-install 'helm)
