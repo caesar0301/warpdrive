@@ -2,21 +2,14 @@
 ;;;
 ;;; By Xiaming Chen <chen@xiaming.me>
 
-;; path where settings files are kept
-(add-to-list 'load-path "~/.emacs.d/settings")
-(require 'melpa-settings)
-(require 'custom-functions)
-(require 'basic-settings)
-(setq custom-file "~/.emacs.d/settings/custom.el")
-(load custom-file)
-
-;; plugins
+;; Global options
 (setq enable-auto-complete t)
 (setq enable-camelcase t)
 (setq enable-helm t)
 (setq enable-ide t)
 (setq enable-ido t)
-(setq enable-latex t)
+(setq enable-java t)
+(setq enable-latex nil)
 (setq enable-lisp t)
 (setq enable-markdown t)
 (setq enable-matlab nil)
@@ -28,6 +21,14 @@
 (setq enable-yaml t)
 (setq enable-yasnippet t)
 (setq enable-zotero nil)
+
+;; path where settings files are kept
+(add-to-list 'load-path "~/.emacs.d/settings")
+(require 'melpa-settings)
+(require 'custom-functions)
+(require 'basic-settings)
+(setq custom-file "~/.emacs.d/settings/custom.el")
+(load custom-file)
 
 ;; plugin settings
 (when enable-auto-complete (require 'auto-complete-settings))
@@ -47,4 +48,3 @@
 (when enable-yaml (require 'yaml-settings))
 (when enable-yasnippet (require 'yasnippet) (yas-global-mode 1))
 (when enable-zotero (require 'zotero))
-

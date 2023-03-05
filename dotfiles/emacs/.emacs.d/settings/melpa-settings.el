@@ -20,69 +20,86 @@
     (package-install 'use-package)))
 (require 'use-package)
 
-;; Install packages
-
-;;; autocomple
-(package-install 'auto-complete)
-(package-install 'yasnippet)
-
-;;; java
-(package-install 'java-snippets)
-
-;;; emacs-lisp
-(package-install 'el-autoyas)
-
-;;; web development
-;; (package-install 'multi-web-mode)
-;; (package-install 'php-auto-yasnippets)
-;; (package-install 'angular-snippets)
-;; (package-install 'django-snippets)
-
-;;; SCSS
-(package-install 'scss-mode)
-
-;;; rlang
-(package-install 'ess)
-(package-install 'r-autoyas)
-
-;;; matlab
-(package-install 'matlab-mode)
-
-;;; markdown
-(package-install 'markdown-mode)
-
-;;; yaml
-(package-install 'yaml-mode)
-
-;;; latex
-(package-install 'auctex)
-(package-install 'auto-complete-auctex)
-;; (package-install 'latex-preview-pane)
-;; (package-install 'latex-math-preview)
-
-;;; pig
-;; (package-install 'pig-snippets)
-;; (package-install 'pig-mode)
-
-;;; python
-(package-install 'jedi)
-
-;;; lisp
-(package-install 'slime)
-(package-install 'lispy)
-
-;;; projectile and neotree
-(package-install 'projectile)
-(package-install 'neotree)
-
 ;;; themes
 (package-install 'solarized-theme)
 (package-install 'darcula-theme)
 
-;; misc utilities
-(package-install 'flycheck)
-(package-install 'helm)
-(package-install 'helm-descbinds)
-(package-install 'zotelo)
+;;; autocomple
+(when enable-auto-complete
+  (package-install 'auto-complete)
+  (package-install 'flycheck)
+  (package-install 'helm)
+  (package-install 'helm-descbinds))
+
+;;; yasnippet
+(when enable-yasnippet
+  (package-install 'yasnippet))
+
+;;; java
+(when enable-java
+  (package-install 'java-snippets))
+
+;;; emacs-lisp
+(when enable-yasnippet
+  (package-install 'el-autoyas))
+
+;;; web development
+(when enable-web-dev 
+  (package-install 'ulti-web-mode)
+  (package-install 'angular-snippets)
+  (package-install 'django-snippets)
+  (when enable-yasnippet
+    (package-install 'php-auto-yasnippets)))
+
+;;; SCSS
+(when enable-scss
+  (package-install 'scss-mode))
+
+;;; rlang
+(when enable-rstat
+  (package-install 'ess)
+  (package-install 'r-autoyas))
+
+;;; matlab
+(when enable-matlab
+  (package-install 'matlab-mode))
+
+;;; markdown
+(when enable-markdown
+  (package-install 'markdown-mode))
+
+;;; yaml
+(when enable-yaml
+  (package-install 'yaml-mode))
+
+;;; latex
+(when enable-latex
+  (package-install 'auctex)
+  (package-install 'auto-complete-auctex)
+  (package-install 'latex-preview-pane)
+  (package-install 'latex-math-preview))
+
+;;; pig
+(when enable-pig
+  (package-install 'pig-mode)
+  (package-install 'pig-snippets))
+
+;;; python
+(when enable-python
+  (package-install 'jedi))
+
+;;; lisp
+(when enable-lisp
+  (package-install 'slime)
+  (package-install 'lispy))
+
+;;; projectile and neotree
+(when enable-ide
+  (package-install 'projectile)
+  (package-install 'neotree))
+
+;;; zotero
+(when enable-zotero
+  (package-install 'zotelo))
 
 (provide 'melpa-settings)
