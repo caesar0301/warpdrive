@@ -1035,7 +1035,7 @@ lspconfig.clangd.setup {
   root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
 }
 
--- python server
+-- yaml server
 require('lspconfig').yamlls.setup {
   on_attach = common_on_attach,
   settings = {
