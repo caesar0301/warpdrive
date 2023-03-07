@@ -26,5 +26,9 @@ function install_fzf() {
     fi
 }
 
+# autoformat
+npm install -g remark-cli js-beautify
+gem install ruby-beautify
+
 install_pyenv
 install_fzf
