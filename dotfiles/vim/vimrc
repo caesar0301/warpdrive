@@ -450,6 +450,10 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
+" Eanble checking for textual files
+autocmd BufRead,BufNewFile *.md setlocal spell
+autocmd BufRead,BufNewFile *.txt setlocal spell
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Misc
