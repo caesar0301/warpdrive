@@ -350,6 +350,8 @@ alias gdc="git diff --cached"
 alias ghf="git log --follow -p --"
 alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
 alias gsrh="git submodule foreach --recursive git reset --hard"
+alias gsur="git submodule update --init --recursive"
+alias git-quick-update="git commit -m \"Quick update\" && git push"
 
 # java
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
