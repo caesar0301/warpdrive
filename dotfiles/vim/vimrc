@@ -1010,6 +1010,7 @@ local servers = {
   'clojure_lsp',        -- Clojure
   'metals',             -- Scala
   'gopls',              -- Golang
+  'cmake',              -- CMake
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
