@@ -452,7 +452,6 @@ map <leader>s? z=
 
 " Eanble checking for textual files
 autocmd BufRead,BufNewFile *.md setlocal spell
-autocmd BufRead,BufNewFile *.txt setlocal spell
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
