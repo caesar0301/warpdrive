@@ -451,8 +451,8 @@ map <leader>sa zg
 map <leader>s? z=
 
 " Eanble checking for textual files
+autocmd FileType markdown setlocal spell
 autocmd BufRead,BufNewFile *.md setlocal spell
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => Misc
