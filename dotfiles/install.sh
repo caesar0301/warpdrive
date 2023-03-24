@@ -9,12 +9,8 @@ function install_zsh() {
     if [ -e $HOME/.zi ]; then
         echo "WARNING: $HOME/.zi existed, skip"
     else
-        typeset -Ag ZI
-        typeset -gx ZI[HOME_DIR]="${HOME}/.zi" ZI[BIN_DIR]="${ZI[HOME_DIR]}/bin"
-        command mkdir -p "$ZI[BIN_DIR]"
-        compaudit | xargs chown -R "$(whoami)" "$ZI[HOME_DIR]"
-        compaudit | xargs chmod -R go-w "$ZI[HOME_DIR]"
-        command git clone https://github.com/z-shell/zi.git "$ZI[BIN_DIR]"
+        mkdir -p "$HOME/.zi/bin"
+        git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
     fi
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/zsh/zshrc $HOME/.zshrc
