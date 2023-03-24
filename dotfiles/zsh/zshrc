@@ -241,11 +241,10 @@ autoload -U compinit && compinit
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
-MYEXT_HOME="${HOME}/.config/zsh/plugins"
+export MYEXT_HOME="${HOME}/.config/zsh/plugins"
 source "${ZI_HOME}/bin/zi.zsh"
-
 autoload -Uz _zi
-(( ${+_comps}  )) && _comps[zi]=_zi
+(( ${+_comps} )) && _comps[zi]=_zi
 
 # OMZ libs
 zi snippet OMZL::clipboard.zsh
