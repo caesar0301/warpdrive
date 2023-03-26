@@ -96,11 +96,11 @@ function openw {
 }
 
 # Proxy triggers
-function enableProxy {
+function proxy_enable {
     export OLD_PROMPT="$PROMPT"
     HHOST="${PROXY_HTTP_HOST:-127.0.0.1}"
-    HPORT="${PROXY_HTTP_PORT:-7890}"
-    SPORT="${PROXY_SOCKS_PORT:-7891}"
+    HPORT="${PROXY_HTTP_PORT:-6152}"
+    SPORT="${PROXY_SOCKS_PORT:-6153}"
     if [[ $(uname -r) =~ "microsoft-standard" ]]; then
         PROXYH=$(/mnt/c/Windows/system32/ipconfig.exe /all |
             sed -n -E "s|.*IPv4 Address.*([0-9]{3}(\.[0-9]*){3})\(Preferred\)|\1|p" |
@@ -113,7 +113,7 @@ function enableProxy {
     export PROMPT="[P] $PROMPT"
 }
 
-function disableProxy {
+function proxy_disable {
     export PROMPT=$OLD_PROMPT
     unset http_proxy
     unset https_proxy
