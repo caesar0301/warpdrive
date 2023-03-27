@@ -96,7 +96,7 @@ function openw {
 }
 
 # Proxy triggers
-function proxy_enable {
+function enable_proxy {
     export OLD_PROMPT="$PROMPT"
     HHOST="${PROXY_HTTP_HOST:-127.0.0.1}"
     HPORT="${PROXY_HTTP_PORT:-6152}"
@@ -113,7 +113,7 @@ function proxy_enable {
     export PROMPT="[P] $PROMPT"
 }
 
-function proxy_disable {
+function disable_proxy {
     export PROMPT=$OLD_PROMPT
     unset http_proxy
     unset https_proxy
