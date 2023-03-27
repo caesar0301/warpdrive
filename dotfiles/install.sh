@@ -10,6 +10,7 @@ function install_zsh() {
         echo "WARNING: $HOME/.zi existed, skip"
     else
         mkdir -p "$HOME/.zi/bin"
+        mkdir -p "$HOME/.zi/completions"
         git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
     fi
     if [ x$SOFTLINK == "x1" ]; then
