@@ -352,6 +352,7 @@ alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
 alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
 alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
+alias gqu="git-quick-update"
 
 # java
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
