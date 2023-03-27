@@ -15,22 +15,22 @@
 
 # Reload zshrc
 function zshld {
-    myextdir=$(basename $(echo "${MYEXT_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
+    myextdir=$(basename $(echo "${PLUGIN_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
     if [ -e $HOME/.zi ]; then
         ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
     source $HOME/.zshrc
 }
 
-# Load my extensions under $MYEXT_HOME
+# Load my extensions under $PLUGIN_HOME
 function _load_my_zsh_extensions {
-    if [ -e ${MYEXT_HOME} ]; then
+    if [ -e ${PLUGIN_HOME} ]; then
         # Load plugins
-        for plugin in $(ls -d $MYEXT_HOME/*); do
+        for plugin in $(ls -d $PLUGIN_HOME/*); do
             zi load $plugin
         done
         # Load plain zsh scripts
-        for i in `find ${MYEXT_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
+        for i in `find ${PLUGIN_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
             zi snippet $i;
         done
     fi
@@ -241,7 +241,7 @@ autoload -U compinit && compinit
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
-export MYEXT_HOME="${HOME}/.config/zsh/plugins"
+export PLUGIN_HOME="${HOME}/.zsh_runtime/plugins"
 source "${ZI_HOME}/bin/zi.zsh"
 autoload -Uz _zi
 (( ${+_comps} )) && _comps[zi]=_zi
