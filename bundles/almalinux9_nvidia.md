@@ -1,5 +1,11 @@
 # Install Nvidia Drivers on AlmaLinux 9
 
+NVIDIA has several driver series, each of which has different hardware support. To determine which driver you need to install, you'll first need to find your graphics card model.
+
+```
+/sbin/lspci | grep -e VGA
+```
+
 Step 1. First, let’s start by ensuring your system is up-to-date.
 ```
 sudo dnf makecache --refresh
@@ -51,3 +57,13 @@ Also, verify the installation worked by running the following command below:
 ```
 nvidia-smi
 ```
+
+Step 5. (optional) version lock
+Sometime, there is a need to lock to a particular driver version for any reason (regression, compatibility with another application, vulka beta branch or else). Using dnf versionlock module is the appropriate way to deal with that. Please remember that version lock will prevent any updates to the nvidia driver including fixes for kernel compatibilities if relevant.
+```
+dnf install python3-dnf-plugin-versionlock
+rpm -qa xorg-x11-drv-nvidia* *kmod-nvidia* nvidia-{settings,xconfig,modprobe,persistenced}  >> /etc/dnf/plugins/versionlock.list
+```
+
+## References
+* https://rpmfusion.org/Howto/NVIDIA
