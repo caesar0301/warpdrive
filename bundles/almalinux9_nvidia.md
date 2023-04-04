@@ -65,11 +65,18 @@ dnf install python3-dnf-plugin-versionlock
 rpm -qa "xorg-x11-drv-nvidia*" "*kmod-nvidia*" nvidia-{settings,xconfig,modprobe,persistenced}  >> /etc/dnf/plugins/versionlock.list
 ```
 
+## Install CUDA-toolkit
+
+```
+sudo yum config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
+sudo dnf install cuda-12.0.1-1
+```
+
 ## Problems
 
-1. **nvidia kernel module missing**
+1. **NVIDIA kernel module missing**
 
-This is caused by the enableness of secure boot in BIOS. Disable its. Related problme in the community: https://unix.stackexchange.com/questions/711756/fedora-nvidia-kernel-module-missing-falling-back-to-nouveau
+This is caused by the enabledness of secure boot in BIOS. Disable its. Related problem in the community: https://unix.stackexchange.com/questions/711756/fedora-nvidia-kernel-module-missing-falling-back-to-nouveau
 
 
 ## References
