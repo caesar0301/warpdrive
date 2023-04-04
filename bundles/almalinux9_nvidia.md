@@ -62,8 +62,15 @@ Step 5. (optional) version lock
 Sometime, there is a need to lock to a particular driver version for any reason (regression, compatibility with another application, vulka beta branch or else). Using dnf versionlock module is the appropriate way to deal with that. Please remember that version lock will prevent any updates to the nvidia driver including fixes for kernel compatibilities if relevant.
 ```
 dnf install python3-dnf-plugin-versionlock
-rpm -qa xorg-x11-drv-nvidia* *kmod-nvidia* nvidia-{settings,xconfig,modprobe,persistenced}  >> /etc/dnf/plugins/versionlock.list
+rpm -qa "xorg-x11-drv-nvidia*" "*kmod-nvidia*" nvidia-{settings,xconfig,modprobe,persistenced}  >> /etc/dnf/plugins/versionlock.list
 ```
+
+## Problems
+
+1. **nvidia kernel module missing**
+
+This is caused by the enableness of secure boot in BIOS. Disable its. Related problme in the community: https://unix.stackexchange.com/questions/711756/fedora-nvidia-kernel-module-missing-falling-back-to-nouveau
+
 
 ## References
 * https://rpmfusion.org/Howto/NVIDIA
