@@ -1,7 +1,7 @@
 https://vim.rtorr.com/lang/zh_cn/
 
 ## NERDTree操作
-
+```
 ?: 快速帮助文档
 o: 打开一个目录或者打开文件，创建的是buffer，也可以用来打开书签
 go: 打开一个文件，但是光标仍然留在NERDTree，创建的是buffer
@@ -30,3 +30,4 @@ f: 打开和关闭文件过滤器
 q: 关闭NERDTree
 A: 全屏显示NERDTree，或者关闭全屏
 m: 打开菜单
+```
