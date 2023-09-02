@@ -21,7 +21,7 @@ fi
 sudo cp $THISPATH/Clash-Meta.service /etc/systemd/system/Clash-Meta.service
 sudo systemctl daemon-reload
 
-sudo useradd -m clash-meta
+sudo useradd -M clash-meta
 sudo groupadd clash-meta
 sudo usermod -a -G clash-meta clash-meta
 
