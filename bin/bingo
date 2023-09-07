@@ -1,9 +1,0 @@
-#!/bin/bash
-unset TMUX
-
-tmux start-server
-tmux has-session -t dev
-if [ $? != 0 ]; then
-    tmux new-session -d -s dev
-fi
-tmux attach -t dev

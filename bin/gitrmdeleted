@@ -1,8 +1,0 @@
-#!/bin/bash
-FILES=`git ls-files -d`
-if [[ ! -z $FILES ]]
-then
-	git rm $FILES
-else
-	echo "No deleted files"
-fi

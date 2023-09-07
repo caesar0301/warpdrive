@@ -1,8 +1,0 @@
-#!/bin/bash
-sudo systemctl status shadowsocks-libev-local@local.service
-
-sudo systemctl status trojan.service
-
-sudo systemctl status socks2http.service
-
-systemctl --user status onedrive
