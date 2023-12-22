@@ -42,7 +42,7 @@ sudo systemctl stop docker
     "data-root": "/new/path/docker-data-root"
 }
 # Move data
-rsync -avxP /var/lib/docker/ /new/path/docker-data-root
+rsync -qaxP /var/lib/docker/ /new/path/docker-data-root
 # restart
 sudo systemctl start docker
 ```
