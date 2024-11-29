@@ -1,11 +1,12 @@
 # Shell font configuration in terminal
 # Menlo, 14 pt.
 
+# Linux and mac, abspath
+THISFILE=$(cd ${0%/*} && echo $PWD/${0##*/})
+THISDIR=$(dirname $THISFILE)
+
 # Get parent directory
 base_dir=$(dirname $0)/..
-
-# Linux and mac
-abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 
 # trapped temp dir
 TEMP_DIR="$( mktemp -d )"
